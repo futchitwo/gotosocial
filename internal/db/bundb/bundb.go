@@ -35,7 +35,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/stdlib"
 	"github.com/superseriousbusiness/gotosocial/internal/cache"
-	"github.com/superseriousbusiness/gotosocial/internal/config"
+	//"github.com/superseriousbusiness/gotosocial/internal/config"
 	"github.com/superseriousbusiness/gotosocial/internal/db"
 	"github.com/superseriousbusiness/gotosocial/internal/db/bundb/migrations"
 	"github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
@@ -48,6 +48,8 @@ import (
 
 	grufcache "codeberg.org/gruf/go-cache/v2"
 	"modernc.org/sqlite"
+
+	"encore.dev/storage/sqldb"
 )
 
 const (
@@ -126,6 +128,13 @@ func doMigration(ctx context.Context, db *bun.DB) error {
 func NewBunDBService(ctx context.Context) (db.DB, error) {
 	var conn *DBConn
 	var err error
+	
+	conn, err = encoreConn(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	/*
 	dbType := strings.ToLower(config.GetDbType())
 
 	switch dbType {
@@ -142,6 +151,7 @@ func NewBunDBService(ctx context.Context) (db.DB, error) {
 	default:
 		return nil, fmt.Errorf("database type %s not supported for bundb", dbType)
 	}
+	*/
 
 	// Add database query hook
 	conn.DB.AddQueryHook(queryHook{})
@@ -298,6 +308,30 @@ func pgConn(ctx context.Context) (*DBConn, error) {
 
 	sqldb := stdlib.OpenDB(*opts)
 
+	tweakConnectionValues(sqldb)
+
+	conn := WrapDBConn(bun.NewDB(sqldb, pgdialect.New()))
+
+	// ping to check the db is there and listening
+	if err := conn.PingContext(ctx); err != nil {
+		return nil, fmt.Errorf("postgres ping: %s", err)
+	}
+
+	log.Info("connected to POSTGRES database")
+	return conn, nil
+}
+
+func encoreConn(ctx context.Context) (*DBConn, error) {
+	/*
+	opts, err := deriveBunDBPGOptions() //nolint:contextcheck
+	if err != nil {
+		return nil, fmt.Errorf("could not create bundb postgres options: %s", err)
+	}
+
+	sqldb := stdlib.OpenDB(*opts)
+	*/
+	sqldb := sqldb.Named("usr").Stdlib()
+	
 	tweakConnectionValues(sqldb)
 
 	conn := WrapDBConn(bun.NewDB(sqldb, pgdialect.New()))
