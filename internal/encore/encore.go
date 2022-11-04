@@ -57,6 +57,7 @@ import (
 //encore:service
 type Service struct {
 	Router *router.router
+}
 
 func initService() (*Service, error) {
 	ctx := context.Background()
@@ -204,8 +205,6 @@ func initService() (*Service, error) {
 			return fmt.Errorf("routing error: %s", err), nil
 		}
 	}
-
-
 
 	return &Service{Router: router_}, nil
     //return &Service{sendgridClient: client}, nil
