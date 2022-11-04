@@ -321,16 +321,10 @@ func pgConn(ctx context.Context) (*DBConn, error) {
 	return conn, nil
 }
 
-func encoreConn(ctx context.Context) (*DBConn, error) {
-	/*
-	opts, err := deriveBunDBPGOptions() //nolint:contextcheck
-	if err != nil {
-		return nil, fmt.Errorf("could not create bundb postgres options: %s", err)
-	}
+var encoreDB = sqldb.Named("encore")
 
-	sqldb := stdlib.OpenDB(*opts)
-	*/
-	sqldb := sqldb.Named("usr").Stdlib()
+func encoreConn(ctx context.Context) (*DBConn, error) {
+	sqldb := encoreDB.Stdlib()
 	
 	tweakConnectionValues(sqldb)
 

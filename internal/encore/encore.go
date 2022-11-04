@@ -210,7 +210,7 @@ func initService() (*Service, error) {
     //return &Service{sendgridClient: client}, nil
 }
 
-//encore:api public path=/*gtsPath
+//encore:api public raw path=/*gtsPath
 func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) error {
 	s.Router.engine.ServeHTTP(w, req)
 	return nil
