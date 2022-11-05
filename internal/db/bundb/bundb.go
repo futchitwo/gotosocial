@@ -35,7 +35,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/stdlib"
 	"github.com/superseriousbusiness/gotosocial/internal/cache"
-	//"github.com/superseriousbusiness/gotosocial/internal/config"
+	"github.com/superseriousbusiness/gotosocial/internal/config"
 	"github.com/superseriousbusiness/gotosocial/internal/db"
 	"github.com/superseriousbusiness/gotosocial/internal/db/bundb/migrations"
 	"github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
@@ -322,7 +322,8 @@ func pgConn(ctx context.Context) (*DBConn, error) {
 }
 
 func encoreConn(ctx context.Context) (*DBConn, error) {
-	encoreDB := ctx.Value("encoreDB")
+	var encoreDB sqldb.Database
+	encoreDB = ctx.Value("encoreDB")
 	sqldb := encoreDB.Stdlib()
 	
 	tweakConnectionValues(sqldb)
