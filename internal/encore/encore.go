@@ -54,12 +54,12 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/web"
 
 	"github.com/gin-gonic/gin"
-	//"encore.dev/storage/sqldb"
+	"encore.dev/storage/sqldb"
 )
 
 //encore: service
 type Service struct {
-	Engine *gin.Engine
+	engine *gin.Engine
 }
 
 var encoreDB sqldb.Database //sqldb.Named("encore")
@@ -209,10 +209,7 @@ func initService() (*Service, error) {
 	for _, m := range apis {
 		if err := m.Route(router_); err != nil {
 			return nil, fmt.Errorf("routing error: %s", err)
-		}
-	}
-
-	return &Service{Engine: router_.(*router.RouterType).engine}, nil
+		return &Service{engine: router_.(*Service).engine}, nil
     //return &Service{sendgridClient: client}, nil
 }
 
@@ -228,7 +225,7 @@ func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 	*/
-	s.Engine.ServeHTTP(w, req)
+	s.engine.ServeHTTP(w, req)
 }
 
 /*
