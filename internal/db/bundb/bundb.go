@@ -323,7 +323,7 @@ func pgConn(ctx context.Context) (*DBConn, error) {
 
 func encoreConn(ctx context.Context) (*DBConn, error) {
 	var encoreDB sqldb.Database
-	encoreDB = ctx.Value("encoreDB")
+	encoreDB = ctx.Value("encoreDB").(sqldb.Database)
 	sqldb := encoreDB.Stdlib()
 	
 	tweakConnectionValues(sqldb)
