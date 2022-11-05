@@ -3,12 +3,12 @@ package encore
 import (
 	"context"
 	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
+	//"os"
+	//"os/signal"
+	//"syscall"
 	"net/http"
 
-	"github.com/superseriousbusiness/gotosocial/cmd/gotosocial/action"
+	//"github.com/superseriousbusiness/gotosocial/cmd/gotosocial/action"
 	"github.com/superseriousbusiness/gotosocial/internal/api"
 	"github.com/superseriousbusiness/gotosocial/internal/api/client/account"
 	"github.com/superseriousbusiness/gotosocial/internal/api/client/admin"
@@ -39,9 +39,9 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/email"
 	"github.com/superseriousbusiness/gotosocial/internal/federation"
 	"github.com/superseriousbusiness/gotosocial/internal/federation/federatingdb"
-	"github.com/superseriousbusiness/gotosocial/internal/gotosocial"
+	//"github.com/superseriousbusiness/gotosocial/internal/gotosocial"
 	"github.com/superseriousbusiness/gotosocial/internal/httpclient"
-	"github.com/superseriousbusiness/gotosocial/internal/log"
+	//"github.com/superseriousbusiness/gotosocial/internal/log"
 	"github.com/superseriousbusiness/gotosocial/internal/media"
 	"github.com/superseriousbusiness/gotosocial/internal/messages"
 	"github.com/superseriousbusiness/gotosocial/internal/oauth"
@@ -54,6 +54,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/web"
 
 	"github.com/gin-gonic/gin"
+	"encore.dev/storage/sqldb"
 )
 
 //encore: service
