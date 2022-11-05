@@ -54,7 +54,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/web"
 
 	"github.com/gin-gonic/gin"
-	"encore.dev/storage/sqldb"
+	//"encore.dev/storage/sqldb"
 )
 
 //encore: service
