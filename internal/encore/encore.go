@@ -245,7 +245,6 @@ var Start action.GTSAction = func(ctx context.Context) error {
 		return fmt.Errorf("error during initial media prune: %s", err)
 	}
 
-	/ *
 	// catch shutdown signals from the operating system
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
@@ -259,7 +258,6 @@ var Start action.GTSAction = func(ctx context.Context) error {
 
 	log.Info("done! exiting...")
 	return nil
-	* /
 }
 */
 
