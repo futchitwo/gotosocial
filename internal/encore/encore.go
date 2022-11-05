@@ -62,7 +62,7 @@ type Service struct {
 	Engine *gin.Engine
 }
 
-var encoreDB = nil //sqldb.Named("encore")
+var encoreDB sqldb.Database //sqldb.Named("encore")
 var encoreRouter *Service
 
 func initService() (*Service, error) {
@@ -212,7 +212,7 @@ func initService() (*Service, error) {
 		}
 	}
 
-	return &Service{Engine: router_.(router.RouterType).engine}, nil
+	return &Service{Engine: router_.(*router.RouterType).engine}, nil
     //return &Service{sendgridClient: client}, nil
 }
 
