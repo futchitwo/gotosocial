@@ -24,25 +24,25 @@ import "github.com/gin-gonic/gin"
 // If the path is set to ANY, then the handlerfunc will be used for ALL methods at its given path.
 func (r *RouterType) AttachHandler(method string, path string, handler gin.HandlerFunc) {
 	if method == "ANY" {
-		r.engine.Any(path, handler)
+		r.Engine.Any(path, handler)
 	} else {
-		r.engine.Handle(method, path, handler)
+		r.Engine.Handle(method, path, handler)
 	}
 }
 
 // AttachMiddleware attaches a gin middleware to the router that will be used globally
 func (r *RouterType) AttachMiddleware(middleware gin.HandlerFunc) {
-	r.engine.Use(middleware)
+	r.Engine.Use(middleware)
 }
 
 // AttachNoRouteHandler attaches a gin.HandlerFunc to NoRoute to handle 404's
 func (r *RouterType) AttachNoRouteHandler(handler gin.HandlerFunc) {
-	r.engine.NoRoute(handler)
+	r.Engine.NoRoute(handler)
 }
 
 // AttachGroup attaches the given handlers into a group with the given relativePath as
 // base path for that group. It then returns the *gin.RouterGroup so that the caller
 // can add any extra middlewares etc specific to that group, as desired.
 func (r *RouterType) AttachGroup(relativePath string, handlers ...gin.HandlerFunc) *gin.RouterGroup {
-	return r.engine.Group(relativePath, handlers...)
+	return r.Engine.Group(relativePath, handlers...)
 }
