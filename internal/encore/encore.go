@@ -52,11 +52,13 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/transport"
 	"github.com/superseriousbusiness/gotosocial/internal/typeutils"
 	"github.com/superseriousbusiness/gotosocial/internal/web"
+
+	"github.com/gin-gonic/gin"
 )
 
 //encore: service
 type Service struct {
-	Router router.Router
+	Engine *gin.Engine
 }
 
 var encoreDB = sqldb.Named("encore")
@@ -209,14 +211,8 @@ func initService() (*Service, error) {
 		}
 	}
 
-	return &Service{Router: router_}, nil
+	return &Service{Engine: router_.engine}, nil
     //return &Service{sendgridClient: client}, nil
-}
-
-type routerType struct {
-	engine      *gin.Engine
-	srv         *http.Server
-	certManager *autocert.Manager
 }
 
 //encore:api public raw path=/*gtsPath
@@ -231,26 +227,27 @@ func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 	*/
-	s.Router.(routerType).engine.ServeHTTP(w, req)
+	s.Engine.ServeHTTP(w, req)
 }
 
+/*
 var Start action.GTSAction = func(ctx context.Context) error {
 
 	gts, err := gotosocial.NewServer(dbService, router_, federator, mediaManager)
 	if err != nil {
-		return fmt.Errorf("error creating gotosocial service: %s", err), nil
+		return fmt.Errorf("error creating gotosocial service: %s", err)
 	}
 
 	if err := gts.Start(ctx); err != nil {
-		return fmt.Errorf("error starting gotosocial service: %s", err), nil
+		return fmt.Errorf("error starting gotosocial service: %s", err)
 	}
 
 	// perform initial media prune in case value of MediaRemoteCacheDays changed
 	if err := processor.AdminMediaPrune(ctx, config.GetMediaRemoteCacheDays()); err != nil {
-		return fmt.Errorf("error during initial media prune: %s", err), nil
+		return fmt.Errorf("error during initial media prune: %s", err)
 	}
 
-	/*
+	/ *
 	// catch shutdown signals from the operating system
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
@@ -264,5 +261,7 @@ var Start action.GTSAction = func(ctx context.Context) error {
 
 	log.Info("done! exiting...")
 	return nil
-	*/
+	* /
 }
+*/
+
