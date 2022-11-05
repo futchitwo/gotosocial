@@ -95,7 +95,7 @@ func NewRouter(ctx context.Context, db db.DB) (Router, error) {
 	}
 
 	return &RouterType{
-		engine:      engine,
+		Engine:      engine,
 		srv:         s,
 		certManager: m,
 	}, nil

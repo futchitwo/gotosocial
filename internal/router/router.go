@@ -61,7 +61,7 @@ type Router interface {
 
 // router fulfils the Router interface using gin and logrus
 type RouterType struct {
-	engine      *gin.Engine
+	Engine      *gin.Engine
 	srv         *http.Server
 	certManager *autocert.Manager
 }
@@ -225,7 +225,7 @@ func New(ctx context.Context, db db.DB) (Router, error) {
 	}
 
 	return &RouterType{
-		engine:      engine,
+		Engine:      engine,
 		srv:         s,
 		certManager: m,
 	}, nil

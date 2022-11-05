@@ -212,7 +212,7 @@ func initService() (*Service, error) {
 		}
 	}
 
-	return &Service{engine: router_.(*Service).engine}, nil
+	return &Service{engine: router_.(*router.RouterType).Engine}, nil
     //return &Service{sendgridClient: client}, nil
 }
 
