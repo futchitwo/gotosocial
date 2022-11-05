@@ -56,7 +56,7 @@ import (
 
 //encore: service
 type Service struct {
-	Router *router.router
+	Router *router.Router
 }
 
 var encoreDB = sqldb.Named("encore")
@@ -67,15 +67,15 @@ func initService() (*Service, error) {
 
     dbService, err := bundb.NewBunDBService(ctx)
 	if err != nil {
-		return fmt.Errorf("error creating dbservice: %s", err), nil
+		return nil, fmt.Errorf("error creating dbservice: %s", err)
 	}
 
 	if err := dbService.CreateInstanceAccount(ctx); err != nil {
-		return fmt.Errorf("error creating instance account: %s", err), nil
+		return nil, fmt.Errorf("error creating instance account: %s", err)
 	}
 
 	if err := dbService.CreateInstanceInstance(ctx); err != nil {
-		return fmt.Errorf("error creating instance instance: %s", err), nil
+		return nil, fmt.Errorf("error creating instance instance: %s", err)
 	}
 
 	// Create the client API and federator worker pools
@@ -90,17 +90,17 @@ func initService() (*Service, error) {
 	//router_, err := router.New(ctx, dbService)
 	router_, err := NewRouter(ctx, dbService)
 	if err != nil {
-		return fmt.Errorf("error creating router: %s", err), nil
+		return nil, fmt.Errorf("error creating router: %s", err)
 	}
 
 	// build converters and util
-	typeConverter := typeutils.NewConverter(dbService), nil
+	typeConverter := typeutils.NewConverter(dbService)
 
 	// Open the storage backend
 
 	storage, err := gtsstorage.AutoConfig()
 	if err != nil {
-		return fmt.Errorf("error creating storage backend: %w", err), nil
+		return nil, fmt.Errorf("error creating storage backend: %w", err)
 	}
 
 	// Build HTTP client (TODO: add configurables here)
@@ -109,7 +109,7 @@ func initService() (*Service, error) {
 	// build backend handlers
 	mediaManager, err := media.NewManager(dbService, storage)
 	if err != nil {
-		return fmt.Errorf("error creating media manager: %s", err), nil
+		return nil, fmt.Errorf("error creating media manager: %s", err)
 	}
 	oauthServer := oauth.New(ctx, dbService)
 	transportController := transport.NewController(dbService, federatingDB, &federation.Clock{}, client)
@@ -121,25 +121,25 @@ func initService() (*Service, error) {
 		// host is defined so create a proper sender
 		emailSender, err = email.NewSender()
 		if err != nil {
-			return fmt.Errorf("error creating email sender: %s", err), nil
+			return nil, fmt.Errorf("error creating email sender: %s", err)
 		}
 	} else {
 		// no host is defined so create a noop sender
 		emailSender, err = email.NewNoopSender(nil)
 		if err != nil {
-			return fmt.Errorf("error creating noop email sender: %s", err), nil
+			return nil, fmt.Errorf("error creating noop email sender: %s", err)
 		}
 	}
 
 	// create and start the message processor using the other services we've created so far
 	processor := processing.NewProcessor(typeConverter, federator, oauthServer, mediaManager, storage, dbService, emailSender, clientWorker, fedWorker)
 	if err := processor.Start(); err != nil {
-		return fmt.Errorf("error starting processor: %s", err), nil
+		return nil, fmt.Errorf("error starting processor: %s", err)
 	}
 
 	idp, err := oidc.NewIDP(ctx)
 	if err != nil {
-		return fmt.Errorf("error creating oidc idp: %s", err), nil
+		return nil, fmt.Errorf("error creating oidc idp: %s", err)
 	}
 
 
@@ -205,7 +205,7 @@ func initService() (*Service, error) {
 
 	for _, m := range apis {
 		if err := m.Route(router_); err != nil {
-			return fmt.Errorf("routing error: %s", err), nil
+			return nil, fmt.Errorf("routing error: %s", err)
 		}
 	}
 
