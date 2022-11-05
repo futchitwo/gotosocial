@@ -54,7 +54,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/web"
 )
 
-//:service
+//encore: service
 type Service struct {
 	Router *router.router
 }
@@ -214,8 +214,9 @@ func initService() (*Service, error) {
 }
 
 //encore:api public raw path=/*gtsPath
-//func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) error {
-func gtsMain(w http.ResponseWriter, req *http.Request) error {
+func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) {
+//func gtsMain(w http.ResponseWriter, req *http.Request) error {
+	/*
 	if encoreRouter == nil {
 		encoreRouter, err := initService()
 		
@@ -223,9 +224,8 @@ func gtsMain(w http.ResponseWriter, req *http.Request) error {
 			return err
 		}
 	}
-	
-	encoreRouter.Router.engine.ServeHTTP(w, req)
-	return nil
+	*/
+	s.Router.engine.ServeHTTP(w, req)
 }
 
 var Start action.GTSAction = func(ctx context.Context) error {
