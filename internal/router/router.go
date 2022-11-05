@@ -60,14 +60,14 @@ type Router interface {
 }
 
 // router fulfils the Router interface using gin and logrus
-type router struct {
+type RouterType struct {
 	engine      *gin.Engine
 	srv         *http.Server
 	certManager *autocert.Manager
 }
 
 // Start starts the router nicely. It will serve two handlers if letsencrypt is enabled, and only the web/API handler if letsencrypt is not enabled.
-func (r *router) Start() {
+func (r *RouterType) Start() {
 	// listen is the server start function, by
 	// default pointing to regular HTTP listener,
 	// but updated to TLS if LetsEncrypt is enabled.
@@ -129,7 +129,7 @@ func (r *router) Start() {
 }
 
 // Stop shuts down the router nicely
-func (r *router) Stop(ctx context.Context) error {
+func (r *RouterType) Stop(ctx context.Context) error {
 	log.Infof("shutting down http router with %s grace period", shutdownTimeout)
 	timeout, cancel := context.WithTimeout(ctx, shutdownTimeout)
 	defer cancel()
@@ -224,7 +224,7 @@ func New(ctx context.Context, db db.DB) (Router, error) {
 		s.TLSConfig = m.TLSConfig()
 	}
 
-	return &router{
+	return &RouterType{
 		engine:      engine,
 		srv:         s,
 		certManager: m,

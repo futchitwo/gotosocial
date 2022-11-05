@@ -12,8 +12,6 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 )
 
-type RouterType router
-
 // New returns a new Router with the specified configuration.
 //
 // The given DB is only used in the New function for parsing config values, and is not otherwise
@@ -96,7 +94,7 @@ func NewRouter(ctx context.Context, db db.DB) (Router, error) {
 		s.TLSConfig = m.TLSConfig()
 	}
 
-	return &router{
+	return &RouterType{
 		engine:      engine,
 		srv:         s,
 		certManager: m,
