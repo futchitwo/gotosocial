@@ -12,6 +12,8 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 )
 
+type RouterType router
+
 // New returns a new Router with the specified configuration.
 //
 // The given DB is only used in the New function for parsing config values, and is not otherwise

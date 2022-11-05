@@ -57,8 +57,6 @@ type Router interface {
 	Start()
 	// Stop the router
 	Stop(ctx context.Context) error
-
-	engine      *gin.Engine
 }
 
 // router fulfils the Router interface using gin and logrus
