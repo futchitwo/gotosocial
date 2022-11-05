@@ -54,13 +54,16 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/web"
 )
 
-//encore:service
+//:service
 type Service struct {
 	Router *router.router
 }
 
+var encoreDB = sqldb.Named("encore")
+var encoreRouter *Service
+
 func initService() (*Service, error) {
-	ctx := context.Background()
+	ctx := context.WithValue(context.Background(), "encoreDB", encoreDB)
 
     dbService, err := bundb.NewBunDBService(ctx)
 	if err != nil {
@@ -211,13 +214,21 @@ func initService() (*Service, error) {
 }
 
 //encore:api public raw path=/*gtsPath
-func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) error {
-	s.Router.engine.ServeHTTP(w, req)
+//func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) error {
+func gtsMain(w http.ResponseWriter, req *http.Request) error {
+	if encoreRouter == nil {
+		encoreRouter, err := initService()
+		
+		if err != nil {
+			return err
+		}
+	}
+	
+	encoreRouter.Router.engine.ServeHTTP(w, req)
 	return nil
 }
 
 var Start action.GTSAction = func(ctx context.Context) error {
-	
 
 	gts, err := gotosocial.NewServer(dbService, router_, federator, mediaManager)
 	if err != nil {

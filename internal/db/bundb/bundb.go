@@ -321,9 +321,8 @@ func pgConn(ctx context.Context) (*DBConn, error) {
 	return conn, nil
 }
 
-var encoreDB = sqldb.Named("encore")
-
 func encoreConn(ctx context.Context) (*DBConn, error) {
+	encoreDB := ctx.Value("encoreDB")
 	sqldb := encoreDB.Stdlib()
 	
 	tweakConnectionValues(sqldb)
@@ -332,7 +331,7 @@ func encoreConn(ctx context.Context) (*DBConn, error) {
 
 	// ping to check the db is there and listening
 	if err := conn.PingContext(ctx); err != nil {
-		return nil, fmt.Errorf("postgres ping: %s", err)
+		return nil, fmt.Errorf("encore DB ping: %s", err)
 	}
 
 	log.Info("connected to POSTGRES database")
