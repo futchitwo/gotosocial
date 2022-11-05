@@ -56,7 +56,7 @@ import (
 
 //encore: service
 type Service struct {
-	Router *router.Router
+	Router router.Router
 }
 
 var encoreDB = sqldb.Named("encore")
@@ -88,7 +88,7 @@ func initService() (*Service, error) {
 	federatingDB := federatingdb.New(dbService, fedWorker)
 
 	//router_, err := router.New(ctx, dbService)
-	router_, err := NewRouter(ctx, dbService)
+	router_, err := router.NewRouter(ctx, dbService)
 	if err != nil {
 		return nil, fmt.Errorf("error creating router: %s", err)
 	}
@@ -213,6 +213,12 @@ func initService() (*Service, error) {
     //return &Service{sendgridClient: client}, nil
 }
 
+type routerType struct {
+	engine      *gin.Engine
+	srv         *http.Server
+	certManager *autocert.Manager
+}
+
 //encore:api public raw path=/*gtsPath
 func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) {
 //func gtsMain(w http.ResponseWriter, req *http.Request) error {
@@ -225,7 +231,7 @@ func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 	*/
-	s.Router.engine.ServeHTTP(w, req)
+	s.Router.(routerType).engine.ServeHTTP(w, req)
 }
 
 var Start action.GTSAction = func(ctx context.Context) error {
