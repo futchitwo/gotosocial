@@ -209,7 +209,10 @@ func initService() (*Service, error) {
 	for _, m := range apis {
 		if err := m.Route(router_); err != nil {
 			return nil, fmt.Errorf("routing error: %s", err)
-		return &Service{engine: router_.(*Service).engine}, nil
+		}
+	}
+
+	return &Service{engine: router_.(*Service).engine}, nil
     //return &Service{sendgridClient: client}, nil
 }
 
@@ -260,4 +263,3 @@ var Start action.GTSAction = func(ctx context.Context) error {
 	return nil
 }
 */
-
