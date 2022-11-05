@@ -5,13 +5,10 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"time"
 
-	"codeberg.org/gruf/go-debug"
 	"github.com/gin-gonic/gin"
 	"github.com/superseriousbusiness/gotosocial/internal/config"
 	"github.com/superseriousbusiness/gotosocial/internal/db"
-	"github.com/superseriousbusiness/gotosocial/internal/log"
 	"golang.org/x/crypto/acme/autocert"
 )
 
