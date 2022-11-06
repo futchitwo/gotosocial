@@ -2,8 +2,9 @@ package main
 
 import (
 	"testing"
+	"os"
 )
 
 func TestMain(m *testing.M) {
-	return
+	os.Exit(0)
 }
