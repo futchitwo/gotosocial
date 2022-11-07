@@ -62,7 +62,7 @@ type Service struct {
 	engine *gin.Engine
 }
 
-var encoreDB sqldb.Database = sqldb.Named("encore")
+var encoreDB *sqldb.Database = sqldb.Named("encore")
 var encoreRouter *Service
 
 func initService() (*Service, error) {
