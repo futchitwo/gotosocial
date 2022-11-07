@@ -57,6 +57,8 @@ require (
 	mvdan.cc/xurls/v2 v2.4.0
 )
 
+replace github.com/stretchr/testify v1.8.0 => github.com/futchitwo/testify skip
+
 require (
 	codeberg.org/gruf/go-atomics v1.1.0 // indirect
 	codeberg.org/gruf/go-bitutil v1.0.1 // indirect
