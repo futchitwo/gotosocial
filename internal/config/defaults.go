@@ -18,10 +18,7 @@
 
 package config
 
-import (
-	"github.com/coreos/go-oidc/v3/oidc"
-	"encore.dev"
-)
+import "github.com/coreos/go-oidc/v3/oidc"
 
 // Defaults contains a populated Configuration with reasonable defaults. Note that
 // if you use this, you will still need to set Host, and, if desired, ConfigPath.
@@ -31,8 +28,8 @@ var Defaults = Configuration{
 	ApplicationName: "gotosocial",
 	LandingPageUser: "",
 	ConfigPath:      "",
-	Host:            encore.Meta().APIBaseURL.String(),
-	AccountDomain:   encore.Meta().APIBaseURL.String(),
+	Host:            "",
+	AccountDomain:   "",
 	Protocol:        "https",
 	BindAddress:     "0.0.0.0",
 	Port:            8080,
