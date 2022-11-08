@@ -18,7 +18,10 @@
 */
 package config
 
-import "codeberg.org/gruf/go-bytesize"
+import (
+	"codeberg.org/gruf/go-bytesize"
+	"encore.dev"
+)
 
 // GetLogLevel safely fetches the Configuration value for state's 'LogLevel' field
 func (st *ConfigState) GetLogLevel() (v string) {
@@ -124,6 +127,9 @@ func SetConfigPath(v string) { global.SetConfigPath(v) }
 func (st *ConfigState) GetHost() (v string) {
 	st.mutex.Lock()
 	v = st.config.Host
+	if v == "" {
+		v = encore.Meta().APIBaseURL.String()
+	}
 	st.mutex.Unlock()
 	return
 }
@@ -149,6 +155,9 @@ func SetHost(v string) { global.SetHost(v) }
 func (st *ConfigState) GetAccountDomain() (v string) {
 	st.mutex.Lock()
 	v = st.config.AccountDomain
+	if v == "" {
+		v = encore.Meta().APIBaseURL.String()
+	}
 	st.mutex.Unlock()
 	return
 }
