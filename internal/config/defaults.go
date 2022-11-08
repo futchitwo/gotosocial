@@ -24,7 +24,7 @@ import "github.com/coreos/go-oidc/v3/oidc"
 // if you use this, you will still need to set Host, and, if desired, ConfigPath.
 var Defaults = Configuration{
 	LogLevel:        "info",
-	LogDbQueries:    false,
+	LogDbQueries:    true,
 	ApplicationName: "gotosocial",
 	LandingPageUser: "",
 	ConfigPath:      "",
@@ -54,7 +54,7 @@ var Defaults = Configuration{
 	AccountsRegistrationOpen: true,
 	AccountsApprovalRequired: true,
 	AccountsReasonRequired:   true,
-	AccountsAllowCustomCSS:   false,
+	AccountsAllowCustomCSS:   true,
 
 	MediaImageMaxSize:        10485760, // 10mb
 	MediaVideoMaxSize:        41943040, // 40mb
