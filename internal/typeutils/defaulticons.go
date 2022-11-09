@@ -20,13 +20,15 @@ package typeutils
 
 import (
 	"math/rand"
-	"os"
+	//"os"
 	"path/filepath"
 	"strings"
 
 	apimodel "github.com/superseriousbusiness/gotosocial/internal/api/model"
 	"github.com/superseriousbusiness/gotosocial/internal/config"
 	"github.com/superseriousbusiness/gotosocial/internal/log"
+
+	"github.com/superseriousbusiness/gotosocial/web/embed"
 )
 
 const defaultHeaderPath = "/assets/default_header.png"
@@ -39,6 +41,7 @@ const defaultHeaderPath = "/assets/default_header.png"
 // So for example, an avatar called default.jpeg would be returned
 // in the slice as "/assets/default_avatars/default.jpeg".
 func populateDefaultAvatars() (defaultAvatars []string) {
+	/*
 	webAssetsAbsFilePath, err := filepath.Abs(config.GetWebAssetBaseDir())
 	if err != nil {
 		log.Panicf("populateDefaultAvatars: error getting abs path for web assets: %s", err)
@@ -46,6 +49,9 @@ func populateDefaultAvatars() (defaultAvatars []string) {
 
 	defaultAvatarsAbsFilePath := filepath.Join(webAssetsAbsFilePath, "default_avatars")
 	defaultAvatarFiles, err := os.ReadDir(defaultAvatarsAbsFilePath)
+	*/
+
+	items, err := embed.WebFS.ReadDir("assets/default_avatars")
 	if err != nil {
 		log.Warnf("populateDefaultAvatars: error reading default avatars at %s: %s", defaultAvatarsAbsFilePath, err)
 		return

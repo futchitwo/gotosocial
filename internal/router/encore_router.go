@@ -48,10 +48,10 @@ func NewRouter(ctx context.Context, db db.DB) (Router, error) {
 	}
 
 	// set template functions
-	LoadTemplateFunctions(engine)
+	// LoadTemplateFunctions(engine)
 
 	// load templates onto the engine
-	if err := LoadTemplates(engine); err != nil {
+	if err := LoadTemplatesFromEmbed(engine); err != nil {
 		return nil, err
 	}
 

@@ -1,0 +1,7 @@
+package embed
+
+import "embed"
+
+//go:embed assets
+//go:embed template
+var WebFS embed.FS
