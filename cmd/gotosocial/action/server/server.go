@@ -107,7 +107,7 @@ var Start action.GTSAction = func(ctx context.Context) error {
 
 	storage, err := gtsstorage.AutoConfig()
 	if err != nil {
-		return fmt.Errorf("error creating storage backend: %w", err)
+		return fmt.Errorf("[debug cmd]error creating storage backend: %w", err)
 	}
 
 	// Build HTTP client (TODO: add configurables here)

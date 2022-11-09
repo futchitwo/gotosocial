@@ -74,7 +74,7 @@ func init() {
 				LockFile: path.Join(storageBasePath, "store.lock"),
 			})
 			if err != nil {
-				return fmt.Errorf("error creating storage backend: %s", err)
+				return fmt.Errorf("[debug migration]error creating storage backend: %s", err)
 			}
 			defer s.Close()
 

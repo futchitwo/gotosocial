@@ -103,7 +103,7 @@ func initService() (*Service, error) {
 
 	storage, err := gtsstorage.AutoConfig()
 	if err != nil {
-		return nil, fmt.Errorf("error creating storage backend: %w", err)
+		return nil, fmt.Errorf("[debug encore]error creating storage backend: %w", err)
 	}
 
 	// Build HTTP client (TODO: add configurables here)
