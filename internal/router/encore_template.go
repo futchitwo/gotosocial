@@ -21,7 +21,7 @@ func LoadTemplatesFromEmbed(engine *gin.Engine) error {
 		"emojify":          emojify,
 	}
 
-	tmplDir, err := fs.Sub(embed.WebFS, "template")
+	tmplDir, err := fs.Sub(web.WebFS, "template")
 	if err != nil {
 		return err
 	}

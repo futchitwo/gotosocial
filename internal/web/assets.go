@@ -67,7 +67,7 @@ func (m *Module) mountAssetsFilesystem(group *gin.RouterGroup) {
 	fs := fileSystem{http.Dir(webAssetsAbsFilePath)}
 	*/
 
-	assetDir, _ := fs.Sub(embed.WebFS, "assets")
+	assetDir, _ := fs.Sub(web.WebFS, "assets")
 	fs := fileSystem{http.FileSystem(assetDir)}
 
 	// use the cache middleware on all handlers in this group
