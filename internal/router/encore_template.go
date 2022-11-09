@@ -27,7 +27,7 @@ func LoadTemplatesFromEmbed(engine *gin.Engine) error {
 	}
 
 	tmpl := template.New("").Funcs(funcMap)
-	tmpl = template.Must(tmpl.ParseFS(tmplDir, "*.tmpl")
+	tmpl = template.Must(tmpl.ParseFS(tmplDir, "*.tmpl"))
 	
 	engine.SetHTMLTemplate(tmpl)
 	return nil
