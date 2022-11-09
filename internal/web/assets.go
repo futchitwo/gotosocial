@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"net/http"
 	"path"
-	"path/filepath"
+	//"path/filepath"
 	"strings"
 
 	"io/fs"
@@ -68,7 +68,7 @@ func (m *Module) mountAssetsFilesystem(group *gin.RouterGroup) {
 	*/
 
 	assetDir, _ := fs.Sub(web.WebFS, "assets")
-	fs := fileSystem{http.FileSystem(assetDir)}
+	fs := fileSystem{http.FS(assetDir)}
 
 	// use the cache middleware on all handlers in this group
 	group.Use(m.assetsCacheControlMiddleware(fs))
