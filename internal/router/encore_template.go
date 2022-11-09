@@ -5,7 +5,7 @@ import (
 	"html/template"
 
 	"github.com/gin-gonic/gin"
-	"github.com/superseriousbusiness/gotosocial/web/embed"
+	"github.com/superseriousbusiness/gotosocial/web"
 )
 
 func LoadTemplatesFromEmbed(engine *gin.Engine) error {

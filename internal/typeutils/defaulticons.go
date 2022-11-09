@@ -28,7 +28,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/config"
 	"github.com/superseriousbusiness/gotosocial/internal/log"
 
-	"github.com/superseriousbusiness/gotosocial/web/embed"
+	"github.com/superseriousbusiness/gotosocial/web"
 )
 
 const defaultHeaderPath = "/assets/default_header.png"
