@@ -44,8 +44,8 @@ var Defaults = Configuration{
 	DbTLSMode:   "disable",
 	DbTLSCACert: "",
 
-	WebTemplateBaseDir: "./web/template/",
-	WebAssetBaseDir:    "./web/assets/",
+	WebTemplateBaseDir: "./template/",
+	WebAssetBaseDir:    "./assets/",
 
 	InstanceExposePeers:            false,
 	InstanceExposeSuspended:        false,
