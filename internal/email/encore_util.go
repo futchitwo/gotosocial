@@ -2,7 +2,7 @@ package email
 
 import (
 	"io/fs"
-	"html/template"
+	"text/template"
 
  	"github.com/superseriousbusiness/gotosocial/web"
 )
