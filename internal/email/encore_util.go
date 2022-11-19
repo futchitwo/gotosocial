@@ -4,7 +4,7 @@ import (
 	"io/fs"
 	"html/template"
 
- 	"github.com/superseriousbusiness/gotosocial/web/embed"
+ 	"github.com/superseriousbusiness/gotosocial/web"
 )
 
 func loadTemplatesFromEmbed() (*template.Template, error) {
