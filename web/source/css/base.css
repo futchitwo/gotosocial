@@ -60,6 +60,7 @@ body {
 	display: grid;
 	min-height: 100%;
 	min-width: 100%;
+	width: 100vw;
 
 	grid-template-columns: auto minmax(auto, 90ch) auto;
 	grid-template-columns: auto min(92%, 90ch) auto;
@@ -261,12 +262,16 @@ section.login {
 }
 
 section.error {
+	word-break: break-word;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	margin-bottom: 0.5rem;
+
 	span {
 		font-size: 2em;
 	}
+
 	pre {
 		border: 1px solid #ff000080;
 		margin-left: 1em;
@@ -285,7 +290,7 @@ section.error {
 	font-weight: bold;
 }
 
-input, select, textarea {
+input, select, textarea, .input {
 	box-sizing: border-box;
 	border: 0.15rem solid $input-border;
 	border-radius: 0.1rem;

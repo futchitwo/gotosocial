@@ -149,11 +149,9 @@ var Promote action.GTSAction = func(ctx context.Context) error {
 		return err
 	}
 
-	updatingColumns := []string{"admin", "updated_at"}
 	admin := true
 	u.Admin = &admin
-	u.UpdatedAt = time.Now()
-	if _, err := dbConn.UpdateUser(ctx, u, updatingColumns...); err != nil {
+	if err := dbConn.UpdateUser(ctx, u, "admin"); err != nil {
 		return err
 	}
 
@@ -185,11 +183,9 @@ var Demote action.GTSAction = func(ctx context.Context) error {
 		return err
 	}
 
-	updatingColumns := []string{"admin", "updated_at"}
 	admin := false
 	u.Admin = &admin
-	u.UpdatedAt = time.Now()
-	if _, err := dbConn.UpdateUser(ctx, u, updatingColumns...); err != nil {
+	if err := dbConn.UpdateUser(ctx, u, "admin"); err != nil {
 		return err
 	}
 
@@ -221,21 +217,13 @@ var Disable action.GTSAction = func(ctx context.Context) error {
 		return err
 	}
 
-	updatingColumns := []string{"disabled", "updated_at"}
 	disabled := true
 	u.Disabled = &disabled
-	u.UpdatedAt = time.Now()
-	if _, err := dbConn.UpdateUser(ctx, u, updatingColumns...); err != nil {
+	if err := dbConn.UpdateUser(ctx, u, "disabled"); err != nil {
 		return err
 	}
 
 	return dbConn.Stop(ctx)
-}
-
-// Suspend suspends the target account, cleanly removing all of its media, followers, following, likes, statuses, etc.
-var Suspend action.GTSAction = func(ctx context.Context) error {
-	// TODO
-	return nil
 }
 
 // Password sets the password of target account.
@@ -276,10 +264,8 @@ var Password action.GTSAction = func(ctx context.Context) error {
 		return fmt.Errorf("error hashing password: %s", err)
 	}
 
-	updatingColumns := []string{"encrypted_password", "updated_at"}
 	u.EncryptedPassword = string(pw)
-	u.UpdatedAt = time.Now()
-	if _, err := dbConn.UpdateUser(ctx, u, updatingColumns...); err != nil {
+	if err := dbConn.UpdateUser(ctx, u, "encrypted_password"); err != nil {
 		return err
 	}
 

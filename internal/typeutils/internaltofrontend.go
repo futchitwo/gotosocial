@@ -20,6 +20,7 @@ package typeutils
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -104,10 +105,11 @@ func (c *converter) AccountToAPIAccountPublic(ctx context.Context, a *gtsmodel.A
 	}
 
 	// check when the last status was
-	var lastStatusAt string
+	var lastStatusAt *string
 	lastPosted, err := c.db.GetAccountLastPosted(ctx, a.ID, false)
 	if err == nil && !lastPosted.IsZero() {
-		lastStatusAt = util.FormatISO8601(lastPosted)
+		lastStatusAtTemp := util.FormatISO8601(lastPosted)
+		lastStatusAt = &lastStatusAtTemp
 	}
 
 	// set account avatar fields if available
@@ -183,13 +185,30 @@ func (c *converter) AccountToAPIAccountPublic(ctx context.Context, a *gtsmodel.A
 		emojis = append(emojis, apiEmoji)
 	}
 
-	var acct string
+	var (
+		acct string
+		role = model.AccountRoleUnknown
+	)
+
 	if a.Domain != "" {
 		// this is a remote user
-		acct = fmt.Sprintf("%s@%s", a.Username, a.Domain)
+		acct = a.Username + "@" + a.Domain
 	} else {
 		// this is a local user
 		acct = a.Username
+		user, err := c.db.GetUserByAccountID(ctx, a.ID)
+		if err != nil {
+			return nil, fmt.Errorf("AccountToAPIAccountPublic: error getting user from database for account id %s: %s", a.ID, err)
+		}
+
+		switch {
+		case *user.Admin:
+			role = model.AccountRoleAdmin
+		case *user.Moderator:
+			role = model.AccountRoleModerator
+		default:
+			role = model.AccountRoleUser
+		}
 	}
 
 	var suspended bool
@@ -220,6 +239,7 @@ func (c *converter) AccountToAPIAccountPublic(ctx context.Context, a *gtsmodel.A
 		Suspended:      suspended,
 		CustomCSS:      a.CustomCSS,
 		EnableRSS:      *a.EnableRSS,
+		Role:           role,
 	}
 
 	c.ensureAvatar(accountFrontend)
@@ -354,12 +374,24 @@ func (c *converter) MentionToAPIMention(ctx context.Context, m *gtsmodel.Mention
 }
 
 func (c *converter) EmojiToAPIEmoji(ctx context.Context, e *gtsmodel.Emoji) (model.Emoji, error) {
+	var category string
+	if e.CategoryID != "" {
+		if e.Category == nil {
+			var err error
+			e.Category, err = c.db.GetEmojiCategory(ctx, e.CategoryID)
+			if err != nil {
+				return model.Emoji{}, err
+			}
+		}
+		category = e.Category.Name
+	}
+
 	return model.Emoji{
 		Shortcode:       e.Shortcode,
 		URL:             e.ImageURL,
 		StaticURL:       e.ImageStaticURL,
 		VisibleInPicker: *e.VisibleInPicker,
-		Category:        e.CategoryID,
+		Category:        category,
 	}, nil
 }
 
@@ -378,6 +410,13 @@ func (c *converter) EmojiToAdminAPIEmoji(ctx context.Context, e *gtsmodel.Emoji)
 		TotalFileSize: e.ImageFileSize + e.ImageStaticFileSize,
 		ContentType:   e.ImageContentType,
 		URI:           e.URI,
+	}, nil
+}
+
+func (c *converter) EmojiCategoryToAPIEmojiCategory(ctx context.Context, category *gtsmodel.EmojiCategory) (*model.EmojiCategory, error) {
+	return &model.EmojiCategory{
+		ID:   category.ID,
+		Name: category.Name,
 	}, nil
 }
 
@@ -665,12 +704,25 @@ func (c *converter) InstanceToAPIInstance(ctx context.Context, i *gtsmodel.Insta
 		mi.AccountDomain = config.GetAccountDomain()
 
 		if ia, err := c.db.GetInstanceAccount(ctx, ""); err == nil {
-			if ia.HeaderMediaAttachment != nil {
-				// take instance account header as instance thumbnail
-				mi.Thumbnail = ia.HeaderMediaAttachment.URL
-			} else {
-				// or just use a default
-				mi.Thumbnail = config.GetProtocol() + "://" + host + "/assets/logo.png"
+			// assume default logo
+			mi.Thumbnail = config.GetProtocol() + "://" + host + "/assets/logo.png"
+
+			// take instance account avatar as instance thumbnail if we can
+			if ia.AvatarMediaAttachmentID != "" {
+				if ia.AvatarMediaAttachment == nil {
+					avi, err := c.db.GetAttachmentByID(ctx, ia.AvatarMediaAttachmentID)
+					if err == nil {
+						ia.AvatarMediaAttachment = avi
+					} else if !errors.Is(err, db.ErrNoEntries) {
+						log.Errorf("InstanceToAPIInstance: error getting instance avatar attachment with id %s: %s", ia.AvatarMediaAttachmentID, err)
+					}
+				}
+
+				if ia.AvatarMediaAttachment != nil {
+					mi.Thumbnail = ia.AvatarMediaAttachment.URL
+					mi.ThumbnailType = ia.AvatarMediaAttachment.File.ContentType
+					mi.ThumbnailDescription = ia.AvatarMediaAttachment.Description
+				}
 			}
 		}
 

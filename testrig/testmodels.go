@@ -583,6 +583,18 @@ func NewTestAccounts() map[string]*gtsmodel.Account {
 	return accounts
 }
 
+func NewTestTombstones() map[string]*gtsmodel.Tombstone {
+	return map[string]*gtsmodel.Tombstone{
+		"https://somewhere.mysterious/users/rest_in_piss#main-key": {
+			ID:        "01GHBTVE9HQPPBDH2W5VH2DGN4",
+			CreatedAt: TimeMustParse("2021-11-09T19:33:45Z"),
+			UpdatedAt: TimeMustParse("2021-11-09T19:33:45Z"),
+			Domain:    "somewhere.mysterious",
+			URI:       "https://somewhere.mysterious/users/rest_in_piss#main-key",
+		},
+	}
+}
+
 // NewTestAttachments returns a map of attachments keyed according to which account
 // and status they belong to, and which attachment number of that status they are.
 func NewTestAttachments() map[string]*gtsmodel.MediaAttachment {
@@ -952,7 +964,7 @@ func NewTestEmojis() map[string]*gtsmodel.Emoji {
 			Disabled:               FalseBool(),
 			URI:                    "http://localhost:8080/emoji/01F8MH9H8E4VG3KDYJR9EGPXCQ",
 			VisibleInPicker:        TrueBool(),
-			CategoryID:             "",
+			CategoryID:             "01GGQ8V4993XK67B2JB396YFB7",
 		},
 		"yell": {
 			ID:                     "01GD5KP5CQEE1R3X43Y1EHS2CW",
@@ -975,6 +987,23 @@ func NewTestEmojis() map[string]*gtsmodel.Emoji {
 			URI:                    "http://fossbros-anonymous.io/emoji/01GD5KP5CQEE1R3X43Y1EHS2CW",
 			VisibleInPicker:        FalseBool(),
 			CategoryID:             "",
+		},
+	}
+}
+
+func NewTestEmojiCategories() map[string]*gtsmodel.EmojiCategory {
+	return map[string]*gtsmodel.EmojiCategory{
+		"reactions": {
+			ID:        "01GGQ8V4993XK67B2JB396YFB7",
+			Name:      "reactions",
+			CreatedAt: TimeMustParse("2020-03-18T11:40:55+02:00"),
+			UpdatedAt: TimeMustParse("2020-03-19T12:35:12+02:00"),
+		},
+		"cute stuff": {
+			ID:        "01GGQ989PTT9PMRN4FZ1WWK2B9",
+			Name:      "cute stuff",
+			CreatedAt: TimeMustParse("2020-03-20T11:40:55+02:00"),
+			UpdatedAt: TimeMustParse("2020-03-21T12:35:12+02:00"),
 		},
 	}
 }
@@ -1835,6 +1864,16 @@ func NewTestActivities(accounts map[string]*gtsmodel.Account) map[string]Activit
 	)
 	announceForwarded2ZorkSig, announceForwarded2ZorkDigest, announceForwarded2ZorkDate := GetSignatureForActivity(announceForwarded2Zork, accounts["remote_account_1"].PublicKeyURI, accounts["remote_account_1"].PrivateKey, URLMustParse(accounts["local_account_1"].InboxURI))
 
+	deleteForRemoteAccount3 := newAPDelete(
+		URLMustParse("https://somewhere.mysterious/users/rest_in_piss"),
+		URLMustParse("https://somewhere.mysterious/users/rest_in_piss"),
+		TimeMustParse("2022-07-13T12:13:12+02:00"),
+		URLMustParse(accounts["local_account_1"].URI),
+	)
+	// it doesn't really matter what key we use to sign this, since we're not going to be able to verify if anyway
+	keyToSignDelete := accounts["remote_account_1"].PrivateKey
+	deleteForRemoteAccount3Sig, deleteForRemoteAccount3Digest, deleteForRemoteAccount3Date := GetSignatureForActivity(deleteForRemoteAccount3, "https://somewhere.mysterious/users/rest_in_piss#main-key", keyToSignDelete, URLMustParse(accounts["local_account_1"].InboxURI))
+
 	return map[string]ActivityWithSignature{
 		"dm_for_zork": {
 			Activity:        createDmForZork,
@@ -1877,6 +1916,12 @@ func NewTestActivities(accounts map[string]*gtsmodel.Account) map[string]Activit
 			SignatureHeader: announceForwarded2ZorkSig,
 			DigestHeader:    announceForwarded2ZorkDigest,
 			DateHeader:      announceForwarded2ZorkDate,
+		},
+		"delete_https://somewhere.mysterious/users/rest_in_piss#main-key": {
+			Activity:        deleteForRemoteAccount3,
+			SignatureHeader: deleteForRemoteAccount3Sig,
+			DigestHeader:    deleteForRemoteAccount3Digest,
+			DateHeader:      deleteForRemoteAccount3Date,
 		},
 	}
 }
@@ -3150,4 +3195,26 @@ func newAPAnnounce(announceID *url.URL, announceActor *url.URL, announcePublishe
 	}
 
 	return announce
+}
+
+func newAPDelete(deleteTarget *url.URL, deleteActor *url.URL, deletePublished time.Time, deleteTo *url.URL) vocab.ActivityStreamsDelete {
+	delete := streams.NewActivityStreamsDelete()
+
+	objectProp := streams.NewActivityStreamsObjectProperty()
+	objectProp.AppendIRI(deleteTarget)
+	delete.SetActivityStreamsObject(objectProp)
+
+	to := streams.NewActivityStreamsToProperty()
+	to.AppendIRI(deleteTo)
+	delete.SetActivityStreamsTo(to)
+
+	actor := streams.NewActivityStreamsActorProperty()
+	actor.AppendIRI(deleteActor)
+	delete.SetActivityStreamsActor(actor)
+
+	published := streams.NewActivityStreamsPublishedProperty()
+	published.Set(deletePublished)
+	delete.SetActivityStreamsPublished(published)
+
+	return delete
 }

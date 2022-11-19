@@ -252,6 +252,14 @@ definitions:
                 description: Bio/description of this account.
                 type: string
                 x-go-name: Note
+            role:
+                description: |-
+                    Role of the account on this instance.
+                    Omitted for remote accounts.
+                    type: accountRole
+                example: user
+                type: string
+                x-go-name: Role
             source:
                 $ref: '#/definitions/Source'
             statuses_count:
@@ -859,8 +867,27 @@ definitions:
         type: object
         x-go-name: Emoji
         x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
+    emojiCategory:
+        properties:
+            id:
+                description: The ID of the custom emoji category.
+                type: string
+                x-go-name: ID
+            name:
+                description: The name of the custom emoji category.
+                type: string
+                x-go-name: Name
+        title: EmojiCategory represents a custom emoji category.
+        type: object
+        x-go-name: EmojiCategory
+        x-go-package: github.com/superseriousbusiness/gotosocial/internal/api/model
     emojiCreateRequest:
         properties:
+            CategoryName:
+                description: |-
+                    Category in which to place the new emoji. Will be uncategorized by default.
+                    CategoryName length should not exceed 64 characters.
+                type: string
             Image:
                 description: Image file to use for the emoji. Must be png or gif and no larger than 50kb.
             Shortcode:
@@ -969,6 +996,16 @@ definitions:
                 example: https://example.org/files/instance/thumbnail.jpeg
                 type: string
                 x-go-name: Thumbnail
+            thumbnail_description:
+                description: Description of the instance thumbnail.
+                example: picture of a cute lil' friendly sloth
+                type: string
+                x-go-name: ThumbnailDescription
+            thumbnail_type:
+                description: MIME type of the instance thumbnail.
+                example: image/png
+                type: string
+                x-go-name: ThumbnailType
             title:
                 description: The title of the instance.
                 example: GoToSocial Example Instance
@@ -2745,6 +2782,10 @@ paths:
                   name: image
                   required: true
                   type: file
+                - description: Category in which to place the new emoji. 64 characters or less. If left blank, emoji will be uncategorized. If a category with the given name doesn't exist yet, it will be created.
+                  in: formData
+                  name: category
+                  type: string
             produces:
                 - application/json
             responses:
@@ -2840,6 +2881,39 @@ paths:
                 "500":
                     description: internal server error
             summary: Get the admin view of a single emoji.
+            tags:
+                - admin
+    /api/v1/admin/custom_emojis/categories:
+        get:
+            operationId: emojiCategoriesGet
+            parameters:
+                - description: The id of the emoji.
+                  in: path
+                  name: id
+                  required: true
+                  type: string
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: Array of existing emoji categories.
+                    schema:
+                        items:
+                            $ref: '#/definitions/adminEmojiCategory'
+                        type: array
+                "400":
+                    description: bad request
+                "401":
+                    description: unauthorized
+                "403":
+                    description: forbidden
+                "404":
+                    description: not found
+                "406":
+                    description: not acceptable
+                "500":
+                    description: internal server error
+            summary: Get a list of existing emoji categories.
             tags:
                 - admin
     /api/v1/admin/domain_blocks:
@@ -3400,11 +3474,15 @@ paths:
                   maximum: 5000
                   name: terms
                   type: string
-                - description: Avatar of the instance.
+                - description: Thumbnail image to use for the instance.
                   in: formData
-                  name: avatar
+                  name: thumbnail
                   type: file
-                - description: Header of the instance.
+                - description: Image description of the submitted instance thumbnail.
+                  in: formData
+                  name: thumbnail_description
+                  type: string
+                - description: Header image to use for the instance.
                   in: formData
                   name: header
                   type: file

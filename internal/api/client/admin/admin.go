@@ -33,6 +33,8 @@ const (
 	EmojiPath = BasePath + "/custom_emojis"
 	// EmojiPathWithID is used for interacting with a single emoji.
 	EmojiPathWithID = EmojiPath + "/:" + IDKey
+	// EmojiCategoriesPath is used for interacting with emoji categories.
+	EmojiCategoriesPath = EmojiPath + "/categories"
 	// DomainBlocksPath is used for posting domain blocks.
 	DomainBlocksPath = BasePath + "/domain_blocks"
 	// DomainBlocksPathWithID is used for interacting with a single domain block.
@@ -79,11 +81,14 @@ func New(processor processing.Processor) api.ClientModule {
 func (m *Module) Route(r router.Router) error {
 	r.AttachHandler(http.MethodPost, EmojiPath, m.EmojiCreatePOSTHandler)
 	r.AttachHandler(http.MethodGet, EmojiPath, m.EmojisGETHandler)
+	r.AttachHandler(http.MethodDelete, EmojiPathWithID, m.EmojiDELETEHandler)
+	r.AttachHandler(http.MethodGet, EmojiPathWithID, m.EmojiGETHandler)
 	r.AttachHandler(http.MethodPost, DomainBlocksPath, m.DomainBlocksPOSTHandler)
 	r.AttachHandler(http.MethodGet, DomainBlocksPath, m.DomainBlocksGETHandler)
 	r.AttachHandler(http.MethodGet, DomainBlocksPathWithID, m.DomainBlockGETHandler)
 	r.AttachHandler(http.MethodDelete, DomainBlocksPathWithID, m.DomainBlockDELETEHandler)
 	r.AttachHandler(http.MethodPost, AccountsActionPath, m.AccountActionPOSTHandler)
 	r.AttachHandler(http.MethodPost, MediaCleanupPath, m.MediaCleanupPOSTHandler)
+	r.AttachHandler(http.MethodGet, EmojiCategoriesPath, m.EmojiCategoriesGETHandler)
 	return nil
 }

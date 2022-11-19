@@ -37,12 +37,48 @@ steps:
     commands:
       - apk update --no-cache && apk add git
       - CGO_ENABLED=0 GTS_DB_TYPE="sqlite" GTS_DB_ADDRESS=":memory:" go test ./...
-      - CGO_ENABLED=0 ./test/cliparsing.sh
       - CGO_ENABLED=0 ./test/envparsing.sh
     when:
       event:
         include:
           - pull_request
+
+  - name: web-setup
+    image: node:14-alpine
+    when:
+      event:
+        include:
+          - pull_request
+    volumes:
+      - name: yarn_cache
+        path: /tmp/cache
+    commands:
+      - cd web/source
+      - yarn --frozen-lockfile --cache-folder /tmp/cache
+
+  - name: web-lint
+    image: node:14-alpine
+    when:
+      event:
+        include:
+          - pull_request
+    depends_on:
+      - web-setup
+    commands:
+      - cd web/source
+      - yarn run lint
+
+  - name: web-build
+    image: node:14-alpine
+    when:
+      event:
+        include:
+          - pull_request
+    depends_on:
+      - web-setup
+    commands:
+      - cd web/source
+      - yarn run build
 
   - name: snapshot
     image: superseriousbusiness/gotosocial-drone-build:0.0.7 # https://github.com/superseriousbusiness/gotosocial-drone-build
@@ -59,12 +95,12 @@ steps:
       - git fetch --tags
       - /go/dockerlogin.sh
       - goreleaser release --rm-dist --snapshot
-      - docker push superseriousbusiness/gotosocial:latest-armv6 && 
-      - docker push superseriousbusiness/gotosocial:latest-armv7
-      - docker push superseriousbusiness/gotosocial:latest-arm64v8
-      - docker push superseriousbusiness/gotosocial:latest-amd64
-      - docker manifest create superseriousbusiness/gotosocial:latest superseriousbusiness/gotosocial:latest-armv6 superseriousbusiness/gotosocial:latest-armv7 superseriousbusiness/gotosocial:latest-amd64 superseriousbusiness/gotosocial:latest-arm64v8
-      - docker manifest push superseriousbusiness/gotosocial:latest
+      - docker push superseriousbusiness/gotosocial:snapshot-armv6 && 
+      - docker push superseriousbusiness/gotosocial:snapshot-armv7
+      - docker push superseriousbusiness/gotosocial:snapshot-arm64v8
+      - docker push superseriousbusiness/gotosocial:snapshot-amd64
+      - docker manifest create superseriousbusiness/gotosocial:snapshot superseriousbusiness/gotosocial:snapshot-armv6 superseriousbusiness/gotosocial:snapshot-armv7 superseriousbusiness/gotosocial:snapshot-amd64 superseriousbusiness/gotosocial:snapshot-arm64v8
+      - docker manifest push superseriousbusiness/gotosocial:snapshot
     when:
       event:
         include:
@@ -146,6 +182,6 @@ steps:
 
 ---
 kind: signature
-hmac: 86caf3c98d6135ac53e05b728e999d03f8b35606f1b5bab63c2c521bf5084173
+hmac: 46dd4ce5b5dab76bc64c68f4730663ed0ada81471ffcbfa1bcf935d8e7f6a155
 
 ...

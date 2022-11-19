@@ -18,7 +18,6 @@
 
 "use strict";
 
-const Promise = require("bluebird");
 const React = require("react");
 const Redux = require("react-redux");
 
@@ -70,14 +69,14 @@ module.exports = function UserProfile() {
 				<div className="files">
 					<div>
 						<h3>Header</h3>
-						<File 
+						<File
 							id="header"
 							fileType="image/*"
 						/>
 					</div>
 					<div>
 						<h3>Avatar</h3>
-						<File 
+						<File
 							id="avatar"
 							fileType="image/*"
 						/>
@@ -102,7 +101,7 @@ module.exports = function UserProfile() {
 				id="enable_rss"
 				name="Enable RSS feed of Public posts"
 			/>
-			{ !allowCustomCSS ? null :  
+			{ !allowCustomCSS ? null :
 				<TextArea
 					id="custom_css"
 					name="Custom CSS"
