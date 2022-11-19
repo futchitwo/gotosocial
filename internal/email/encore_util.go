@@ -15,6 +15,5 @@ func loadTemplatesFromEmbed() (*template.Template, error) {
 
  	tmpl := template.New("")
 	// look for all templates that start with 'email_'
- 	err = tmpl.ParseFS(tmplDir, "email_*")
-	return tmpl, err
+ 	return tmpl.ParseFS(tmplDir, "email_*")
 }
