@@ -22,6 +22,7 @@ import (
 	"errors"
 	"net"
 	"net/http"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/superseriousbusiness/gotosocial/internal/api"
@@ -84,11 +85,13 @@ func (m *Module) AccountCreatePOSTHandler(c *gin.Context) {
 
 	form := &model.AccountCreateRequest{}
 	if err := c.ShouldBind(form); err != nil {
+		err = fmt.Errorf("ShouldBind: %m", err)
 		api.ErrorHandler(c, gtserror.NewErrorBadRequest(err, err.Error()), m.processor.InstanceGet)
 		return
 	}
 
 	if err := validateCreateAccount(form); err != nil {
+		err = fmt.Errorf("validateCreateAccount: %m", err)
 		api.ErrorHandler(c, gtserror.NewErrorBadRequest(err, err.Error()), m.processor.InstanceGet)
 		return
 	}
@@ -123,15 +126,15 @@ func validateCreateAccount(form *model.AccountCreateRequest) error {
 	}
 
 	if err := validate.Username(form.Username); err != nil {
-		return err
+		return fmt.Errorf("validate username: %m", err)
 	}
 
 	if err := validate.Email(form.Email); err != nil {
-		return err
+		return fmt.Errorf("validate email: %m", err)
 	}
 
 	if err := validate.NewPassword(form.Password); err != nil {
-		return err
+		return fmt.Errorf("validate password: %m", err)
 	}
 
 	if !form.Agreement {
@@ -139,11 +142,11 @@ func validateCreateAccount(form *model.AccountCreateRequest) error {
 	}
 
 	if err := validate.Language(form.Locale); err != nil {
-		return err
+		return fmt.Errorf("validate lang: %m", err)
 	}
 
 	if err := validate.SignUpReason(form.Reason, config.GetAccountsReasonRequired()); err != nil {
-		return err
+		return fmt.Errorf("validate signup reason: %m", err)
 	}
 
 	return nil
