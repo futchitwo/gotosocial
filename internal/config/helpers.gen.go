@@ -153,7 +153,7 @@ func (st *ConfigState) GetHost() (v string) {
 	st.mutex.Lock()
 	v = st.config.Host
 	if v == "" {
-		v = encore.Meta().APIBaseURL.String()
+		v = encore.Meta().APIBaseURL.Hostname()
 	}
 	st.mutex.Unlock()
 	return
