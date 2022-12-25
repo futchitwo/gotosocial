@@ -53,7 +53,7 @@ var Defaults = Configuration{
 
 	AccountsRegistrationOpen: true,
 	AccountsApprovalRequired: false,
-	AccountsReasonRequired:   true,
+	AccountsReasonRequired:   false,
 	AccountsAllowCustomCSS:   true,
 
 	MediaImageMaxSize:        10485760, // 10mb
