@@ -2,6 +2,6 @@ package web
 
 import "embed"
 
-//go:embed assets/*
-//go:embed template/*
+//go:embed all:assets
+//go:embed all:template
 var WebFS embed.FS
