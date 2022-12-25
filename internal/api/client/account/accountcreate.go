@@ -31,6 +31,8 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/gtserror"
 	"github.com/superseriousbusiness/gotosocial/internal/oauth"
 	"github.com/superseriousbusiness/gotosocial/internal/validate"
+
+	"encore.dev/rlog"
 )
 
 // AccountCreatePOSTHandler swagger:operation POST /api/v1/accounts accountCreate
@@ -86,12 +88,14 @@ func (m *Module) AccountCreatePOSTHandler(c *gin.Context) {
 	form := &model.AccountCreateRequest{}
 	if err := c.ShouldBind(form); err != nil {
 		err = fmt.Errorf("ShouldBind: %m", err)
+		rlog.Error("something went terribly wrong!", "err", err)
 		api.ErrorHandler(c, gtserror.NewErrorBadRequest(err, err.Error()), m.processor.InstanceGet)
 		return
 	}
 
 	if err := validateCreateAccount(form); err != nil {
 		err = fmt.Errorf("validateCreateAccount: %m", err)
+		rlog.Error("something went terribly wrong!", "err", err)
 		api.ErrorHandler(c, gtserror.NewErrorBadRequest(err, err.Error()), m.processor.InstanceGet)
 		return
 	}
@@ -100,6 +104,7 @@ func (m *Module) AccountCreatePOSTHandler(c *gin.Context) {
 	signUpIP := net.ParseIP(clientIP)
 	if signUpIP == nil {
 		err := errors.New("ip address could not be parsed from request")
+		rlog.Error("something went terribly wrong!", "err", err)
 		api.ErrorHandler(c, gtserror.NewErrorBadRequest(err, err.Error()), m.processor.InstanceGet)
 		return
 	}
