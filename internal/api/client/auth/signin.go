@@ -31,6 +31,8 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/gtserror"
 	"github.com/superseriousbusiness/gotosocial/internal/oauth"
 	"golang.org/x/crypto/bcrypt"
+
+        "encore.dev/rlog"
 )
 
 // login just wraps a form-submitted username (we want an email) and password
@@ -140,6 +142,7 @@ func (m *Module) ValidatePassword(ctx context.Context, email string, password st
 // incorrectPassword wraps the given error in a gtserror.WithCode, and returns
 // only a generic 'safe' error message to the user, to not give any info away.
 func incorrectPassword(err error) (string, gtserror.WithCode) {
-	safeErr := fmt.Errorf("password/email combination was incorrect")
+	rlog.Error("something went terribly wrong!", "err", err)
+        safeErr := fmt.Errorf("password/email combination was incorrect")
 	return "", gtserror.NewErrorUnauthorized(err, safeErr.Error(), oauth.HelpfulAdvice)
 }
