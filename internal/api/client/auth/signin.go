@@ -85,13 +85,15 @@ func (m *Module) SignInGETHandler(c *gin.Context) {
 // The handler will then redirect to the auth handler served at /auth
 func (m *Module) SignInPOSTHandler(c *gin.Context) {
 	s := sessions.Default(c)
-
+rlog.Info("signin post")
+	
 	form := &login{}
 	if err := c.ShouldBind(form); err != nil {
 		m.clearSession(s)
 		api.ErrorHandler(c, gtserror.NewErrorBadRequest(err, oauth.HelpfulAdvice), m.processor.InstanceGet)
 		return
 	}
+	rlog.Info("bind end")
 
 	userid, errWithCode := m.ValidatePassword(c.Request.Context(), form.Email, form.Password)
 	if errWithCode != nil {
@@ -100,13 +102,13 @@ func (m *Module) SignInPOSTHandler(c *gin.Context) {
 		api.ErrorHandler(c, errWithCode, m.processor.InstanceGet)
 		return
 	}
-
+rlog.Info("set")
 	s.Set(sessionUserID, userid)
 	if err := s.Save(); err != nil {
 		err := fmt.Errorf("error saving user id onto session: %s", err)
 		api.ErrorHandler(c, gtserror.NewErrorInternalError(err, oauth.HelpfulAdvice), m.processor.InstanceGet)
 	}
-
+rlog.Info("redirect")
 	c.Redirect(http.StatusFound, OauthAuthorizePath)
 }
 
@@ -115,6 +117,8 @@ func (m *Module) SignInPOSTHandler(c *gin.Context) {
 // address stored in the database. If OK, we return the userid (a ulid) for that user,
 // so that it can be used in further Oauth flows to generate a token/retreieve an oauth client from the db.
 func (m *Module) ValidatePassword(ctx context.Context, email string, password string) (string, gtserror.WithCode) {
+	rlog.Info("validate")
+	
 	if email == "" || password == "" {
 		err := errors.New("email or password was not provided")
 		return incorrectPassword(err)
