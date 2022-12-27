@@ -119,6 +119,9 @@ type Processor interface {
 	// AdminEmojiDelete deletes one *local* emoji with the given key. Remote emojis will not be deleted this way.
 	// Only admin users in good standing should be allowed to access this function -- check this before calling it.
 	AdminEmojiDelete(ctx context.Context, authed *oauth.Auth, id string) (*apimodel.AdminEmoji, gtserror.WithCode)
+	// AdminEmojiUpdate updates one local or remote emoji with the given key.
+	// Only admin users in good standing should be allowed to access this function -- check this before calling it.
+	AdminEmojiUpdate(ctx context.Context, id string, form *apimodel.EmojiUpdateRequest) (*apimodel.AdminEmoji, gtserror.WithCode)
 	// AdminEmojiCategoriesGet gets a list of all existing emoji categories.
 	AdminEmojiCategoriesGet(ctx context.Context) ([]*apimodel.EmojiCategory, gtserror.WithCode)
 	// AdminDomainBlockCreate handles the creation of a new domain block by an admin, using the given form.
@@ -133,6 +136,8 @@ type Processor interface {
 	AdminDomainBlockDelete(ctx context.Context, authed *oauth.Auth, id string) (*apimodel.DomainBlock, gtserror.WithCode)
 	// AdminMediaRemotePrune triggers a prune of remote media according to the given number of mediaRemoteCacheDays
 	AdminMediaPrune(ctx context.Context, mediaRemoteCacheDays int) gtserror.WithCode
+	// AdminMediaRefetch triggers a refetch of remote media for the given domain (or all if domain is empty).
+	AdminMediaRefetch(ctx context.Context, authed *oauth.Auth, domain string) gtserror.WithCode
 
 	// AppCreate processes the creation of a new API application
 	AppCreate(ctx context.Context, authed *oauth.Auth, form *apimodel.ApplicationCreateRequest) (*apimodel.Application, gtserror.WithCode)
@@ -142,6 +147,9 @@ type Processor interface {
 
 	// CustomEmojisGet returns an array of info about the custom emojis on this server
 	CustomEmojisGet(ctx context.Context) ([]*apimodel.Emoji, gtserror.WithCode)
+
+	// BookmarksGet returns a pageable response of statuses that have been bookmarked
+	BookmarksGet(ctx context.Context, authed *oauth.Auth, maxID string, minID string, limit int) (*apimodel.PageableResponse, gtserror.WithCode)
 
 	// FileGet handles the fetching of a media attachment file via the fileserver.
 	FileGet(ctx context.Context, authed *oauth.Auth, form *apimodel.GetContentRequestForm) (*apimodel.Content, gtserror.WithCode)
@@ -199,6 +207,10 @@ type Processor interface {
 	StatusUnfave(ctx context.Context, authed *oauth.Auth, targetStatusID string) (*apimodel.Status, gtserror.WithCode)
 	// StatusGetContext returns the context (previous and following posts) from the given status ID
 	StatusGetContext(ctx context.Context, authed *oauth.Auth, targetStatusID string) (*apimodel.Context, gtserror.WithCode)
+	// StatusBookmark process a bookmark for a status
+	StatusBookmark(ctx context.Context, authed *oauth.Auth, targetStatusID string) (*apimodel.Status, gtserror.WithCode)
+	// StatusUnbookmark removes a bookmark for a status
+	StatusUnbookmark(ctx context.Context, authed *oauth.Auth, targetStatusID string) (*apimodel.Status, gtserror.WithCode)
 
 	// HomeTimelineGet returns statuses from the home timeline, with the given filters/parameters.
 	HomeTimelineGet(ctx context.Context, authed *oauth.Auth, maxID string, sinceID string, minID string, limit int, local bool) (*apimodel.PageableResponse, gtserror.WithCode)
@@ -273,7 +285,7 @@ type processor struct {
 	tc              typeutils.TypeConverter
 	oauthServer     oauth.Server
 	mediaManager    media.Manager
-	storage         storage.Driver
+	storage         *storage.Driver
 	statusTimelines timeline.Manager
 	db              db.DB
 	filter          visibility.Filter
@@ -297,7 +309,7 @@ func NewProcessor(
 	federator federation.Federator,
 	oauthServer oauth.Server,
 	mediaManager media.Manager,
-	storage storage.Driver,
+	storage *storage.Driver,
 	db db.DB,
 	emailSender email.Sender,
 	clientWorker *concurrency.WorkerPool[messages.FromClientAPI],
@@ -308,7 +320,7 @@ func NewProcessor(
 	statusProcessor := status.New(db, tc, clientWorker, parseMentionFunc)
 	streamingProcessor := streaming.New(db, oauthServer)
 	accountProcessor := account.New(db, tc, mediaManager, oauthServer, clientWorker, federator, parseMentionFunc)
-	adminProcessor := admin.New(db, tc, mediaManager, clientWorker)
+	adminProcessor := admin.New(db, tc, mediaManager, federator.TransportController(), storage, clientWorker)
 	mediaProcessor := mediaProcessor.New(db, tc, mediaManager, federator.TransportController(), storage)
 	userProcessor := user.New(db, emailSender)
 	federationProcessor := federationProcessor.New(db, tc, federator)
@@ -351,6 +363,11 @@ func (p *processor) Start() error {
 		return err
 	}
 
+	// Start status timelines
+	if err := p.statusTimelines.Start(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -359,8 +376,14 @@ func (p *processor) Stop() error {
 	if err := p.clientWorker.Stop(); err != nil {
 		return err
 	}
+
 	if err := p.fedWorker.Stop(); err != nil {
 		return err
 	}
+
+	if err := p.statusTimelines.Stop(); err != nil {
+		return err
+	}
+
 	return nil
 }

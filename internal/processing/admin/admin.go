@@ -29,6 +29,8 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
 	"github.com/superseriousbusiness/gotosocial/internal/media"
 	"github.com/superseriousbusiness/gotosocial/internal/messages"
+	"github.com/superseriousbusiness/gotosocial/internal/storage"
+	"github.com/superseriousbusiness/gotosocial/internal/transport"
 	"github.com/superseriousbusiness/gotosocial/internal/typeutils"
 )
 
@@ -44,23 +46,29 @@ type Processor interface {
 	EmojisGet(ctx context.Context, account *gtsmodel.Account, user *gtsmodel.User, domain string, includeDisabled bool, includeEnabled bool, shortcode string, maxShortcodeDomain string, minShortcodeDomain string, limit int) (*apimodel.PageableResponse, gtserror.WithCode)
 	EmojiGet(ctx context.Context, account *gtsmodel.Account, user *gtsmodel.User, id string) (*apimodel.AdminEmoji, gtserror.WithCode)
 	EmojiDelete(ctx context.Context, id string) (*apimodel.AdminEmoji, gtserror.WithCode)
+	EmojiUpdate(ctx context.Context, id string, form *apimodel.EmojiUpdateRequest) (*apimodel.AdminEmoji, gtserror.WithCode)
 	EmojiCategoriesGet(ctx context.Context) ([]*apimodel.EmojiCategory, gtserror.WithCode)
 	MediaPrune(ctx context.Context, mediaRemoteCacheDays int) gtserror.WithCode
+	MediaRefetch(ctx context.Context, requestingAccount *gtsmodel.Account, domain string) gtserror.WithCode
 }
 
 type processor struct {
-	tc           typeutils.TypeConverter
-	mediaManager media.Manager
-	clientWorker *concurrency.WorkerPool[messages.FromClientAPI]
-	db           db.DB
+	tc                  typeutils.TypeConverter
+	mediaManager        media.Manager
+	transportController transport.Controller
+	storage             *storage.Driver
+	clientWorker        *concurrency.WorkerPool[messages.FromClientAPI]
+	db                  db.DB
 }
 
 // New returns a new admin processor.
-func New(db db.DB, tc typeutils.TypeConverter, mediaManager media.Manager, clientWorker *concurrency.WorkerPool[messages.FromClientAPI]) Processor {
+func New(db db.DB, tc typeutils.TypeConverter, mediaManager media.Manager, transportController transport.Controller, storage *storage.Driver, clientWorker *concurrency.WorkerPool[messages.FromClientAPI]) Processor {
 	return &processor{
-		tc:           tc,
-		mediaManager: mediaManager,
-		clientWorker: clientWorker,
-		db:           db,
+		tc:                  tc,
+		mediaManager:        mediaManager,
+		transportController: transportController,
+		storage:             storage,
+		clientWorker:        clientWorker,
+		db:                  db,
 	}
 }

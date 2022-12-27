@@ -76,9 +76,11 @@ protocol: "https"
 
 # String. Address to bind the GoToSocial server to.
 # This can be an IPv4 address or an IPv6 address (surrounded in square brackets), or a hostname.
-# Default value will bind to all interfaces.
-# You probably won't need to change this unless you're setting GoToSocial up in some fancy way or
-# you have specific networking requirements.
+# The default value will bind to all interfaces, which makes the server
+# accessible by other machines. For most setups there is no need to change this.
+# If you are using GoToSocial in a reverse proxy setup with the proxy running on
+# the same machine, you will want to set this to "localhost" or an equivalent,
+# so that the proxy can't be bypassed.
 # Examples: ["0.0.0.0", "172.128.0.16", "localhost", "[::]", "[2001:db8::fed1]"]
 # Default: "0.0.0.0"
 bind-address: "0.0.0.0"
@@ -161,6 +163,61 @@ db-tls-mode: "disable"
 # Examples: ["/path/to/some/cert.crt"]
 # Default: ""
 db-tls-ca-cert: ""
+
+cache:
+  gts:
+    ###########################
+    #### DATABASE CACHES ######
+    ###########################
+    #
+    # Database cache configuration:
+    # 
+    # Allows configuration of caches used
+    # when loading GTS models from the database.
+    #
+    # max-size   = maximum cached objects count
+    # ttl        = cached object lifetime
+    # sweep-freq = frequency to look for stale cache objects
+
+    account-max-size: 100
+    account-ttl: "5m"
+    account-sweep-freq: "10s"
+
+    block-max-size: 100
+    block-ttl: "5m"
+    block-sweep-freq: "10s"
+
+    domain-block-max-size: 1000
+    domain-block-ttl: "24h"
+    domain-block-sweep-freq: "1m"
+
+    emoji-max-size: 500
+    emoji-ttl: "5m"
+    emoji-sweep-freq: "10s"
+
+    emoji-category-max-size: 100
+    emoji-category-ttl: "5m"
+    emoji-category-sweep-freq: "10s"
+
+    mention-max-size: 500
+    mention-ttl: "5m"
+    mention-sweep-freq: "10s"
+
+    notification-max-size: 500
+    notification-ttl: "5m"
+    notification-sweep-freq: "10s"
+
+    status-max-size: 500
+    status-ttl: "5m"
+    status-sweep-freq: "10s"
+
+    tombstone-max-size: 100
+    tombstone-ttl: "5m"
+    tombstone-sweep-freq: "10s"
+
+    user-max-size: 100
+    user-ttl: "5m"
+    user-sweep-freq: "10s"
 
 ######################
 ##### WEB CONFIG #####
@@ -489,6 +546,13 @@ oidc-scopes:
   - "email"
   - "profile"
   - "groups"
+
+# Bool. Link OIDC authenticated users to existing ones based on their email address.
+# This is mostly intended for migration purposes if you were running previous versions of GTS
+# which only correlated users with their email address. Should be set to false for most usecases.
+# Options: [true, false]
+# Default: false
+oidc-link-existing: false
 
 #######################
 ##### SMTP CONFIG #####

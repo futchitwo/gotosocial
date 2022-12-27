@@ -94,6 +94,7 @@ var testDefaults = config.Configuration{
 	OIDCClientID:         "",
 	OIDCClientSecret:     "",
 	OIDCScopes:           []string{oidc.ScopeOpenID, "profile", "email", "groups"},
+	OIDCLinkExisting:     false,
 
 	SMTPHost:     "",
 	SMTPPort:     0,
@@ -109,4 +110,7 @@ var testDefaults = config.Configuration{
 	AdvancedRateLimitRequests: 0, // disabled
 
 	SoftwareVersion: "0.0.0-testrig",
+
+	// simply use cache defaults.
+	Cache: config.Defaults.Cache,
 }

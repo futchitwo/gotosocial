@@ -34,6 +34,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
 	"github.com/superseriousbusiness/gotosocial/internal/id"
 	"github.com/superseriousbusiness/gotosocial/internal/log"
+	"github.com/superseriousbusiness/gotosocial/internal/state"
 	"github.com/superseriousbusiness/gotosocial/internal/uris"
 	"github.com/uptrace/bun"
 	"golang.org/x/crypto/bcrypt"
@@ -43,9 +44,8 @@ import (
 const rsaKeyBits = 2048
 
 type adminDB struct {
-	conn     *DBConn
-	accounts *accountDB
-	users    *userDB
+	conn  *DBConn
+	state *state.State
 }
 
 func (a *adminDB) IsUsernameAvailable(ctx context.Context, username string) (bool, db.Error) {
@@ -90,7 +90,7 @@ func (a *adminDB) IsEmailAvailable(ctx context.Context, email string) (bool, db.
 	return a.conn.NotExists(ctx, q)
 }
 
-func (a *adminDB) NewSignup(ctx context.Context, username string, reason string, requireApproval bool, email string, password string, signUpIP net.IP, locale string, appID string, emailVerified bool, admin bool) (*gtsmodel.User, db.Error) {
+func (a *adminDB) NewSignup(ctx context.Context, username string, reason string, requireApproval bool, email string, password string, signUpIP net.IP, locale string, appID string, emailVerified bool, externalID string, admin bool) (*gtsmodel.User, db.Error) {
 	key, err := rsa.GenerateKey(rand.Reader, rsaKeyBits)
 	if err != nil {
 		log.Errorf("error creating new rsa key: %s", err)
@@ -139,7 +139,7 @@ func (a *adminDB) NewSignup(ctx context.Context, username string, reason string,
 		}
 
 		// insert the new account!
-		if err := a.accounts.PutAccount(ctx, acct); err != nil {
+		if err := a.state.DB.PutAccount(ctx, acct); err != nil {
 			return nil, err
 		}
 	}
@@ -169,12 +169,12 @@ func (a *adminDB) NewSignup(ctx context.Context, username string, reason string,
 		UnconfirmedEmail:       email,
 		CreatedByApplicationID: appID,
 		Approved:               &approved,
+		ExternalID:             externalID,
 	}
 
 	if emailVerified {
 		u.ConfirmedAt = time.Now()
 		u.Email = email
-		u.UnconfirmedEmail = ""
 	}
 
 	if admin {
@@ -185,7 +185,7 @@ func (a *adminDB) NewSignup(ctx context.Context, username string, reason string,
 	}
 
 	// insert the user!
-	if err := a.users.PutUser(ctx, u); err != nil {
+	if err := a.state.DB.PutUser(ctx, u); err != nil {
 		return nil, err
 	}
 
@@ -241,7 +241,7 @@ func (a *adminDB) CreateInstanceAccount(ctx context.Context) db.Error {
 	}
 
 	// insert the new account!
-	if err := a.accounts.PutAccount(ctx, acct); err != nil {
+	if err := a.state.DB.PutAccount(ctx, acct); err != nil {
 		return err
 	}
 

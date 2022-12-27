@@ -60,6 +60,14 @@ func StringPtr(in string) *string {
 	return &in
 }
 
+func Float32Ptr(in float32) *float32 {
+	return &in
+}
+
+func Uint64Ptr(in uint64) *uint64 {
+	return &in
+}
+
 // NewTestTokens returns a map of tokens keyed according to which account the token belongs to.
 func NewTestTokens() map[string]*gtsmodel.Token {
 	tokens := map[string]*gtsmodel.Token{
@@ -304,6 +312,46 @@ func NewTestUsers() map[string]*gtsmodel.User {
 // NewTestAccounts returns a map of accounts keyed by what type of account they are.
 func NewTestAccounts() map[string]*gtsmodel.Account {
 	accounts := map[string]*gtsmodel.Account{
+		"instance_account": {
+			ID:                      "01AY6P665V14JJR0AFVRT7311Y",
+			Username:                "localhost:8080",
+			AvatarMediaAttachmentID: "",
+			HeaderMediaAttachmentID: "",
+			DisplayName:             "",
+			Fields:                  []gtsmodel.Field{},
+			Note:                    "",
+			NoteRaw:                 "",
+			Memorial:                FalseBool(),
+			MovedToAccountID:        "",
+			CreatedAt:               TimeMustParse("2020-05-17T13:10:59Z"),
+			UpdatedAt:               TimeMustParse("2020-05-17T13:10:59Z"),
+			Bot:                     FalseBool(),
+			Reason:                  "",
+			Locked:                  FalseBool(),
+			Discoverable:            TrueBool(),
+			Privacy:                 gtsmodel.VisibilityPublic,
+			Sensitive:               FalseBool(),
+			Language:                "en",
+			URI:                     "http://localhost:8080/users/localhost:8080",
+			URL:                     "http://localhost:8080/@localhost:8080",
+			PublicKeyURI:            "http://localhost:8080/users/localhost:8080#main-key",
+			LastWebfingeredAt:       time.Time{},
+			InboxURI:                "http://localhost:8080/users/localhost:8080/inbox",
+			OutboxURI:               "http://localhost:8080/users/localhost:8080/outbox",
+			FollowersURI:            "http://localhost:8080/users/localhost:8080/followers",
+			FollowingURI:            "http://localhost:8080/users/localhost:8080/following",
+			FeaturedCollectionURI:   "http://localhost:8080/users/localhost:8080/collections/featured",
+			ActorType:               ap.ActorPerson,
+			AlsoKnownAs:             "",
+			PrivateKey:              &rsa.PrivateKey{},
+			PublicKey:               &rsa.PublicKey{},
+			SensitizedAt:            time.Time{},
+			SilencedAt:              time.Time{},
+			SuspendedAt:             time.Time{},
+			HideCollections:         FalseBool(),
+			SuspensionOrigin:        "",
+			EnableRSS:               FalseBool(),
+		},
 		"unconfirmed_account": {
 			ID:                      "01F8MH0BBE4FHXPH513MBVFHB0",
 			Username:                "weed_lord420",
@@ -499,7 +547,7 @@ func NewTestAccounts() map[string]*gtsmodel.Account {
 		},
 		"remote_account_2": {
 			ID:                    "01FHMQX3GAABWSM0S2VZEC2SWC",
-			Username:              "some_user",
+			Username:              "Some_User",
 			Domain:                "example.org",
 			DisplayName:           "some user",
 			Fields:                []gtsmodel.Field{},
@@ -513,25 +561,62 @@ func NewTestAccounts() map[string]*gtsmodel.Account {
 			Discoverable:          TrueBool(),
 			Sensitive:             FalseBool(),
 			Language:              "en",
-			URI:                   "http://example.org/users/some_user",
-			URL:                   "http://example.org/@some_user",
+			URI:                   "http://example.org/users/Some_User",
+			URL:                   "http://example.org/@Some_User",
 			LastWebfingeredAt:     time.Time{},
-			InboxURI:              "http://example.org/users/some_user/inbox",
+			InboxURI:              "http://example.org/users/Some_User/inbox",
 			SharedInboxURI:        StringPtr(""),
-			OutboxURI:             "http://example.org/users/some_user/outbox",
-			FollowersURI:          "http://example.org/users/some_user/followers",
-			FollowingURI:          "http://example.org/users/some_user/following",
-			FeaturedCollectionURI: "http://example.org/users/some_user/collections/featured",
+			OutboxURI:             "http://example.org/users/Some_User/outbox",
+			FollowersURI:          "http://example.org/users/Some_User/followers",
+			FollowingURI:          "http://example.org/users/Some_User/following",
+			FeaturedCollectionURI: "http://example.org/users/Some_User/collections/featured",
 			ActorType:             ap.ActorPerson,
 			AlsoKnownAs:           "",
 			PrivateKey:            &rsa.PrivateKey{},
 			PublicKey:             &rsa.PublicKey{},
-			PublicKeyURI:          "http://example.org/users/some_user#main-key",
+			PublicKeyURI:          "http://example.org/users/Some_User#main-key",
 			SensitizedAt:          time.Time{},
 			SilencedAt:            time.Time{},
 			SuspendedAt:           time.Time{},
 			HideCollections:       FalseBool(),
 			SuspensionOrigin:      "",
+		},
+		"remote_account_3": {
+			ID:                      "062G5WYKY35KKD12EMSM3F8PJ8",
+			Username:                "her_fuckin_maj",
+			Domain:                  "thequeenisstillalive.technology",
+			DisplayName:             "lizzzieeeeeeeeeeee",
+			Fields:                  []gtsmodel.Field{},
+			Note:                    "if i die blame charles don't let that fuck become king",
+			Memorial:                FalseBool(),
+			MovedToAccountID:        "",
+			CreatedAt:               TimeMustParse("2020-08-10T14:13:28+02:00"),
+			UpdatedAt:               TimeMustParse("2022-06-04T13:12:00Z"),
+			Bot:                     FalseBool(),
+			Locked:                  TrueBool(),
+			Discoverable:            TrueBool(),
+			Sensitive:               FalseBool(),
+			Language:                "en",
+			URI:                     "http://thequeenisstillalive.technology/users/her_fuckin_maj",
+			URL:                     "http://thequeenisstillalive.technology/@her_fuckin_maj",
+			LastWebfingeredAt:       time.Time{},
+			InboxURI:                "http://thequeenisstillalive.technology/users/her_fuckin_maj/inbox",
+			SharedInboxURI:          StringPtr(""),
+			OutboxURI:               "http://thequeenisstillalive.technology/users/her_fuckin_maj/outbox",
+			FollowersURI:            "http://thequeenisstillalive.technology/users/her_fuckin_maj/followers",
+			FollowingURI:            "http://thequeenisstillalive.technology/users/her_fuckin_maj/following",
+			FeaturedCollectionURI:   "http://thequeenisstillalive.technology/users/her_fuckin_maj/collections/featured",
+			ActorType:               ap.ActorPerson,
+			AlsoKnownAs:             "",
+			PrivateKey:              &rsa.PrivateKey{},
+			PublicKey:               &rsa.PublicKey{},
+			PublicKeyURI:            "http://thequeenisstillalive.technology/users/her_fuckin_maj#main-key",
+			SensitizedAt:            time.Time{},
+			SilencedAt:              time.Time{},
+			SuspendedAt:             time.Time{},
+			HideCollections:         FalseBool(),
+			SuspensionOrigin:        "",
+			HeaderMediaAttachmentID: "01PFPMWK2FF0D9WMHEJHR07C3R",
 		},
 	}
 
@@ -545,12 +630,14 @@ func NewTestAccounts() map[string]*gtsmodel.Account {
 	})
 
 	preserializedKeys := []string{
+		"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",
+		"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",
 	}
 
 	if diff := len(accountsSorted) - len(preserializedKeys); diff > 0 {
@@ -687,6 +774,58 @@ func NewTestAttachments() map[string]*gtsmodel.MediaAttachment {
 				FileSize:    8803,
 				UpdatedAt:   TimeMustParse("2022-06-09T13:12:00Z"),
 				URL:         "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/attachment/small/01F8MH7TDVANYKWVE8VVKFPJTJ.jpeg",
+				RemoteURL:   "",
+			},
+			Avatar: FalseBool(),
+			Header: FalseBool(),
+			Cached: TrueBool(),
+		},
+		"local_account_1_status_4_attachment_2": {
+			ID:        "01CDR64G398ADCHXK08WWTHEZ5",
+			StatusID:  "01F8MH82FYRXD2RC6108DAJ5HB",
+			URL:       "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/attachment/original/01CDR64G398ADCHXK08WWTHEZ5.mp4",
+			RemoteURL: "",
+			CreatedAt: TimeMustParse("2022-06-09T13:12:00Z"),
+			UpdatedAt: TimeMustParse("2022-06-09T13:12:00Z"),
+			Type:      gtsmodel.FileTypeVideo,
+			FileMeta: gtsmodel.FileMeta{
+				Original: gtsmodel.Original{
+					Width:     720,
+					Height:    404,
+					Size:      290880,
+					Aspect:    1.78217821782178,
+					Duration:  Float32Ptr(15.033334),
+					Framerate: Float32Ptr(30.0),
+					Bitrate:   Uint64Ptr(1206522),
+				},
+				Small: gtsmodel.Small{
+					Width:  720,
+					Height: 404,
+					Size:   290880,
+					Aspect: 1.78217821782178,
+				},
+				Focus: gtsmodel.Focus{
+					X: 0,
+					Y: 0,
+				},
+			},
+			AccountID:         "01F8MH1H7YV1Z7D2C8K2730QBF",
+			Description:       "A cow adorably licking another cow!",
+			ScheduledStatusID: "",
+			Blurhash:          "",
+			Processing:        2,
+			File: gtsmodel.File{
+				Path:        "01F8MH1H7YV1Z7D2C8K2730QBF/attachment/original/01CDR64G398ADCHXK08WWTHEZ5.gif",
+				ContentType: "video/mp4",
+				FileSize:    2273532,
+				UpdatedAt:   TimeMustParse("2022-06-09T13:12:00Z"),
+			},
+			Thumbnail: gtsmodel.Thumbnail{
+				Path:        "01F8MH1H7YV1Z7D2C8K2730QBF/attachment/small/01CDR64G398ADCHXK08WWTHEZ5.jpeg",
+				ContentType: "image/jpeg",
+				FileSize:    5272,
+				UpdatedAt:   TimeMustParse("2022-06-09T13:12:00Z"),
+				URL:         "http://localhost:8080/fileserver/01F8MH1H7YV1Z7D2C8K2730QBF/attachment/small/01CDR64G398ADCHXK08WWTHEZ5.jpeg",
 				RemoteURL:   "",
 			},
 			Avatar: FalseBool(),
@@ -938,6 +1077,55 @@ func NewTestAttachments() map[string]*gtsmodel.MediaAttachment {
 			Header: FalseBool(),
 			Cached: TrueBool(),
 		},
+		"remote_account_3_header": {
+			ID:        "01PFPMWK2FF0D9WMHEJHR07C3R",
+			StatusID:  "",
+			URL:       "http://localhost:8080/fileserver/062G5WYKY35KKD12EMSM3F8PJ8/header/original/01PFPMWK2FF0D9WMHEJHR07C3R.jpeg",
+			RemoteURL: "http://fossbros-anonymous.io/attachments/small/a499f55b-2d1e-4acd-98d2-1ac2ba6d79b9.jpeg",
+			CreatedAt: TimeMustParse("2022-06-09T13:12:00Z"),
+			UpdatedAt: TimeMustParse("2022-06-09T13:12:00Z"),
+			Type:      gtsmodel.FileTypeImage,
+			FileMeta: gtsmodel.FileMeta{
+				Original: gtsmodel.Original{
+					Width:  472,
+					Height: 291,
+					Size:   137352,
+					Aspect: 1.6219931271477663,
+				},
+				Small: gtsmodel.Small{
+					Width:  472,
+					Height: 291,
+					Size:   137352,
+					Aspect: 1.6219931271477663,
+				},
+				Focus: gtsmodel.Focus{
+					X: 0,
+					Y: 0,
+				},
+			},
+			AccountID:         "062G5WYKY35KKD12EMSM3F8PJ8",
+			Description:       "tweet from thoughts of dog: i drank. all the water. in my bowl. earlier. but just now. i returned. to the same bowl. and it was. full again.. the bowl. is haunted",
+			ScheduledStatusID: "",
+			Blurhash:          "LARysgM_IU_3~pD%M_Rj_39FIAt6",
+			Processing:        2,
+			File: gtsmodel.File{
+				Path:        "062G5WYKY35KKD12EMSM3F8PJ8/attachment/original/01PFPMWK2FF0D9WMHEJHR07C3R.jpeg",
+				ContentType: "image/jpeg",
+				FileSize:    19310,
+				UpdatedAt:   TimeMustParse("2022-06-09T13:12:00Z"),
+			},
+			Thumbnail: gtsmodel.Thumbnail{
+				Path:        "062G5WYKY35KKD12EMSM3F8PJ8/attachment/small/01PFPMWK2FF0D9WMHEJHR07C3R.jpeg",
+				ContentType: "image/jpeg",
+				FileSize:    20395,
+				UpdatedAt:   TimeMustParse("2022-06-09T13:12:00Z"),
+				URL:         "http://localhost:8080/fileserver/062G5WYKY35KKD12EMSM3F8PJ8/header/small/01PFPMWK2FF0D9WMHEJHR07C3R.jpeg",
+				RemoteURL:   "http://fossbros-anonymous.io/attachments/small/a499f55b-2d1e-4acd-98d2-1ac2ba6d79b9.jpeg",
+			},
+			Avatar: FalseBool(),
+			Header: TrueBool(),
+			Cached: TrueBool(),
+		},
 	}
 }
 
@@ -952,10 +1140,10 @@ func NewTestEmojis() map[string]*gtsmodel.Emoji {
 			UpdatedAt:              TimeMustParse("2021-09-20T12:40:37+02:00"),
 			ImageRemoteURL:         "",
 			ImageStaticRemoteURL:   "",
-			ImageURL:               "http://localhost:8080/fileserver/01F8MH17FWEB39HZJ76B6VXSKF/emoji/original/01F8MH9H8E4VG3KDYJR9EGPXCQ.png",
-			ImagePath:              "/tmp/gotosocial/01F8MH17FWEB39HZJ76B6VXSKF/emoji/original/01F8MH9H8E4VG3KDYJR9EGPXCQ.png",
-			ImageStaticURL:         "http://localhost:8080/fileserver/01F8MH17FWEB39HZJ76B6VXSKF/emoji/static/01F8MH9H8E4VG3KDYJR9EGPXCQ.png",
-			ImageStaticPath:        "/tmp/gotosocial/01F8MH17FWEB39HZJ76B6VXSKF/emoji/static/01F8MH9H8E4VG3KDYJR9EGPXCQ.png",
+			ImageURL:               "http://localhost:8080/fileserver/01AY6P665V14JJR0AFVRT7311Y/emoji/original/01F8MH9H8E4VG3KDYJR9EGPXCQ.png",
+			ImagePath:              "/01AY6P665V14JJR0AFVRT7311Y/emoji/original/01F8MH9H8E4VG3KDYJR9EGPXCQ.png",
+			ImageStaticURL:         "http://localhost:8080/fileserver/01AY6P665V14JJR0AFVRT7311Y/emoji/static/01F8MH9H8E4VG3KDYJR9EGPXCQ.png",
+			ImageStaticPath:        "01AY6P665V14JJR0AFVRT7311Y/emoji/static/01F8MH9H8E4VG3KDYJR9EGPXCQ.png",
 			ImageContentType:       "image/png",
 			ImageStaticContentType: "image/png",
 			ImageFileSize:          36702,
@@ -974,10 +1162,10 @@ func NewTestEmojis() map[string]*gtsmodel.Emoji {
 			UpdatedAt:              TimeMustParse("2020-03-18T13:12:00+01:00"),
 			ImageRemoteURL:         "http://fossbros-anonymous.io/emoji/yell.gif",
 			ImageStaticRemoteURL:   "",
-			ImageURL:               "http://localhost:8080/fileserver/01GD5KR15NHTY8FZ01CD4D08XP/emoji/original/01GD5KP5CQEE1R3X43Y1EHS2CW.png",
-			ImagePath:              "/tmp/gotosocial/01GD5KR15NHTY8FZ01CD4D08XP/emoji/original/01GD5KP5CQEE1R3X43Y1EHS2CW.png",
-			ImageStaticURL:         "http://localhost:8080/fileserver/01GD5KR15NHTY8FZ01CD4D08XP/emoji/static/01GD5KP5CQEE1R3X43Y1EHS2CW.png",
-			ImageStaticPath:        "/tmp/gotosocial/01GD5KR15NHTY8FZ01CD4D08XP/emoji/static/01GD5KP5CQEE1R3X43Y1EHS2CW.png",
+			ImageURL:               "http://localhost:8080/fileserver/01AY6P665V14JJR0AFVRT7311Y/emoji/original/01GD5KP5CQEE1R3X43Y1EHS2CW.png",
+			ImagePath:              "01AY6P665V14JJR0AFVRT7311Y/emoji/original/01GD5KP5CQEE1R3X43Y1EHS2CW.png",
+			ImageStaticURL:         "http://localhost:8080/fileserver/01AY6P665V14JJR0AFVRT7311Y/emoji/static/01GD5KP5CQEE1R3X43Y1EHS2CW.png",
+			ImageStaticPath:        "01AY6P665V14JJR0AFVRT7311Y/emoji/static/01GD5KP5CQEE1R3X43Y1EHS2CW.png",
 			ImageContentType:       "image/png",
 			ImageStaticContentType: "image/png",
 			ImageFileSize:          10889,
@@ -1080,6 +1268,10 @@ func newTestStoredAttachments() map[string]filenames {
 		"local_account_1_status_4_attachment_1": {
 			Original: "trent-original.gif",
 			Small:    "trent-small.jpeg",
+		},
+		"local_account_1_status_4_attachment_2": {
+			Original: "cowlick-original.mp4",
+			Small:    "cowlick-small.jpeg",
 		},
 		"local_account_1_unattached_1": {
 			Original: "ohyou-original.jpeg",
@@ -1306,9 +1498,9 @@ func NewTestStatuses() map[string]*gtsmodel.Status {
 			ID:                       "01F8MH82FYRXD2RC6108DAJ5HB",
 			URI:                      "http://localhost:8080/users/the_mighty_zork/statuses/01F8MH82FYRXD2RC6108DAJ5HB",
 			URL:                      "http://localhost:8080/@the_mighty_zork/statuses/01F8MH82FYRXD2RC6108DAJ5HB",
-			Content:                  "here's a little gif of trent",
-			Text:                     "here's a little gif of trent",
-			AttachmentIDs:            []string{"01F8MH7TDVANYKWVE8VVKFPJTJ"},
+			Content:                  "here's a little gif of trent.... and also a cow",
+			Text:                     "here's a little gif of trent.... and also a cow",
+			AttachmentIDs:            []string{"01F8MH7TDVANYKWVE8VVKFPJTJ", "01CDR64G398ADCHXK08WWTHEZ5"},
 			CreatedAt:                TimeMustParse("2021-10-20T12:40:37+02:00"),
 			UpdatedAt:                TimeMustParse("2021-10-20T12:40:37+02:00"),
 			Local:                    TrueBool(),
@@ -1316,7 +1508,7 @@ func NewTestStatuses() map[string]*gtsmodel.Status {
 			AccountID:                "01F8MH1H7YV1Z7D2C8K2730QBF",
 			InReplyToID:              "",
 			BoostOfID:                "",
-			ContentWarning:           "eye contact, trent reznor gif",
+			ContentWarning:           "eye contact, trent reznor gif, cow",
 			Visibility:               gtsmodel.VisibilityMutualsOnly,
 			Sensitive:                FalseBool(),
 			Language:                 "en",
@@ -1670,6 +1862,30 @@ func NewTestFaves() map[string]*gtsmodel.StatusFave {
 			StatusID:        "01F8MH75CBF9JFX4ZAD54N0W0R", // admin account status 1
 			URI:             "http://localhost:8080/users/the_mighty_zork/liked/01F8MHD2QCZSZ6WQS2ATVPEYJ9",
 		},
+		"local_account_1_admin_account_status_3": {
+			ID:              "01GM435XERVPXXRK6NBAHK5HCZ",
+			CreatedAt:       TimeMustParse("2022-12-12T20:17:56+02:00"),
+			AccountID:       "01F8MH1H7YV1Z7D2C8K2730QBF", // local account 1
+			TargetAccountID: "01F8MH17FWEB39HZJ76B6VXSKF", // admin account
+			StatusID:        "01F8MHAAY43M6RJ473VQFCVH37", // admin account status 1
+			URI:             "http://localhost:8080/users/the_mighty_zork/liked/01GM435XERVPXXRK6NBAHK5HCZ",
+		},
+		"local_account_1_local_account_2_status_1": {
+			ID:              "01GM43AKBMN4YNXQ1HZHVC1SGB",
+			CreatedAt:       TimeMustParse("2022-12-12T20:19:49+02:00"),
+			AccountID:       "01F8MH1H7YV1Z7D2C8K2730QBF", // local account 1
+			TargetAccountID: "01F8MH5NBDF2MV7CTC4Q5128HF", // admin account
+			StatusID:        "01F8MHBQCBTDKN6X5VHGMMN4MA", // admin account status 1
+			URI:             "http://localhost:8080/users/the_mighty_zork/liked/01GM43AKBMN4YNXQ1HZHVC1SGB",
+		},
+		"local_account_1_local_account_2_status_4": {
+			ID:              "01GM43CC47DRPNZZ7BD04BS1YZ",
+			CreatedAt:       TimeMustParse("2022-12-12T20:20:47+02:00"),
+			AccountID:       "01F8MH1H7YV1Z7D2C8K2730QBF", // local account 1
+			TargetAccountID: "01F8MH5NBDF2MV7CTC4Q5128HF", // admin account
+			StatusID:        "01F8MHCP5P2NWYQ416SBA0XSEV", // admin account status 1
+			URI:             "http://localhost:8080/users/the_mighty_zork/liked/01GM43CC47DRPNZZ7BD04BS1YZ",
+		},
 		"admin_account_local_account_1_status_1": {
 			ID:              "01F8Q0486ANTDWKG02A7DS1Q24",
 			CreatedAt:       TimeMustParse("2022-05-14T13:21:09+02:00"),
@@ -1812,27 +2028,27 @@ func NewTestActivities(accounts map[string]*gtsmodel.Account) map[string]Activit
 	createReplyToTurtleForTurtleSig, createReplyToTurtleForTurtleDigest, createReplyToTurtleForTurtleDate := GetSignatureForActivity(createReplyToTurtle, accounts["remote_account_1"].PublicKeyURI, accounts["remote_account_1"].PrivateKey, URLMustParse(accounts["local_account_2"].InboxURI))
 
 	forwardedMessage := NewAPNote(
-		URLMustParse("http://example.org/users/some_user/statuses/afaba698-5740-4e32-a702-af61aa543bc1"),
-		URLMustParse("http://example.org/@some_user/afaba698-5740-4e32-a702-af61aa543bc1"),
+		URLMustParse("http://example.org/users/Some_User/statuses/afaba698-5740-4e32-a702-af61aa543bc1"),
+		URLMustParse("http://example.org/@Some_User/afaba698-5740-4e32-a702-af61aa543bc1"),
 		TimeMustParse("2022-07-13T12:13:12+02:00"),
 		"this is a public status, please forward it!",
 		"",
-		URLMustParse("http://example.org/users/some_user"),
+		URLMustParse("http://example.org/users/Some_User"),
 		[]*url.URL{URLMustParse(pub.PublicActivityPubIRI)},
 		nil,
 		false,
 		[]vocab.ActivityStreamsMention{},
 		[]vocab.ActivityStreamsImage{
 			newAPImage(
-				URLMustParse("http://example.org/users/some_user/statuses/afaba698-5740-4e32-a702-af61aa543bc1/attachment1.jpeg"),
+				URLMustParse("http://example.org/users/Some_User/statuses/afaba698-5740-4e32-a702-af61aa543bc1/attachment1.jpeg"),
 				"image/jpeg",
 				"trent reznor looking handsome as balls",
 				"LEDara58O=t5EMSOENEN9]}?aK%0"),
 		},
 	)
 	createForwardedMessage := WrapAPNoteInCreate(
-		URLMustParse("http://example.org/users/some_user/statuses/afaba698-5740-4e32-a702-af61aa543bc1/activity"),
-		URLMustParse("http://example.org/users/some_user"),
+		URLMustParse("http://example.org/users/Some_User/statuses/afaba698-5740-4e32-a702-af61aa543bc1/activity"),
+		URLMustParse("http://example.org/users/Some_User"),
 		TimeMustParse("2022-07-13T12:13:12+02:00"),
 		forwardedMessage)
 	createForwardedMessageSig, createForwardedMessageDigest, createForwardedMessageDate := GetSignatureForActivity(createForwardedMessage, accounts["remote_account_1"].PublicKeyURI, accounts["remote_account_1"].PrivateKey, URLMustParse(accounts["local_account_1"].InboxURI))
@@ -2131,20 +2347,20 @@ func NewTestFediAttachments(relativePath string) map[string]RemoteAttachmentFile
 
 func NewTestFediStatuses() map[string]vocab.ActivityStreamsNote {
 	return map[string]vocab.ActivityStreamsNote{
-		"http://example.org/users/some_user/statuses/afaba698-5740-4e32-a702-af61aa543bc1": NewAPNote(
-			URLMustParse("http://example.org/users/some_user/statuses/afaba698-5740-4e32-a702-af61aa543bc1"),
-			URLMustParse("http://example.org/@some_user/afaba698-5740-4e32-a702-af61aa543bc1"),
+		"http://example.org/users/Some_User/statuses/afaba698-5740-4e32-a702-af61aa543bc1": NewAPNote(
+			URLMustParse("http://example.org/users/Some_User/statuses/afaba698-5740-4e32-a702-af61aa543bc1"),
+			URLMustParse("http://example.org/@Some_User/afaba698-5740-4e32-a702-af61aa543bc1"),
 			TimeMustParse("2022-07-13T12:13:12+02:00"),
 			"this is a public status, please forward it!",
 			"",
-			URLMustParse("http://example.org/users/some_user"),
+			URLMustParse("http://example.org/users/Some_User"),
 			[]*url.URL{URLMustParse(pub.PublicActivityPubIRI)},
 			nil,
 			false,
 			[]vocab.ActivityStreamsMention{},
 			[]vocab.ActivityStreamsImage{
 				newAPImage(
-					URLMustParse("http://example.org/users/some_user/statuses/afaba698-5740-4e32-a702-af61aa543bc1/attachment1.jpeg"),
+					URLMustParse("http://example.org/users/Some_User/statuses/afaba698-5740-4e32-a702-af61aa543bc1/attachment1.jpeg"),
 					"image/jpeg",
 					"trent reznor looking handsome as balls",
 					"LEDara58O=t5EMSOENEN9]}?aK%0"),
@@ -2207,6 +2423,26 @@ func NewTestFediStatuses() map[string]vocab.ActivityStreamsNote {
 				),
 			},
 		),
+	}
+}
+
+// NewTestBookmarks returns a map of gts model bookmarks, keyed in the format [bookmarking_account]_[target_status]
+func NewTestBookmarks() map[string]*gtsmodel.StatusBookmark {
+	return map[string]*gtsmodel.StatusBookmark{
+		"local_account_1_admin_account_status_1": {
+			ID:              "01F8MHD2QCZSZ6WQS2ATVPEYJ9",
+			CreatedAt:       TimeMustParse("2022-05-14T13:21:09+02:00"),
+			AccountID:       "01F8MH1H7YV1Z7D2C8K2730QBF", // local account 1
+			TargetAccountID: "01F8MH17FWEB39HZJ76B6VXSKF", // admin account
+			StatusID:        "01F8MH75CBF9JFX4ZAD54N0W0R", // admin account status 1
+		},
+		"admin_account_local_account_1_status_1": {
+			ID:              "01F8Q0486ANTDWKG02A7DS1Q24",
+			CreatedAt:       TimeMustParse("2022-05-14T13:21:09+02:00"),
+			AccountID:       "01F8MH17FWEB39HZJ76B6VXSKF", // admin account
+			TargetAccountID: "01F8MH1H7YV1Z7D2C8K2730QBF", // local account 1
+			StatusID:        "01F8MHAMCHF6Y650WCRSCP4WMY", // local account status 1
+		},
 	}
 }
 

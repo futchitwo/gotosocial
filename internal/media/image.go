@@ -30,6 +30,7 @@ import (
 
 	"github.com/buckket/go-blurhash"
 	"github.com/disintegration/imaging"
+	_ "golang.org/x/image/webp" // blank import to support WebP decoding
 )
 
 const (
@@ -37,16 +38,7 @@ const (
 	thumbnailMaxHeight = 512
 )
 
-type imageMeta struct {
-	width    int
-	height   int
-	size     int
-	aspect   float64
-	blurhash string // defined only for calls to deriveThumbnail if createBlurhash is true
-	small    []byte // defined only for calls to deriveStaticEmoji or deriveThumbnail
-}
-
-func decodeGif(r io.Reader) (*imageMeta, error) {
+func decodeGif(r io.Reader) (*mediaMeta, error) {
 	gif, err := gif.DecodeAll(r)
 	if err != nil {
 		return nil, err
@@ -56,9 +48,9 @@ func decodeGif(r io.Reader) (*imageMeta, error) {
 	width := gif.Config.Width
 	height := gif.Config.Height
 	size := width * height
-	aspect := float64(width) / float64(height)
+	aspect := float32(width) / float32(height)
 
-	return &imageMeta{
+	return &mediaMeta{
 		width:  width,
 		height: height,
 		size:   size,
@@ -66,12 +58,12 @@ func decodeGif(r io.Reader) (*imageMeta, error) {
 	}, nil
 }
 
-func decodeImage(r io.Reader, contentType string) (*imageMeta, error) {
+func decodeImage(r io.Reader, contentType string) (*mediaMeta, error) {
 	var i image.Image
 	var err error
 
 	switch contentType {
-	case mimeImageJpeg:
+	case mimeImageJpeg, mimeImageWebp:
 		i, err = imaging.Decode(r, imaging.AutoOrientation(true))
 	case mimeImagePng:
 		strippedPngReader := io.Reader(&PNGAncillaryChunkStripper{
@@ -93,9 +85,9 @@ func decodeImage(r io.Reader, contentType string) (*imageMeta, error) {
 	width := i.Bounds().Size().X
 	height := i.Bounds().Size().Y
 	size := width * height
-	aspect := float64(width) / float64(height)
+	aspect := float32(width) / float32(height)
 
-	return &imageMeta{
+	return &mediaMeta{
 		width:  width,
 		height: height,
 		size:   size,
@@ -103,8 +95,37 @@ func decodeImage(r io.Reader, contentType string) (*imageMeta, error) {
 	}, nil
 }
 
-// deriveThumbnail returns a byte slice and metadata for a thumbnail
-// of a given jpeg, png, or gif, or an error if something goes wrong.
+// deriveStaticEmojji takes a given gif or png of an emoji, decodes it, and re-encodes it as a static png.
+func deriveStaticEmoji(r io.Reader, contentType string) (*mediaMeta, error) {
+	var i image.Image
+	var err error
+
+	switch contentType {
+	case mimeImagePng:
+		i, err = StrippedPngDecode(r)
+		if err != nil {
+			return nil, err
+		}
+	case mimeImageGif:
+		i, err = gif.Decode(r)
+		if err != nil {
+			return nil, err
+		}
+	default:
+		return nil, fmt.Errorf("content type %s not allowed for emoji", contentType)
+	}
+
+	out := &bytes.Buffer{}
+	if err := png.Encode(out, i); err != nil {
+		return nil, err
+	}
+	return &mediaMeta{
+		small: out.Bytes(),
+	}, nil
+}
+
+// deriveThumbnailFromImage returns a byte slice and metadata for a thumbnail
+// of a given piece of media, or an error if something goes wrong.
 //
 // If createBlurhash is true, then a blurhash will also be generated from a tiny
 // version of the image. This costs precious CPU cycles, so only use it if you
@@ -112,12 +133,12 @@ func decodeImage(r io.Reader, contentType string) (*imageMeta, error) {
 //
 // If createBlurhash is false, then the blurhash field on the returned ImageAndMeta
 // will be an empty string.
-func deriveThumbnail(r io.Reader, contentType string, createBlurhash bool) (*imageMeta, error) {
+func deriveThumbnailFromImage(r io.Reader, contentType string, createBlurhash bool) (*mediaMeta, error) {
 	var i image.Image
 	var err error
 
 	switch contentType {
-	case mimeImageJpeg, mimeImageGif:
+	case mimeImageJpeg, mimeImageGif, mimeImageWebp:
 		i, err = imaging.Decode(r, imaging.AutoOrientation(true))
 	case mimeImagePng:
 		strippedPngReader := io.Reader(&PNGAncillaryChunkStripper{
@@ -125,7 +146,7 @@ func deriveThumbnail(r io.Reader, contentType string, createBlurhash bool) (*ima
 		})
 		i, err = imaging.Decode(strippedPngReader, imaging.AutoOrientation(true))
 	default:
-		err = fmt.Errorf("content type %s can't be thumbnailed", contentType)
+		err = fmt.Errorf("content type %s can't be thumbnailed as an image", contentType)
 	}
 
 	if err != nil {
@@ -146,9 +167,9 @@ func deriveThumbnail(r io.Reader, contentType string, createBlurhash bool) (*ima
 	thumbX := thumb.Bounds().Size().X
 	thumbY := thumb.Bounds().Size().Y
 	size := thumbX * thumbY
-	aspect := float64(thumbX) / float64(thumbY)
+	aspect := float32(thumbX) / float32(thumbY)
 
-	im := &imageMeta{
+	im := &mediaMeta{
 		width:  thumbX,
 		height: thumbY,
 		size:   size,
@@ -176,33 +197,4 @@ func deriveThumbnail(r io.Reader, contentType string, createBlurhash bool) (*ima
 	im.small = out.Bytes()
 
 	return im, nil
-}
-
-// deriveStaticEmojji takes a given gif or png of an emoji, decodes it, and re-encodes it as a static png.
-func deriveStaticEmoji(r io.Reader, contentType string) (*imageMeta, error) {
-	var i image.Image
-	var err error
-
-	switch contentType {
-	case mimeImagePng:
-		i, err = StrippedPngDecode(r)
-		if err != nil {
-			return nil, err
-		}
-	case mimeImageGif:
-		i, err = gif.Decode(r)
-		if err != nil {
-			return nil, err
-		}
-	default:
-		return nil, fmt.Errorf("content type %s not allowed for emoji", contentType)
-	}
-
-	out := &bytes.Buffer{}
-	if err := png.Encode(out, i); err != nil {
-		return nil, err
-	}
-	return &imageMeta{
-		small: out.Bytes(),
-	}, nil
 }

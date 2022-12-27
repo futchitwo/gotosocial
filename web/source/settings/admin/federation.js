@@ -30,6 +30,8 @@ const api = require("../lib/api");
 const adminActions = require("../redux/reducers/admin").actions;
 const submit = require("../lib/submit");
 const BackButton = require("../components/back-button");
+const Loading = require("../components/loading");
+const { matchSorter } = require("match-sorter");
 
 const base = "/settings/admin/federation";
 
@@ -56,7 +58,9 @@ module.exports = function AdminSettings() {
 		return (
 			<div>
 				<h1>Federation</h1>
-				Loading...
+				<div>
+					<Loading/>
+				</div>
 			</div>
 		);
 	}
@@ -76,6 +80,10 @@ function InstanceOverview() {
 	const blockedInstances = Redux.useSelector(state => state.admin.blockedInstances);
 	const [_location, setLocation] = useLocation();
 
+	const filteredInstances = React.useMemo(() => {
+		return matchSorter(Object.values(blockedInstances), filter, {keys: ["domain"]});
+	}, [blockedInstances, filter]);
+
 	function filterFormSubmit(e) {
 		e.preventDefault();
 		setLocation(`${base}/${filter}`);
@@ -93,7 +101,7 @@ function InstanceOverview() {
 					<Link to={`${base}/${filter}`}><a className="button">Add block</a></Link>
 				</form>
 				<div className="list">
-					{Object.values(blockedInstances).filter((a) => a.domain.startsWith(filter)).map((entry) => {
+					{filteredInstances.map((entry) => {
 						return (
 							<Link key={entry.domain} to={`${base}/${entry.domain}`}>
 								<a className="entry nounderline">
@@ -321,7 +329,7 @@ function InstancePage({domain, Form}) {
 	const [statusMsg, setStatus] = React.useState("");
 
 	if (entry == undefined) {
-		return "Loading...";
+		return <Loading/>;
 	}
 
 	const updateBlock = submit(
@@ -339,28 +347,39 @@ function InstancePage({domain, Form}) {
 	return (
 		<div>
 			<h1><BackButton to={base}/> Federation settings for: {domain}</h1>
-			{entry.new && "No stored block yet, you can add one below:"}
+			{entry.new 
+				? "No stored block yet, you can add one below:"
+				: <b className="error">Editing domain blocks is not implemented yet, <a href="https://github.com/superseriousbusiness/gotosocial/issues/1198" target="_blank" rel="noopener noreferrer">check here for progress</a>.</b>
+			}
 
 			<Form.TextArea
 				id="public_comment"
 				name="Public comment"
+				inputProps={{
+					disabled: !entry.new
+				}}
 			/>
 
 			<Form.TextArea
 				id="private_comment"
 				name="Private comment"
+				inputProps={{
+					disabled: !entry.new
+				}}
 			/>
 
 			<Form.Checkbox
 				id="obfuscate"
 				name="Obfuscate domain? "
+				inputProps={{
+					disabled: !entry.new
+				}}
 			/>
 
 			<div className="messagebutton">
-				<button type="submit" onClick={updateBlock}>{entry.new ? "Add block" : "Save block"}</button>
-
-				{!entry.new &&
-					<button className="danger" onClick={removeBlock}>Remove block</button>
+				{entry.new
+					? <button type="submit" onClick={updateBlock}>{entry.new ? "Add block" : "Save block"}</button>
+					: <button className="danger" onClick={removeBlock}>Remove block</button>
 				}
 
 				{errorMsg.length > 0 && 

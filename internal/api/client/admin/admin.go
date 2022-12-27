@@ -46,6 +46,7 @@ const (
 	// AccountsActionPath is used for taking action on a single account.
 	AccountsActionPath = AccountsPathWithID + "/action"
 	MediaCleanupPath   = BasePath + "/media_cleanup"
+	MediaRefetchPath   = BasePath + "/media_refetch"
 
 	// ExportQueryKey is for requesting a public export of some data.
 	ExportQueryKey = "export"
@@ -63,6 +64,8 @@ const (
 	MinShortcodeDomainKey = "min_shortcode_domain"
 	// LimitKey is for specifying maximum number of results to return.
 	LimitKey = "limit"
+	// DomainQueryKey is for specifying a domain during admin actions.
+	DomainQueryKey = "domain"
 )
 
 // Module implements the ClientAPIModule interface for admin-related actions (reports, emojis, etc)
@@ -83,12 +86,14 @@ func (m *Module) Route(r router.Router) error {
 	r.AttachHandler(http.MethodGet, EmojiPath, m.EmojisGETHandler)
 	r.AttachHandler(http.MethodDelete, EmojiPathWithID, m.EmojiDELETEHandler)
 	r.AttachHandler(http.MethodGet, EmojiPathWithID, m.EmojiGETHandler)
+	r.AttachHandler(http.MethodPatch, EmojiPathWithID, m.EmojiPATCHHandler)
 	r.AttachHandler(http.MethodPost, DomainBlocksPath, m.DomainBlocksPOSTHandler)
 	r.AttachHandler(http.MethodGet, DomainBlocksPath, m.DomainBlocksGETHandler)
 	r.AttachHandler(http.MethodGet, DomainBlocksPathWithID, m.DomainBlockGETHandler)
 	r.AttachHandler(http.MethodDelete, DomainBlocksPathWithID, m.DomainBlockDELETEHandler)
 	r.AttachHandler(http.MethodPost, AccountsActionPath, m.AccountActionPOSTHandler)
 	r.AttachHandler(http.MethodPost, MediaCleanupPath, m.MediaCleanupPOSTHandler)
+	r.AttachHandler(http.MethodPost, MediaRefetchPath, m.MediaRefetchPOSTHandler)
 	r.AttachHandler(http.MethodGet, EmojiCategoriesPath, m.EmojiCategoriesGETHandler)
 	return nil
 }

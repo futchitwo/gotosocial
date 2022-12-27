@@ -60,7 +60,7 @@ body {
 	display: grid;
 	min-height: 100%;
 	min-width: 100%;
-	width: 100vw;
+	width: 100%;
 
 	grid-template-columns: auto minmax(auto, 90ch) auto;
 	grid-template-columns: auto min(92%, 90ch) auto;
@@ -169,6 +169,16 @@ main {
 
 		&:hover {
 			background: $button-danger-hover-bg;
+		}
+	}
+
+	&:disabled {
+		color: $white2;
+		background: $gray2;
+		cursor: auto;
+
+		&:hover {
+			background: $gray3;
 		}
 	}
 
@@ -369,4 +379,28 @@ footer {
 
 .monospace {
 	font-family: monospace;
+}
+
+.callout {
+	margin: 1.5rem 0;
+	border: .05rem solid $border-accent;
+	border-radius: .2rem;
+	padding: 0 .6rem .6rem;
+	.callout-title {
+		margin: 0 -.6rem;
+		padding: .6rem;
+		font-weight: bold;
+		background-color: $border-accent;
+		color: $gray1;
+	}
+}
+
+label {
+	cursor: pointer;
+}
+
+@media (prefers-reduced-motion) {
+	.fa-spin {
+		animation: none;
+	}
 }
