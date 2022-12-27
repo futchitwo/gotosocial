@@ -14,7 +14,7 @@ cp.out
 site/
 
 # exclude compiled binaries
-dist/
+# dist/
 
 # exclude the copy of swagger.yaml moved into assets during packaging
 web/assets/swagger.yaml

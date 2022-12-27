@@ -1,0 +1,114 @@
+
+:root {
+	--white1: #fafaff;
+	--white2: #b3b5c6;
+	--gray1: #2a2b2f;
+	--gray2: #35363b;
+	--gray3: #3a3b41;
+	--gray4: #45464e;
+	--gray5: #4d4e56;
+	--gray6: #575861;
+	--gray7: #5d5e67;
+	--gray8: #696a75;
+	--orange1: #fd6a00;
+	--orange2: #ff853e;
+	--blue1: #3a9fde;
+	--blue2: #66befe;
+	--blue3: #89caff;
+	--error1: #860000;
+	--error2: #ff9796;
+	--error-link: #185F8C;
+	--fg: var(--white1);
+	--bg: var(--gray1);
+	--bg-trans: rgba(77, 78, 86, 0.62);
+	--bg-accent: var(--gray5);
+	--fg-accent: var(--blue3);
+	--fg-reduced: var(--white2);
+	--border-accent: var(--orange2);
+	--link-fg: var(--fg-accent);
+	--role-moderator: var(--orange1);
+	--role-admin: var(--blue2);
+	--button-bg: var(--blue2);
+	--button-fg: var(--gray1);
+	--button-hover-bg: var(--blue3);
+	--button-danger-bg: var(--orange1);
+	--button-danger-fg: var(--gray1);
+	--button-danger-hover-bg: var(--orange2);
+	--toot-focus-bg: var(--gray5);
+	--toot-unfocus-bg: var(--gray2);
+	--toot-info-bg: var(--gray4);
+	--no-img-desc-bg: var(--orange1);
+	--no-img-desc-fg: var(--gray1);
+	--bg-sensitive: var(--gray1);
+	--boxshadow: 0 0.4rem 1rem -0.1rem rgba(0,0,0,0.15);
+	--boxshadow-border: 0.08rem solid var(--gray1);
+	--avatar-border: var(--orange2);
+	--input-bg: var(--gray4);
+	--input-disabled-bg: var(--gray2);
+	--input-border: var(--blue1);
+	--input-focus-border: var(--blue3);
+	--settings-nav-bg: var(--bg-accent);
+	--settings-nav-header-fg: var(--gray1);
+	--settings-nav-header-bg: var(--orange1);
+	--settings-nav-bg-hover: var(--gray3);
+	--settings-nav-bg-active: var(--gray2);
+	--error-fg: var(--error1);
+	--error-bg: var(--error2);
+	--settings-entry-bg: var(--gray3);
+	--settings-entry-hover-bg: var(--gray4)
+}
+
+/*
+	GoToSocial
+	Copyright (C) 2021-2022 GoToSocial Authors admin@gotosocial.org
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
+
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
+   This stylesheets defines (color) variables to be used by other stylesheets on the page
+   postcss-custom-prop-vars will transpile these to css --variables
+*/
+
+/* Color definitions */
+
+/* Foreground */
+
+/* default text color, contrast >= 5.0 with all $grays */
+
+/* less important text, can be used with $gray1 (6.8), $gray2 (5.5), $gray3 (4.9), $gray4 (4.5) */
+
+/* Background shades, contrast >= 5.0 with $white1 (#fafaff) */
+
+/* Used for non-text accent colors, can be used as background: $gray1 for text color (contrast 4.6)*/
+
+/* hover/selected accent to $orange1, can be used with $gray1 (5.7), $gray2 (4.6) */
+
+/* darker blue for smaller elements (borders), can only be used with $gray1 (4.7) */
+
+/* all-round accent color, can be used with $gray1 (6.8), $gray2 (5.5), $gray3 (4.9), $gray4 (4.5) */
+
+/* hover/selected accent to $blue2, can be used with $gray1 (7.9), $gray2 (6.3), $gray3 (5.6), $gray4 (5.2), $gray5 (4.7) */
+
+/* Error border/foreground text, can be used with $error2 (5.0), $white1 (10), $white2 (5.1) */
+
+/* Error background text, can be used with $error1 (5.0), $gray1 (6.6), $gray2 (5.3), $gray3 (4.8) */
+
+/* Error link text, can be used with $error2 (5.54) */
+
+/* Color variables as used in a specific location */
+
+/* $settings-nav-fg-hover: $gray1; */
+
+/* $settings-nav-fg-active: $orange2; */
