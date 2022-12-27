@@ -181,7 +181,7 @@ func (st *ConfigState) GetAccountDomain() (v string) {
 	st.mutex.Lock()
 	v = st.config.AccountDomain
 	if v == "" {
-		v = encore.Meta().APIBaseURL.String()
+		v = encore.Meta().APIBaseURL.Hostname()
 	}
 	st.mutex.Unlock()
 	return
