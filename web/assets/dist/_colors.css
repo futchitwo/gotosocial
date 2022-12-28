@@ -17,6 +17,7 @@
 	--blue3: #89caff;
 	--error1: #860000;
 	--error2: #ff9796;
+	--error3: #dd2c2c;
 	--error-link: #185F8C;
 	--fg: var(--white1);
 	--bg: var(--gray1);
@@ -31,9 +32,9 @@
 	--button-bg: var(--blue2);
 	--button-fg: var(--gray1);
 	--button-hover-bg: var(--blue3);
-	--button-danger-bg: var(--orange1);
-	--button-danger-fg: var(--gray1);
-	--button-danger-hover-bg: var(--orange2);
+	--button-danger-bg: var(--error3);
+	--button-danger-fg: var(--white1);
+	--button-danger-hover-bg: var(--error2);
 	--toot-focus-bg: var(--gray5);
 	--toot-unfocus-bg: var(--gray2);
 	--toot-info-bg: var(--gray4);
@@ -104,6 +105,8 @@
 /* Error border/foreground text, can be used with $error2 (5.0), $white1 (10), $white2 (5.1) */
 
 /* Error background text, can be used with $error1 (5.0), $gray1 (6.6), $gray2 (5.3), $gray3 (4.8) */
+
+/* Error button background text, can be used with $white1 (4.51) */
 
 /* Error link text, can be used with $error2 (5.54) */
 
