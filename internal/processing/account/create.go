@@ -50,7 +50,6 @@ func (p *processor) Create(ctx context.Context, applicationToken oauth2.TokenInf
 		return nil, gtserror.NewErrorConflict(fmt.Errorf("username %s in use", form.Username))
 	}
 
-
 	userCount, err := p.db.CountInstanceUsers(ctx, config.GetHost())
 	if err != nil {
 		return nil, gtserror.NewErrorInternalError(fmt.Errorf("error counting local user: %s", err))
@@ -58,7 +57,7 @@ func (p *processor) Create(ctx context.Context, applicationToken oauth2.TokenInf
 	shouldSetAsAdmin := userCount == 0
 
 	reasonRequired := config.GetAccountsReasonRequired()
-	approvalRequired := shouldSetAsAdmin || config.GetAccountsApprovalRequired()
+	approvalRequired := !shouldSetAsAdmin && config.GetAccountsApprovalRequired()
 
 	// don't store a reason if we don't require one
 	reason := form.Reason
