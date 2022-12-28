@@ -50,20 +50,21 @@ func (p *processor) Create(ctx context.Context, applicationToken oauth2.TokenInf
 		return nil, gtserror.NewErrorConflict(fmt.Errorf("username %s in use", form.Username))
 	}
 
-	reasonRequired := config.GetAccountsReasonRequired()
-	approvalRequired := config.GetAccountsApprovalRequired()
-
-	// don't store a reason if we don't require one
-	reason := form.Reason
-	if !reasonRequired {
-		reason = ""
-	}
 
 	userCount, err := p.db.CountInstanceUsers(ctx, config.GetHost())
 	if err != nil {
 		return nil, gtserror.NewErrorInternalError(fmt.Errorf("error counting local user: %s", err))
 	}
 	shouldSetAsAdmin := userCount == 0
+
+	reasonRequired := config.GetAccountsReasonRequired()
+	approvalRequired := shouldSetAsAdmin || config.GetAccountsApprovalRequired()
+
+	// don't store a reason if we don't require one
+	reason := form.Reason
+	if !reasonRequired {
+		reason = ""
+	}
 
 	log.Trace("creating new username and account")
 	user, err := p.db.NewSignup(ctx, form.Username, text.SanitizePlaintext(reason), approvalRequired, form.Email, form.Password, form.IP, form.Locale, application.ID, shouldSetAsAdmin, "", shouldSetAsAdmin)
