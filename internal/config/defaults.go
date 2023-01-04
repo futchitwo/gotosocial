@@ -29,7 +29,7 @@ import (
 // if you use this, you will still need to set Host, and, if desired, ConfigPath.
 var Defaults = Configuration{
 	LogLevel:        "info",
-	LogDbQueries:    false,
+	LogDbQueries:    true,
 	ApplicationName: "gotosocial",
 	LandingPageUser: "",
 	ConfigPath:      "",
@@ -49,8 +49,8 @@ var Defaults = Configuration{
 	DbTLSMode:   "disable",
 	DbTLSCACert: "",
 
-	WebTemplateBaseDir: "./web/template/",
-	WebAssetBaseDir:    "./web/assets/",
+	WebTemplateBaseDir: "./template/",
+	WebAssetBaseDir:    "./assets/",
 
 	InstanceExposePeers:            false,
 	InstanceExposeSuspended:        false,
@@ -59,7 +59,7 @@ var Defaults = Configuration{
 	AccountsRegistrationOpen: true,
 	AccountsApprovalRequired: true,
 	AccountsReasonRequired:   true,
-	AccountsAllowCustomCSS:   false,
+	AccountsAllowCustomCSS:   true,
 
 	MediaImageMaxSize:        10 * bytesize.MiB,
 	MediaVideoMaxSize:        40 * bytesize.MiB,

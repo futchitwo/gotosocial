@@ -20,18 +20,18 @@ package router
 
 import "github.com/gin-gonic/gin"
 
-func (r *router) AttachGlobalMiddleware(handlers ...gin.HandlerFunc) gin.IRoutes {
-	return r.engine.Use(handlers...)
+func (r *RouterType) AttachGlobalMiddleware(handlers ...gin.HandlerFunc) gin.IRoutes {
+	return r.Engine.Use(handlers...)
 }
 
-func (r *router) AttachNoRouteHandler(handler gin.HandlerFunc) {
-	r.engine.NoRoute(handler)
+func (r *RouterType) AttachNoRouteHandler(handler gin.HandlerFunc) {
+	r.Engine.NoRoute(handler)
 }
 
-func (r *router) AttachGroup(relativePath string, handlers ...gin.HandlerFunc) *gin.RouterGroup {
-	return r.engine.Group(relativePath, handlers...)
+func (r *RouterType) AttachGroup(relativePath string, handlers ...gin.HandlerFunc) *gin.RouterGroup {
+	return r.Engine.Group(relativePath, handlers...)
 }
 
-func (r *router) AttachHandler(method string, path string, handler gin.HandlerFunc) {
-	r.engine.Handle(method, path, handler)
+func (r *RouterType) AttachHandler(method string, path string, handler gin.HandlerFunc) {
+	r.Engine.Handle(method, path, handler)
 }
