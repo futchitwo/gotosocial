@@ -178,20 +178,29 @@ func initService() (*Service, error) {
 	)
 
 	// create required middleware
+	// rate limiting
 	limit := config.GetAdvancedRateLimitRequests()
-	gzip := middleware.Gzip()               // all except fileserver
 	clLimit := middleware.RateLimit(limit)  // client api
 	s2sLimit := middleware.RateLimit(limit) // server-to-server (AP)
 	fsLimit := middleware.RateLimit(limit)  // fileserver / web templates
 
-	// these should be routed in order
-	authModule.Route(router_, clLimit, gzip)
-	clientModule.Route(router_, clLimit, gzip)
-	fileserverModule.Route(router_, fsLimit)
-	wellKnownModule.Route(router_, gzip, s2sLimit)
-	nodeInfoModule.Route(router_, s2sLimit, gzip)
-	activityPubModule.Route(router_, s2sLimit, gzip)
-	webModule.Route(router_, fsLimit, gzip)
+	// throttling
+	cpuMultiplier := config.GetAdvancedThrottlingMultiplier()
+	clThrottle := middleware.Throttle(cpuMultiplier)  // client api
+	s2sThrottle := middleware.Throttle(cpuMultiplier) // server-to-server (AP)
+	fsThrottle := middleware.Throttle(cpuMultiplier)  // fileserver / web templates
+
+	gzip := middleware.Gzip() // applied to all except fileserver
+
+	// these should be routed in order;
+	// apply throttling *after* rate limiting
+	authModule.Route(router_, clLimit, clThrottle, gzip)
+	clientModule.Route(router_, clLimit, clThrottle, gzip)
+	fileserverModule.Route(router_, fsLimit, fsThrottle)
+	wellKnownModule.Route(router_, gzip, s2sLimit, s2sThrottle)
+	nodeInfoModule.Route(router_, s2sLimit, s2sThrottle, gzip)
+	activityPubModule.Route(router_, s2sLimit, s2sThrottle, gzip)
+	webModule.Route(router_, fsLimit, fsThrottle, gzip)
 
 	return &Service{engine: router_.(*router.RouterType).Engine}, nil
 }
