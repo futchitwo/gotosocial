@@ -130,7 +130,7 @@ func initService() (*Service, error) {
 		HTTP router initialization
 	*/
 
-	router_, err := router.New(ctx)
+	router_, err := router.NewRouter(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error creating router: %s", err)
 	}
