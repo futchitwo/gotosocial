@@ -27,7 +27,7 @@ import (
 	"codeberg.org/gruf/go-cache/v3"
 	"github.com/gin-gonic/gin"
 	//"github.com/superseriousbusiness/gotosocial/internal/config"
-	"github.com/superseriousbusiness/gotosocial/internal/log"
+	//"github.com/superseriousbusiness/gotosocial/internal/log"
 	"github.com/superseriousbusiness/gotosocial/internal/processing"
 	"github.com/superseriousbusiness/gotosocial/internal/router"
 	"github.com/superseriousbusiness/gotosocial/internal/uris"
