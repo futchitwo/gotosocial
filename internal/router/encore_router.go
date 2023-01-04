@@ -8,7 +8,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/superseriousbusiness/gotosocial/internal/config"
-	"github.com/superseriousbusiness/gotosocial/internal/db"
 	"golang.org/x/crypto/acme/autocert"
 )
 
@@ -16,34 +15,16 @@ import (
 //
 // The given DB is only used in the New function for parsing config values, and is not otherwise
 // pinned to the router.
-func NewRouter(ctx context.Context, db db.DB) (Router, error) {
-	gin.SetMode(gin.ReleaseMode)
+func NewRouter(ctx context.Context) (Router, error) {
+	gin.SetMode(gin.TestMode)
 
 	// create the actual engine here -- this is the core request routing handler for gts
 	engine := gin.New()
-	engine.Use(loggingMiddleware)
-
-	// 8 MiB
-	engine.MaxMultipartMemory = 8 << 20
+	engine.MaxMultipartMemory = maxMultipartMemory
 
 	// set up IP forwarding via x-forward-* headers.
 	trustedProxies := config.GetTrustedProxies()
 	if err := engine.SetTrustedProxies(trustedProxies); err != nil {
-		return nil, err
-	}
-
-	// enable cors on the engine
-	if err := useCors(engine); err != nil {
-		return nil, err
-	}
-
-	// enable gzip compression on the engine
-	if err := useGzip(engine); err != nil {
-		return nil, err
-	}
-
-	// enable session store middleware on the engine
-	if err := useSession(ctx, db, engine); err != nil {
 		return nil, err
 	}
 
