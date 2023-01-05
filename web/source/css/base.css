@@ -1,6 +1,6 @@
 /*
 	GoToSocial
-	Copyright (C) 2021-2022 GoToSocial Authors admin@gotosocial.org
+	Copyright (C) 2021-2023 GoToSocial Authors admin@gotosocial.org
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU Affero General Public License as published by
@@ -62,8 +62,8 @@ body {
 	min-width: 100%;
 	width: 100%;
 
-	grid-template-columns: auto minmax(auto, 90ch) auto;
-	grid-template-columns: auto min(92%, 90ch) auto;
+	grid-template-columns: auto minmax(auto, 50rem) auto;
+	grid-template-columns: auto min(92%, 50rem) auto;
 	grid-template-rows: auto 1fr auto;
 }
 
