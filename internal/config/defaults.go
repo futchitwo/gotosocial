@@ -40,14 +40,18 @@ var Defaults = Configuration{
 	Port:            8080,
 	TrustedProxies:  []string{"127.0.0.1/32", "::1"}, // localhost
 
-	DbType:      "postgres",
-	DbAddress:   "",
-	DbPort:      5432,
-	DbUser:      "",
-	DbPassword:  "",
-	DbDatabase:  "gotosocial",
-	DbTLSMode:   "disable",
-	DbTLSCACert: "",
+	DbType:              "postgres",
+	DbAddress:           "",
+	DbPort:              5432,
+	DbUser:              "",
+	DbPassword:          "",
+	DbDatabase:          "gotosocial",
+	DbTLSMode:           "disable",
+	DbTLSCACert:         "",
+	DbSqliteJournalMode: "WAL",
+	DbSqliteSynchronous: "NORMAL",
+	DbSqliteCacheSize:   64 * bytesize.MiB,
+	DbSqliteBusyTimeout: time.Minute * 5,
 
 	WebTemplateBaseDir: "./template/",
 	WebAssetBaseDir:    "./assets/",
@@ -137,6 +141,10 @@ var Defaults = Configuration{
 			NotificationMaxSize:   500,
 			NotificationTTL:       time.Minute * 5,
 			NotificationSweepFreq: time.Second * 10,
+
+			ReportMaxSize:   100,
+			ReportTTL:       time.Minute * 5,
+			ReportSweepFreq: time.Second * 10,
 
 			StatusMaxSize:   500,
 			StatusTTL:       time.Minute * 5,

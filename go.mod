@@ -5,17 +5,18 @@ go 1.19
 require (
 	codeberg.org/gruf/go-bytesize v1.0.2
 	codeberg.org/gruf/go-byteutil v1.0.2
-	codeberg.org/gruf/go-cache/v3 v3.2.0
+	codeberg.org/gruf/go-cache/v3 v3.2.2
 	codeberg.org/gruf/go-debug v1.2.0
-	codeberg.org/gruf/go-errors/v2 v2.0.2
+	codeberg.org/gruf/go-errors/v2 v2.1.1
 	codeberg.org/gruf/go-kv v1.5.2
 	codeberg.org/gruf/go-logger/v2 v2.2.1
-	codeberg.org/gruf/go-mutexes v1.1.4
-	codeberg.org/gruf/go-runners v1.3.1
-	codeberg.org/gruf/go-store/v2 v2.0.10
+	codeberg.org/gruf/go-mutexes v1.1.5
+	codeberg.org/gruf/go-runners v1.4.0
+	codeberg.org/gruf/go-store/v2 v2.2.1
+	github.com/KimMachineGun/automemlimit v0.2.4
 	github.com/abema/go-mp4 v0.9.0
 	github.com/buckket/go-blurhash v1.1.0
-	github.com/coreos/go-oidc/v3 v3.4.0
+	github.com/coreos/go-oidc/v3 v3.5.0
 	github.com/cornelk/hashmap v1.0.8
 	github.com/disintegration/imaging v1.6.2
 	github.com/gin-contrib/cors v1.4.0
@@ -32,7 +33,7 @@ require (
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/microcosm-cc/bluemonday v1.0.21
 	github.com/miekg/dns v1.1.50
-	github.com/minio/minio-go/v7 v7.0.44
+	github.com/minio/minio-go/v7 v7.0.47
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/oklog/ulid v1.3.1
 	github.com/robfig/cron/v3 v3.0.1
@@ -49,12 +50,13 @@ require (
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.9
 	github.com/wagslane/go-password-validator v0.3.0
 	github.com/yuin/goldmark v1.5.3
+	go.uber.org/automaxprocs v1.5.1
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90
 	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d
-	golang.org/x/image v0.2.0
-	golang.org/x/net v0.4.0
-	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783
-	golang.org/x/text v0.5.0
+	golang.org/x/image v0.3.0
+	golang.org/x/net v0.5.0
+	golang.org/x/oauth2 v0.4.0
+	golang.org/x/text v0.6.0
 	gopkg.in/mcuadros/go-syslog.v2 v2.3.0
 	gopkg.in/yaml.v3 v3.0.1
 	modernc.org/sqlite v1.19.5
@@ -67,17 +69,21 @@ require (
 	codeberg.org/gruf/go-atomics v1.1.0 // indirect
 	codeberg.org/gruf/go-bitutil v1.0.1 // indirect
 	codeberg.org/gruf/go-bytes v1.0.2 // indirect
-	codeberg.org/gruf/go-fastcopy v1.1.1 // indirect
+	codeberg.org/gruf/go-fastcopy v1.1.2 // indirect
 	codeberg.org/gruf/go-fastpath v1.0.3 // indirect
 	codeberg.org/gruf/go-fastpath/v2 v2.0.0 // indirect
 	codeberg.org/gruf/go-hashenc v1.0.2 // indirect
-	codeberg.org/gruf/go-mangler v1.1.1 // indirect
+	codeberg.org/gruf/go-iotools v0.0.0-20221224124424-3386841cb225 // indirect
+	codeberg.org/gruf/go-mangler v1.2.2 // indirect
 	codeberg.org/gruf/go-maps v1.0.3 // indirect
 	codeberg.org/gruf/go-pools v1.1.0 // indirect
-	codeberg.org/gruf/go-sched v1.1.1 // indirect
+	codeberg.org/gruf/go-sched v1.2.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
-	github.com/cespare/xxhash v1.1.0 // indirect
+	github.com/cilium/ebpf v0.4.0 // indirect
+	github.com/containerd/cgroups v1.0.4 // indirect
+	github.com/coreos/go-systemd/v22 v22.3.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/docker/go-units v0.4.0 // indirect
 	github.com/dsoprea/go-exif/v3 v3.0.0-20210625224831-a6301f85c82b // indirect
 	github.com/dsoprea/go-iptc v0.0.0-20200610044640-bc9ca208b413 // indirect
 	github.com/dsoprea/go-logging v0.0.0-20200710184922-b02d349568dd // indirect
@@ -88,10 +94,13 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-errors/errors v1.4.1 // indirect
+	github.com/go-jose/go-jose/v3 v3.0.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-xmlfmt/xmlfmt v0.0.0-20211206191508-7fd73a941850 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
+	github.com/godbus/dbus/v5 v5.0.4 // indirect
+	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/geo v0.0.0-20210211234256-740aa86cb551 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -119,6 +128,7 @@ require (
 	github.com/minio/sha256-simd v1.0.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/opencontainers/runtime-spec v1.0.2 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
@@ -139,12 +149,11 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220907135952-02c991387e35 // indirect
-	golang.org/x/sys v0.3.0 // indirect
+	golang.org/x/sys v0.4.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	lukechampine.com/uint128 v1.2.0 // indirect
 	modernc.org/cc/v3 v3.40.0 // indirect

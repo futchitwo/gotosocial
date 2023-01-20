@@ -531,6 +531,106 @@ func GetDbTLSCACert() string { return global.GetDbTLSCACert() }
 // SetDbTLSCACert safely sets the value for global configuration 'DbTLSCACert' field
 func SetDbTLSCACert(v string) { global.SetDbTLSCACert(v) }
 
+// GetDbSqliteJournalMode safely fetches the Configuration value for state's 'DbSqliteJournalMode' field
+func (st *ConfigState) GetDbSqliteJournalMode() (v string) {
+	st.mutex.Lock()
+	v = st.config.DbSqliteJournalMode
+	st.mutex.Unlock()
+	return
+}
+
+// SetDbSqliteJournalMode safely sets the Configuration value for state's 'DbSqliteJournalMode' field
+func (st *ConfigState) SetDbSqliteJournalMode(v string) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.DbSqliteJournalMode = v
+	st.reloadToViper()
+}
+
+// DbSqliteJournalModeFlag returns the flag name for the 'DbSqliteJournalMode' field
+func DbSqliteJournalModeFlag() string { return "db-sqlite-journal-mode" }
+
+// GetDbSqliteJournalMode safely fetches the value for global configuration 'DbSqliteJournalMode' field
+func GetDbSqliteJournalMode() string { return global.GetDbSqliteJournalMode() }
+
+// SetDbSqliteJournalMode safely sets the value for global configuration 'DbSqliteJournalMode' field
+func SetDbSqliteJournalMode(v string) { global.SetDbSqliteJournalMode(v) }
+
+// GetDbSqliteSynchronous safely fetches the Configuration value for state's 'DbSqliteSynchronous' field
+func (st *ConfigState) GetDbSqliteSynchronous() (v string) {
+	st.mutex.Lock()
+	v = st.config.DbSqliteSynchronous
+	st.mutex.Unlock()
+	return
+}
+
+// SetDbSqliteSynchronous safely sets the Configuration value for state's 'DbSqliteSynchronous' field
+func (st *ConfigState) SetDbSqliteSynchronous(v string) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.DbSqliteSynchronous = v
+	st.reloadToViper()
+}
+
+// DbSqliteSynchronousFlag returns the flag name for the 'DbSqliteSynchronous' field
+func DbSqliteSynchronousFlag() string { return "db-sqlite-synchronous" }
+
+// GetDbSqliteSynchronous safely fetches the value for global configuration 'DbSqliteSynchronous' field
+func GetDbSqliteSynchronous() string { return global.GetDbSqliteSynchronous() }
+
+// SetDbSqliteSynchronous safely sets the value for global configuration 'DbSqliteSynchronous' field
+func SetDbSqliteSynchronous(v string) { global.SetDbSqliteSynchronous(v) }
+
+// GetDbSqliteCacheSize safely fetches the Configuration value for state's 'DbSqliteCacheSize' field
+func (st *ConfigState) GetDbSqliteCacheSize() (v bytesize.Size) {
+	st.mutex.Lock()
+	v = st.config.DbSqliteCacheSize
+	st.mutex.Unlock()
+	return
+}
+
+// SetDbSqliteCacheSize safely sets the Configuration value for state's 'DbSqliteCacheSize' field
+func (st *ConfigState) SetDbSqliteCacheSize(v bytesize.Size) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.DbSqliteCacheSize = v
+	st.reloadToViper()
+}
+
+// DbSqliteCacheSizeFlag returns the flag name for the 'DbSqliteCacheSize' field
+func DbSqliteCacheSizeFlag() string { return "db-sqlite-cache-size" }
+
+// GetDbSqliteCacheSize safely fetches the value for global configuration 'DbSqliteCacheSize' field
+func GetDbSqliteCacheSize() bytesize.Size { return global.GetDbSqliteCacheSize() }
+
+// SetDbSqliteCacheSize safely sets the value for global configuration 'DbSqliteCacheSize' field
+func SetDbSqliteCacheSize(v bytesize.Size) { global.SetDbSqliteCacheSize(v) }
+
+// GetDbSqliteBusyTimeout safely fetches the Configuration value for state's 'DbSqliteBusyTimeout' field
+func (st *ConfigState) GetDbSqliteBusyTimeout() (v time.Duration) {
+	st.mutex.Lock()
+	v = st.config.DbSqliteBusyTimeout
+	st.mutex.Unlock()
+	return
+}
+
+// SetDbSqliteBusyTimeout safely sets the Configuration value for state's 'DbSqliteBusyTimeout' field
+func (st *ConfigState) SetDbSqliteBusyTimeout(v time.Duration) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.DbSqliteBusyTimeout = v
+	st.reloadToViper()
+}
+
+// DbSqliteBusyTimeoutFlag returns the flag name for the 'DbSqliteBusyTimeout' field
+func DbSqliteBusyTimeoutFlag() string { return "db-sqlite-busy-timeout" }
+
+// GetDbSqliteBusyTimeout safely fetches the value for global configuration 'DbSqliteBusyTimeout' field
+func GetDbSqliteBusyTimeout() time.Duration { return global.GetDbSqliteBusyTimeout() }
+
+// SetDbSqliteBusyTimeout safely sets the value for global configuration 'DbSqliteBusyTimeout' field
+func SetDbSqliteBusyTimeout(v time.Duration) { global.SetDbSqliteBusyTimeout(v) }
+
 // GetWebTemplateBaseDir safely fetches the Configuration value for state's 'WebTemplateBaseDir' field
 func (st *ConfigState) GetWebTemplateBaseDir() (v string) {
 	st.mutex.Lock()
@@ -2384,6 +2484,81 @@ func GetCacheGTSNotificationSweepFreq() time.Duration {
 
 // SetCacheGTSNotificationSweepFreq safely sets the value for global configuration 'Cache.GTS.NotificationSweepFreq' field
 func SetCacheGTSNotificationSweepFreq(v time.Duration) { global.SetCacheGTSNotificationSweepFreq(v) }
+
+// GetCacheGTSReportMaxSize safely fetches the Configuration value for state's 'Cache.GTS.ReportMaxSize' field
+func (st *ConfigState) GetCacheGTSReportMaxSize() (v int) {
+	st.mutex.Lock()
+	v = st.config.Cache.GTS.ReportMaxSize
+	st.mutex.Unlock()
+	return
+}
+
+// SetCacheGTSReportMaxSize safely sets the Configuration value for state's 'Cache.GTS.ReportMaxSize' field
+func (st *ConfigState) SetCacheGTSReportMaxSize(v int) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.Cache.GTS.ReportMaxSize = v
+	st.reloadToViper()
+}
+
+// CacheGTSReportMaxSizeFlag returns the flag name for the 'Cache.GTS.ReportMaxSize' field
+func CacheGTSReportMaxSizeFlag() string { return "cache-gts-report-max-size" }
+
+// GetCacheGTSReportMaxSize safely fetches the value for global configuration 'Cache.GTS.ReportMaxSize' field
+func GetCacheGTSReportMaxSize() int { return global.GetCacheGTSReportMaxSize() }
+
+// SetCacheGTSReportMaxSize safely sets the value for global configuration 'Cache.GTS.ReportMaxSize' field
+func SetCacheGTSReportMaxSize(v int) { global.SetCacheGTSReportMaxSize(v) }
+
+// GetCacheGTSReportTTL safely fetches the Configuration value for state's 'Cache.GTS.ReportTTL' field
+func (st *ConfigState) GetCacheGTSReportTTL() (v time.Duration) {
+	st.mutex.Lock()
+	v = st.config.Cache.GTS.ReportTTL
+	st.mutex.Unlock()
+	return
+}
+
+// SetCacheGTSReportTTL safely sets the Configuration value for state's 'Cache.GTS.ReportTTL' field
+func (st *ConfigState) SetCacheGTSReportTTL(v time.Duration) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.Cache.GTS.ReportTTL = v
+	st.reloadToViper()
+}
+
+// CacheGTSReportTTLFlag returns the flag name for the 'Cache.GTS.ReportTTL' field
+func CacheGTSReportTTLFlag() string { return "cache-gts-report-ttl" }
+
+// GetCacheGTSReportTTL safely fetches the value for global configuration 'Cache.GTS.ReportTTL' field
+func GetCacheGTSReportTTL() time.Duration { return global.GetCacheGTSReportTTL() }
+
+// SetCacheGTSReportTTL safely sets the value for global configuration 'Cache.GTS.ReportTTL' field
+func SetCacheGTSReportTTL(v time.Duration) { global.SetCacheGTSReportTTL(v) }
+
+// GetCacheGTSReportSweepFreq safely fetches the Configuration value for state's 'Cache.GTS.ReportSweepFreq' field
+func (st *ConfigState) GetCacheGTSReportSweepFreq() (v time.Duration) {
+	st.mutex.Lock()
+	v = st.config.Cache.GTS.ReportSweepFreq
+	st.mutex.Unlock()
+	return
+}
+
+// SetCacheGTSReportSweepFreq safely sets the Configuration value for state's 'Cache.GTS.ReportSweepFreq' field
+func (st *ConfigState) SetCacheGTSReportSweepFreq(v time.Duration) {
+	st.mutex.Lock()
+	defer st.mutex.Unlock()
+	st.config.Cache.GTS.ReportSweepFreq = v
+	st.reloadToViper()
+}
+
+// CacheGTSReportSweepFreqFlag returns the flag name for the 'Cache.GTS.ReportSweepFreq' field
+func CacheGTSReportSweepFreqFlag() string { return "cache-gts-report-sweep-freq" }
+
+// GetCacheGTSReportSweepFreq safely fetches the value for global configuration 'Cache.GTS.ReportSweepFreq' field
+func GetCacheGTSReportSweepFreq() time.Duration { return global.GetCacheGTSReportSweepFreq() }
+
+// SetCacheGTSReportSweepFreq safely sets the value for global configuration 'Cache.GTS.ReportSweepFreq' field
+func SetCacheGTSReportSweepFreq(v time.Duration) { global.SetCacheGTSReportSweepFreq(v) }
 
 // GetCacheGTSStatusMaxSize safely fetches the Configuration value for state's 'Cache.GTS.StatusMaxSize' field
 func (st *ConfigState) GetCacheGTSStatusMaxSize() (v int) {

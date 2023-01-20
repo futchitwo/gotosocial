@@ -20,6 +20,7 @@ package iotools
 
 import (
 	"io"
+	"os"
 )
 
 // ReadFnCloser takes an io.Reader and wraps it to use the provided function to implement io.Closer.
@@ -118,4 +119,74 @@ func (w *SilentWriter) Write(b []byte) (int, error) {
 
 func (w *SilentWriter) Error() error {
 	return w.err
+}
+
+func StreamReadFunc(read func(io.Reader) error) io.Writer {
+	// In-memory stream.
+	pr, pw := io.Pipe()
+
+	go func() {
+		var err error
+
+		defer func() {
+			// Always pass along error.
+			pr.CloseWithError(err)
+		}()
+
+		// Start reading.
+		err = read(pr)
+	}()
+
+	return pw
+}
+
+func StreamWriteFunc(write func(io.Writer) error) io.Reader {
+	// In-memory stream.
+	pr, pw := io.Pipe()
+
+	go func() {
+		var err error
+
+		defer func() {
+			// Always pass along error.
+			pw.CloseWithError(err)
+		}()
+
+		// Start writing.
+		err = write(pw)
+	}()
+
+	return pr
+}
+
+type tempFileSeeker struct {
+	io.Reader
+	io.Seeker
+	tmp *os.File
+}
+
+func (tfs *tempFileSeeker) Close() error {
+	tfs.tmp.Close()
+	return os.Remove(tfs.tmp.Name())
+}
+
+// TempFileSeeker converts the provided Reader into a ReadSeekCloser
+// by using an underlying temporary file. Callers should call the Close
+// function when they're done with the TempFileSeeker, to release +
+// clean up the temporary file.
+func TempFileSeeker(r io.Reader) (io.ReadSeekCloser, error) {
+	tmp, err := os.CreateTemp(os.TempDir(), "gotosocial-")
+	if err != nil {
+		return nil, err
+	}
+
+	if _, err := io.Copy(tmp, r); err != nil {
+		return nil, err
+	}
+
+	return &tempFileSeeker{
+		Reader: tmp,
+		Seeker: tmp,
+		tmp:    tmp,
+	}, nil
 }

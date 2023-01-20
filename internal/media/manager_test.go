@@ -26,6 +26,7 @@ import (
 	"os"
 	"path"
 	"testing"
+	"time"
 
 	"codeberg.org/gruf/go-store/v2/kv"
 	"codeberg.org/gruf/go-store/v2/storage"
@@ -33,7 +34,6 @@ import (
 	gtsmodel "github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
 	"github.com/superseriousbusiness/gotosocial/internal/media"
 	gtsstorage "github.com/superseriousbusiness/gotosocial/internal/storage"
-	"github.com/superseriousbusiness/gotosocial/testrig"
 )
 
 type ManagerTestSuite struct {
@@ -214,7 +214,7 @@ func (suite *ManagerTestSuite) TestEmojiProcessBlockingTooLarge() {
 
 	// do a blocking call to fetch the emoji
 	emoji, err := processingEmoji.LoadEmoji(ctx)
-	suite.EqualError(err, "store: given emoji fileSize (645688b) is larger than allowed size (51200b)")
+	suite.EqualError(err, "given emoji size 630kiB greater than max allowed 50.0kiB")
 	suite.Nil(emoji)
 }
 
@@ -227,7 +227,7 @@ func (suite *ManagerTestSuite) TestEmojiProcessBlockingTooLargeNoSizeGiven() {
 		if err != nil {
 			panic(err)
 		}
-		return io.NopCloser(bytes.NewBuffer(b)), int64(len(b)), nil
+		return io.NopCloser(bytes.NewBuffer(b)), -1, nil
 	}
 
 	emojiID := "01GDQ9G782X42BAMFASKP64343"
@@ -238,7 +238,7 @@ func (suite *ManagerTestSuite) TestEmojiProcessBlockingTooLargeNoSizeGiven() {
 
 	// do a blocking call to fetch the emoji
 	emoji, err := processingEmoji.LoadEmoji(ctx)
-	suite.EqualError(err, "store: given emoji fileSize (645688b) is larger than allowed size (51200b)")
+	suite.EqualError(err, "calculated emoji size 630kiB greater than max allowed 50.0kiB")
 	suite.Nil(emoji)
 }
 
@@ -396,6 +396,9 @@ func (suite *ManagerTestSuite) TestSlothVineProcessBlocking() {
 	// fetch the attachment id from the processing media
 	attachmentID := processingMedia.AttachmentID()
 
+	// Give time for processing
+	time.Sleep(time.Second * 3)
+
 	// do a blocking call to fetch the attachment
 	attachment, err := processingMedia.LoadAttachment(ctx)
 	suite.NoError(err)
@@ -411,16 +414,16 @@ func (suite *ManagerTestSuite) TestSlothVineProcessBlocking() {
 	suite.Equal(240, attachment.FileMeta.Original.Height)
 	suite.Equal(81120, attachment.FileMeta.Original.Size)
 	suite.EqualValues(1.4083333, attachment.FileMeta.Original.Aspect)
-	suite.EqualValues(6.5862, *attachment.FileMeta.Original.Duration)
+	suite.EqualValues(6.640907, *attachment.FileMeta.Original.Duration)
 	suite.EqualValues(29.000029, *attachment.FileMeta.Original.Framerate)
-	suite.EqualValues(0x3b3e1, *attachment.FileMeta.Original.Bitrate)
+	suite.EqualValues(0x59e74, *attachment.FileMeta.Original.Bitrate)
 	suite.EqualValues(gtsmodel.Small{
 		Width: 338, Height: 240, Size: 81120, Aspect: 1.4083333333333334,
 	}, attachment.FileMeta.Small)
 	suite.Equal("video/mp4", attachment.File.ContentType)
 	suite.Equal("image/jpeg", attachment.Thumbnail.ContentType)
 	suite.Equal(312413, attachment.File.FileSize)
-	suite.Equal("", attachment.Blurhash)
+	suite.Equal("L00000fQfQfQfQfQfQfQfQfQfQfQ", attachment.Blurhash)
 
 	// now make sure the attachment is in the database
 	dbAttachment, err := suite.db.GetAttachmentByID(ctx, attachmentID)
@@ -491,12 +494,12 @@ func (suite *ManagerTestSuite) TestLongerMp4ProcessBlocking() {
 	suite.EqualValues(10, *attachment.FileMeta.Original.Framerate)
 	suite.EqualValues(0xc8fb, *attachment.FileMeta.Original.Bitrate)
 	suite.EqualValues(gtsmodel.Small{
-		Width: 600, Height: 330, Size: 198000, Aspect: 1.8181819,
+		Width: 512, Height: 281, Size: 143872, Aspect: 1.822064,
 	}, attachment.FileMeta.Small)
 	suite.Equal("video/mp4", attachment.File.ContentType)
 	suite.Equal("image/jpeg", attachment.Thumbnail.ContentType)
 	suite.Equal(109549, attachment.File.FileSize)
-	suite.Equal("", attachment.Blurhash)
+	suite.Equal("L00000fQfQfQfQfQfQfQfQfQfQfQ", attachment.Blurhash)
 
 	// now make sure the attachment is in the database
 	dbAttachment, err := suite.db.GetAttachmentByID(ctx, attachmentID)
@@ -528,6 +531,82 @@ func (suite *ManagerTestSuite) TestLongerMp4ProcessBlocking() {
 	suite.Equal(processedThumbnailBytesExpected, processedThumbnailBytes)
 }
 
+func (suite *ManagerTestSuite) TestBirdnestMp4ProcessBlocking() {
+	ctx := context.Background()
+
+	data := func(_ context.Context) (io.ReadCloser, int64, error) {
+		// load bytes from a test video
+		b, err := os.ReadFile("./test/birdnest-original.mp4")
+		if err != nil {
+			panic(err)
+		}
+		return io.NopCloser(bytes.NewBuffer(b)), int64(len(b)), nil
+	}
+
+	accountID := "01FS1X72SK9ZPW0J1QQ68BD264"
+
+	// process the media with no additional info provided
+	processingMedia, err := suite.manager.ProcessMedia(ctx, data, nil, accountID, nil)
+	suite.NoError(err)
+	// fetch the attachment id from the processing media
+	attachmentID := processingMedia.AttachmentID()
+
+	// do a blocking call to fetch the attachment
+	attachment, err := processingMedia.LoadAttachment(ctx)
+	suite.NoError(err)
+	suite.NotNil(attachment)
+
+	// make sure it's got the stuff set on it that we expect
+	// the attachment ID and accountID we expect
+	suite.Equal(attachmentID, attachment.ID)
+	suite.Equal(accountID, attachment.AccountID)
+
+	// file meta should be correctly derived from the video
+	suite.Equal(404, attachment.FileMeta.Original.Width)
+	suite.Equal(720, attachment.FileMeta.Original.Height)
+	suite.Equal(290880, attachment.FileMeta.Original.Size)
+	suite.EqualValues(0.5611111, attachment.FileMeta.Original.Aspect)
+	suite.EqualValues(9.822041, *attachment.FileMeta.Original.Duration)
+	suite.EqualValues(30, *attachment.FileMeta.Original.Framerate)
+	suite.EqualValues(0x117c79, *attachment.FileMeta.Original.Bitrate)
+	suite.EqualValues(gtsmodel.Small{
+		Width: 287, Height: 512, Size: 146944, Aspect: 0.5605469,
+	}, attachment.FileMeta.Small)
+	suite.Equal("video/mp4", attachment.File.ContentType)
+	suite.Equal("image/jpeg", attachment.Thumbnail.ContentType)
+	suite.Equal(1409577, attachment.File.FileSize)
+	suite.Equal("L00000fQfQfQfQfQfQfQfQfQfQfQ", attachment.Blurhash)
+
+	// now make sure the attachment is in the database
+	dbAttachment, err := suite.db.GetAttachmentByID(ctx, attachmentID)
+	suite.NoError(err)
+	suite.NotNil(dbAttachment)
+
+	// make sure the processed file is in storage
+	processedFullBytes, err := suite.storage.Get(ctx, attachment.File.Path)
+	suite.NoError(err)
+	suite.NotEmpty(processedFullBytes)
+
+	// load the processed bytes from our test folder, to compare
+	processedFullBytesExpected, err := os.ReadFile("./test/birdnest-processed.mp4")
+	suite.NoError(err)
+	suite.NotEmpty(processedFullBytesExpected)
+
+	// the bytes in storage should be what we expected
+	suite.Equal(processedFullBytesExpected, processedFullBytes)
+
+	// now do the same for the thumbnail and make sure it's what we expected
+	processedThumbnailBytes, err := suite.storage.Get(ctx, attachment.Thumbnail.Path)
+	suite.NoError(err)
+	suite.NotEmpty(processedThumbnailBytes)
+
+	processedThumbnailBytesExpected, err := os.ReadFile("./test/birdnest-thumbnail.jpg")
+	suite.NoError(err)
+	suite.NotEmpty(processedThumbnailBytesExpected)
+
+	suite.Equal(processedThumbnailBytesExpected, processedThumbnailBytes)
+}
+
 func (suite *ManagerTestSuite) TestNotAnMp4ProcessBlocking() {
 	// try to load an 'mp4' that's actually an mkv in disguise
 
@@ -550,7 +629,7 @@ func (suite *ManagerTestSuite) TestNotAnMp4ProcessBlocking() {
 
 	// we should get an error while loading
 	attachment, err := processingMedia.LoadAttachment(ctx)
-	suite.EqualError(err, "\"video width could not be discovered\",\"video height could not be discovered\",\"video duration could not be discovered\",\"video framerate could not be discovered\",\"video bitrate could not be discovered\"")
+	suite.EqualError(err, "error decoding video: error determining video metadata: [width height framerate]")
 	suite.Nil(attachment)
 }
 
@@ -928,7 +1007,8 @@ func (suite *ManagerTestSuite) TestSimpleJpegProcessBlockingWithCallback() {
 }
 
 func (suite *ManagerTestSuite) TestSimpleJpegProcessAsync() {
-	ctx := context.Background()
+	ctx, cncl := context.WithTimeout(context.Background(), time.Second*30)
+	defer cncl()
 
 	data := func(_ context.Context) (io.ReadCloser, int64, error) {
 		// load bytes from a test image
@@ -944,15 +1024,12 @@ func (suite *ManagerTestSuite) TestSimpleJpegProcessAsync() {
 	// process the media with no additional info provided
 	processingMedia, err := suite.manager.ProcessMedia(ctx, data, nil, accountID, nil)
 	suite.NoError(err)
+
 	// fetch the attachment id from the processing media
 	attachmentID := processingMedia.AttachmentID()
 
-	// wait for the media to finish processing
-	if !testrig.WaitFor(func() bool {
-		return processingMedia.Finished()
-	}) {
-		suite.FailNow("timed out waiting for media to be processed")
-	}
+	// Give time for processing to happen.
+	time.Sleep(time.Second * 3)
 
 	// fetch the attachment from the database
 	attachment, err := suite.db.GetAttachmentByID(ctx, attachmentID)

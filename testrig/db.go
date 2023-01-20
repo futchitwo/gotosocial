@@ -58,6 +58,7 @@ var testModels = []interface{}{
 	&gtsmodel.Client{},
 	&gtsmodel.EmojiCategory{},
 	&gtsmodel.Tombstone{},
+	&gtsmodel.Report{},
 }
 
 // NewTestDB returns a new initialized, empty database for testing.
@@ -72,15 +73,11 @@ var testModels = []interface{}{
 // value as the port instead.
 func NewTestDB() db.DB {
 	if alternateAddress := os.Getenv("GTS_DB_ADDRESS"); alternateAddress != "" {
-		config.Config(func(cfg *config.Configuration) {
-			cfg.DbAddress = alternateAddress
-		})
+		config.SetDbAddress(alternateAddress)
 	}
 
 	if alternateDBType := os.Getenv("GTS_DB_TYPE"); alternateDBType != "" {
-		config.Config(func(cfg *config.Configuration) {
-			cfg.DbType = alternateDBType
-		})
+		config.SetDbType(alternateDBType)
 	}
 
 	if alternateDBPort := os.Getenv("GTS_DB_PORT"); alternateDBPort != "" {
@@ -88,9 +85,7 @@ func NewTestDB() db.DB {
 		if err != nil {
 			panic(err)
 		}
-		config.Config(func(cfg *config.Configuration) {
-			cfg.DbPort = int(port)
-		})
+		config.SetDbPort(int(port))
 	}
 
 	var state state.State
@@ -152,6 +147,12 @@ func StandardDBSetup(db db.DB, accounts map[string]*gtsmodel.Account) {
 	}
 
 	for _, v := range NewTestBlocks() {
+		if err := db.Put(ctx, v); err != nil {
+			log.Panic(err)
+		}
+	}
+
+	for _, v := range NewTestReports() {
 		if err := db.Put(ctx, v); err != nil {
 			log.Panic(err)
 		}
