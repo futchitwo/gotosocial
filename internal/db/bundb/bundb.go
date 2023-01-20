@@ -143,6 +143,7 @@ func NewBunDBService(ctx context.Context, state *state.State) (db.DB, error) {
 	// Add database query hook
 	conn.DB.AddQueryHook(queryHook{})
 
+	/*
 	// execute sqlite pragmas *after* adding database hook;
 	// this allows the pragma queries to be logged
 	if t == "sqlite" {
@@ -150,6 +151,7 @@ func NewBunDBService(ctx context.Context, state *state.State) (db.DB, error) {
 			return nil, err
 		}
 	}
+	*/
 
 	// table registration is needed for many-to-many, see:
 	// https://bun.uptrace.dev/orm/many-to-many-relation/
@@ -360,7 +362,11 @@ func encoreConn(ctx context.Context) (*DBConn, error) {
 	encoreDB = ctx.Value("encoreDB").(*sqldb.Database)
 	sqldb := encoreDB.Stdlib()
 	
-	tweakConnectionValues(sqldb)
+	/*
+	maxOpenConns := 4 * runtime.GOMAXPROCS(0)
+	sqldb.SetMaxOpenConns(maxOpenConns)
+	sqldb.SetMaxIdleConns(maxOpenConns)
+	*/
 
 	conn := WrapDBConn(bun.NewDB(sqldb, pgdialect.New()))
 
