@@ -176,7 +176,7 @@ func NewS3Storage() (*Driver, error) {
 
 func NewTerminusxStorage() (*Driver, error) {
 	// Open terminusx storage implementation
-	tx, err := terminusx.OpenTerminusx(
+	tx := terminusx.OpenTerminusx(
 		&terminusx.KvDocType{
 			C: &terminusx.ClientType{
 				Token: secrets.TX_TOKEN,
@@ -189,10 +189,7 @@ func NewTerminusxStorage() (*Driver, error) {
 			ValueName: "item",
 		},
 		false,
-	  )
-	if err != nil {
-		return nil, fmt.Errorf("error opening terminusx storage: %w", err)
-	}
+	)
 
 	/*
 	if err := tx.Clean(context.Background()); err != nil {
@@ -202,6 +199,6 @@ func NewTerminusxStorage() (*Driver, error) {
 
 	return &Driver{
 		KVStore: kv.New(tx),
-		Storage: disk,
+		Storage: tx,
 	}, nil
 }
