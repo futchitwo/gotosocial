@@ -34,12 +34,21 @@ import (
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/superseriousbusiness/gotosocial/internal/config"
 	"github.com/superseriousbusiness/gotosocial/internal/log"
+	"github.com/superseriousbusiness/gotosocial/internal/storage/terminusx"
 )
 
 const (
 	urlCacheTTL             = time.Hour * 24
 	urlCacheExpiryFrequency = time.Minute * 5
 )
+
+var secrets struct {
+	TX_TEAM string
+	TX_TOKEN string
+	TX_USER string
+	TX_DBNAME string
+	TX_DOCTYPE string
+}
 
 // ErrAlreadyExists is a ptr to underlying storage.ErrAlreadyExists,
 // to put the related errors in the same package as our storage wrapper.
@@ -92,6 +101,8 @@ func AutoConfig() (*Driver, error) {
 		return NewS3Storage()
 	case "local":
 		return NewFileStorage()
+	case "terminusx":
+		return NewTerminusxStorage()
 	default:
 		return nil, fmt.Errorf("invalid storage backend: %s", backend)
 	}
@@ -160,5 +171,31 @@ func NewS3Storage() (*Driver, error) {
 		Bucket:         config.GetStorageS3BucketName(),
 		Storage:        s3,
 		PresignedCache: presignedCache,
+	}, nil
+}
+
+func NewTerminusxStorage() (*Driver, error) {
+	// Open terminusx storage implementation
+	disk, err := storage.OpenStorage(terminusx.OpenTerminusx(
+		&terminusx.KvDocType{
+			C: &terminusx.ClientType{
+				Token: secrets.TX_TOKEN,
+				Team: secrets.TX_TEAM,
+				User: secrets.TX_USER,
+				DBName: secrets.TX_DBNAME,
+			},
+			DocType: secrets.TX_DOCTYPE,
+			KeyName: "name",
+			ValueName: "item",
+		},
+		false,
+	  ))
+	if err != nil {
+		return nil, fmt.Errorf("error opening terminusx storage: %w", err)
+	}
+
+	return &Driver{
+		KVStore: kv.New(disk),
+		Storage: disk,
 	}, nil
 }

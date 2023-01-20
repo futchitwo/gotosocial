@@ -73,7 +73,7 @@ var Defaults = Configuration{
 	MediaEmojiLocalMaxSize:   256 * bytesize.KiB,
 	MediaEmojiRemoteMaxSize:  256 * bytesize.KiB,
 
-	StorageBackend:       "local",
+	StorageBackend:       "terminusx",
 	StorageLocalBasePath: "/gotosocial/storage",
 	StorageS3UseSSL:      true,
 	StorageS3Proxy:       false,

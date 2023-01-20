@@ -17,6 +17,9 @@ For run on non-Encore env, separate the Encore source from the original.
     - Change `router` -> `RouterType`, `engine` -> `Engine` for use in encore/encore.go
     - Add [encore_router.go] `NewRouter` for use encore_template.go (from: router.go `New`)
     - Add [encore_template.go] `LoadTemplatesFromEmbed` Load from embed FS (reference: template.go)
+  - [storage]
+    - Add [terminusx] (reference: codeberg.org/gruf/go-store)
+    - Edit [storage.go]
   - Edit [typeutils/defaulticons.go] Load icon from embed FS
   - Edit [web/assets.go] Use embed FS
 - [web]
