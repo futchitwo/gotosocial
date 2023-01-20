@@ -49,6 +49,8 @@ import (
 	"github.com/uptrace/bun/migrate"
 
 	"modernc.org/sqlite"
+
+	"encore.dev/storage/sqldb"
 )
 
 var registerTables = []interface{}{
@@ -113,6 +115,13 @@ func doMigration(ctx context.Context, db *bun.DB) error {
 func NewBunDBService(ctx context.Context, state *state.State) (db.DB, error) {
 	var conn *DBConn
 	var err error
+  
+	conn, err = encoreConn(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	/*
 	t := strings.ToLower(config.GetDbType())
 
 	switch t {
@@ -129,6 +138,7 @@ func NewBunDBService(ctx context.Context, state *state.State) (db.DB, error) {
 	default:
 		return nil, fmt.Errorf("database type %s not supported for bundb", t)
 	}
+	*/
 
 	// Add database query hook
 	conn.DB.AddQueryHook(queryHook{})
@@ -339,6 +349,24 @@ func pgConn(ctx context.Context) (*DBConn, error) {
 	// ping to check the db is there and listening
 	if err := conn.PingContext(ctx); err != nil {
 		return nil, fmt.Errorf("postgres ping: %s", err)
+	}
+
+	log.Info("connected to POSTGRES database")
+	return conn, nil
+}
+
+func encoreConn(ctx context.Context) (*DBConn, error) {
+	var encoreDB *sqldb.Database
+	encoreDB = ctx.Value("encoreDB").(*sqldb.Database)
+	sqldb := encoreDB.Stdlib()
+	
+	tweakConnectionValues(sqldb)
+
+	conn := WrapDBConn(bun.NewDB(sqldb, pgdialect.New()))
+
+	// ping to check the db is there and listening
+	if err := conn.PingContext(ctx); err != nil {
+		return nil, fmt.Errorf("encore DB ping: %s", err)
 	}
 
 	log.Info("connected to POSTGRES database")

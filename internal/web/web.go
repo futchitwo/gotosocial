@@ -20,15 +20,19 @@ package web
 
 import (
 	"net/http"
-	"path/filepath"
+	//"path/filepath"
+
+	"io/fs"
 
 	"codeberg.org/gruf/go-cache/v3"
 	"github.com/gin-gonic/gin"
-	"github.com/superseriousbusiness/gotosocial/internal/config"
-	"github.com/superseriousbusiness/gotosocial/internal/log"
+	//"github.com/superseriousbusiness/gotosocial/internal/config"
+	//"github.com/superseriousbusiness/gotosocial/internal/log"
 	"github.com/superseriousbusiness/gotosocial/internal/processing"
 	"github.com/superseriousbusiness/gotosocial/internal/router"
 	"github.com/superseriousbusiness/gotosocial/internal/uris"
+
+	"github.com/superseriousbusiness/gotosocial/web"
 )
 
 const (
@@ -71,12 +75,17 @@ func New(processor processing.Processor) *Module {
 func (m *Module) Route(r router.Router, mi ...gin.HandlerFunc) {
 	// serve static files from assets dir at /assets
 	assetsGroup := r.AttachGroup(assetsPathPrefix)
+	/*
 	webAssetsAbsFilePath, err := filepath.Abs(config.GetWebAssetBaseDir())
 	if err != nil {
 		log.Panicf("error getting absolute path of assets dir: %s", err)
 	}
 
 	fs := fileSystem{http.Dir(webAssetsAbsFilePath)}
+	*/
+
+	assetDir, _ := fs.Sub(web.WebFS, "assets")
+	fs := fileSystem{http.FS(assetDir)}
 
 	// use the cache middleware on all handlers in this group
 	assetsGroup.Use(m.assetsCacheControlMiddleware(fs))
