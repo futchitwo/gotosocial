@@ -27,7 +27,6 @@ import (
 	"codeberg.org/gruf/go-kv"
 	"codeberg.org/gruf/go-logger/v2/level"
 	"github.com/superseriousbusiness/gotosocial/internal/ap"
-	"github.com/superseriousbusiness/gotosocial/internal/federation/dereferencing"
 	"github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
 	"github.com/superseriousbusiness/gotosocial/internal/id"
 	"github.com/superseriousbusiness/gotosocial/internal/log"
@@ -82,6 +81,9 @@ func (p *processor) ProcessFromFederator(ctx context.Context, federatorMsg messa
 		case ap.ActivityBlock:
 			// CREATE A BLOCK
 			return p.processCreateBlockFromFederator(ctx, federatorMsg)
+		case ap.ActivityFlag:
+			// CREATE A FLAG / REPORT
+			return p.processCreateFlagFromFederator(ctx, federatorMsg)
 		}
 	case ap.ActivityUpdate:
 		// UPDATE SOMETHING
@@ -151,11 +153,11 @@ func (p *processor) processCreateStatusFromFederator(ctx context.Context, federa
 			return err
 		}
 
-		a, err := p.federator.GetAccount(ctx, dereferencing.GetAccountParams{
-			RequestingUsername: federatorMsg.ReceivingAccount.Username,
-			RemoteAccountID:    remoteAccountID,
-			Blocking:           true,
-		})
+		a, err := p.federator.GetAccountByURI(ctx,
+			federatorMsg.ReceivingAccount.Username,
+			remoteAccountID,
+			true,
+		)
 		if err != nil {
 			return err
 		}
@@ -197,11 +199,11 @@ func (p *processor) processCreateFaveFromFederator(ctx context.Context, federato
 			return err
 		}
 
-		a, err := p.federator.GetAccount(ctx, dereferencing.GetAccountParams{
-			RequestingUsername: federatorMsg.ReceivingAccount.Username,
-			RemoteAccountID:    remoteAccountID,
-			Blocking:           true,
-		})
+		a, err := p.federator.GetAccountByURI(ctx,
+			federatorMsg.ReceivingAccount.Username,
+			remoteAccountID,
+			true,
+		)
 		if err != nil {
 			return err
 		}
@@ -239,11 +241,11 @@ func (p *processor) processCreateFollowRequestFromFederator(ctx context.Context,
 			return err
 		}
 
-		a, err := p.federator.GetAccount(ctx, dereferencing.GetAccountParams{
-			RequestingUsername: federatorMsg.ReceivingAccount.Username,
-			RemoteAccountID:    remoteAccountID,
-			Blocking:           true,
-		})
+		a, err := p.federator.GetAccountByURI(ctx,
+			federatorMsg.ReceivingAccount.Username,
+			remoteAccountID,
+			true,
+		)
 		if err != nil {
 			return err
 		}
@@ -300,11 +302,11 @@ func (p *processor) processCreateAnnounceFromFederator(ctx context.Context, fede
 			return err
 		}
 
-		a, err := p.federator.GetAccount(ctx, dereferencing.GetAccountParams{
-			RequestingUsername: federatorMsg.ReceivingAccount.Username,
-			RemoteAccountID:    remoteAccountID,
-			Blocking:           true,
-		})
+		a, err := p.federator.GetAccountByURI(ctx,
+			federatorMsg.ReceivingAccount.Username,
+			remoteAccountID,
+			true,
+		)
 		if err != nil {
 			return err
 		}
@@ -357,6 +359,13 @@ func (p *processor) processCreateBlockFromFederator(ctx context.Context, federat
 	return nil
 }
 
+func (p *processor) processCreateFlagFromFederator(ctx context.Context, federatorMsg messages.FromFederator) error {
+	// TODO: handle side effects of flag creation:
+	// - send email to admins
+	// - notify admins
+	return nil
+}
+
 // processUpdateAccountFromFederator handles Activity Update and Object Profile
 func (p *processor) processUpdateAccountFromFederator(ctx context.Context, federatorMsg messages.FromFederator) error {
 	incomingAccount, ok := federatorMsg.GTSModel.(*gtsmodel.Account)
@@ -370,14 +379,11 @@ func (p *processor) processUpdateAccountFromFederator(ctx context.Context, feder
 	}
 
 	// further database updates occur inside getremoteaccount
-	if _, err := p.federator.GetAccount(ctx, dereferencing.GetAccountParams{
-		RequestingUsername:    federatorMsg.ReceivingAccount.Username,
-		RemoteAccountID:       incomingAccountURL,
-		RemoteAccountHost:     incomingAccount.Domain,
-		RemoteAccountUsername: incomingAccount.Username,
-		PartialAccount:        incomingAccount,
-		Blocking:              true,
-	}); err != nil {
+	if _, err := p.federator.GetAccountByURI(ctx,
+		federatorMsg.ReceivingAccount.Username,
+		incomingAccountURL,
+		true,
+	); err != nil {
 		return fmt.Errorf("error enriching updated account from federator: %s", err)
 	}
 

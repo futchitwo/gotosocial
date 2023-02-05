@@ -315,7 +315,7 @@ input, select, textarea, .input {
 		border-color: $input-focus-border;
 	}
 
-	&:invalid {
+	&:invalid, .invalid & {
 		border-color: $input-error-border;
 	}
 
@@ -406,5 +406,93 @@ label {
 @media (prefers-reduced-motion) {
 	.fa-spin {
 		animation: none;
+	}
+}
+
+.text-cutoff {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+
+	.header, .entry {
+		padding: 0.5rem;
+	}
+
+	.header {
+		border: 0.1rem solid transparent !important; /* for alignment with .entry border padding */
+		background: $gray1 !important;
+		display: flex;
+		font-weight: bold;
+	}
+
+	.entries {
+		display: flex;
+		flex-direction: column;
+
+		&.scrolling {
+			height: 20rem;
+			max-height: 20rem;
+			overflow: auto;
+		}
+	}
+
+	input[type=checkbox] {
+		margin-left: 0.5rem;
+	}
+
+	.entry {
+		display: flex;
+		flex-wrap: wrap;
+		background: $list-entry-bg;
+		border: 0.1rem solid transparent;
+
+		&:nth-child(even) {
+			background: $list-entry-alternate-bg;
+		}
+	
+		&:hover {
+			background: $list-entry-hover-bg;
+		}
+	
+		&:active, &:focus, &:hover, &:target {
+			border-color: $fg-accent;
+		}
+	}
+}
+
+.domain-blocklist {
+	box-shadow: $boxshadow;
+
+	.entry {
+		display: grid;
+		grid-template-columns: 15rem 1fr;
+		gap: 0.5rem;
+		align-items: start;
+		border: $boxshadow-border;
+		border-top-color: transparent;
+
+		& > div {
+			display: flex;
+			align-items: center
+		}
+
+		.domain a {
+			font-weight: bold;
+			text-decoration: none;
+			display: inline-block; /* so it wraps properly */
+		}
+
+		.public_comment p {
+			margin: 0;
+		}
+	}
+
+	.header .domain {
+		color: $fg;
 	}
 }

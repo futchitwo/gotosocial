@@ -62,7 +62,7 @@ import (
 
 // Start creates and starts a gotosocial server
 var Start action.GTSAction = func(ctx context.Context) error {
-	_, err := maxprocs.Set(maxprocs.Logger(log.Errorf))
+	_, err := maxprocs.Set(maxprocs.Logger(log.Debugf))
 	if err != nil {
 		return fmt.Errorf("failed to set CPU limits from cgroup: %s", err)
 	}
@@ -71,6 +71,8 @@ var Start action.GTSAction = func(ctx context.Context) error {
 
 	// Initialize caches
 	state.Caches.Init()
+	state.Caches.Start()
+	defer state.Caches.Stop()
 
 	// Open connection to the database
 	dbService, err := bundb.NewBunDBService(ctx, &state)
@@ -160,7 +162,7 @@ var Start action.GTSAction = func(ctx context.Context) error {
 
 	// attach global no route / 404 handler to the router
 	router.AttachNoRouteHandler(func(c *gin.Context) {
-		apiutil.ErrorHandler(c, gtserror.NewErrorNotFound(errors.New(http.StatusText(http.StatusNotFound))), processor.InstanceGet)
+		apiutil.ErrorHandler(c, gtserror.NewErrorNotFound(errors.New(http.StatusText(http.StatusNotFound))), processor.InstanceGetV1)
 	})
 
 	// build router modules

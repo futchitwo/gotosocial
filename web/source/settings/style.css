@@ -69,6 +69,10 @@ section {
 			&:last-child {
 				margin-bottom: 0;
 			}
+
+			&.without-border {
+				border-left: 0;
+			}
 		}
 	}
 
@@ -368,52 +372,10 @@ span.form-info {
 	font-weight: initial;
 }
 
-.list {
-	display: flex;
-	flex-direction: column;
-
-	&.scrolling {
-		max-height: 40rem;
-		overflow: auto;
-	}
-
-	.header, .entry {
-		padding: 0.5rem;
-	}
-
-	.header {
-		border: 0.1rem solid transparent; /* for alignment with .entry border padding */
-		background: $gray2;
-		display: flex;
-	}
-
-	input[type=checkbox] {
-		margin-left: 0.5rem;
-	}
-
-	.entry {
-		display: flex;
-		flex-wrap: wrap;
-		background: $settings-entry-bg;
-		border: 0.1rem solid transparent;
-
-		&:nth-child(even) {
-			background: $settings-entry-alternate-bg;
-		}
-	
-		&:hover {
-			background: $settings-entry-hover-bg;
-		}
-	
-		&:active, &:focus, &:hover {
-			border-color: $fg-accent;
-		}
-	}
-}
-
 .checkbox-list {
 	.header, .entry {
-		gap: 1rem;
+		display: grid;
+		gap: 0 1rem;
 	}
 }
 
@@ -446,7 +408,11 @@ span.form-info {
 }
 
 .emoji-list {
-	background: $settings-entry-bg;
+	background: $list-entry-bg;
+
+	.header .form-field {
+		flex: 1 1 auto;
+	}
 
 	.entry {
 		flex-direction: column;
@@ -472,7 +438,7 @@ span.form-info {
 				}
 
 				&:hover {
-					background: $settings-entry-hover-bg;
+					background: $list-entry-hover-bg;
 				}
 			}
 		}
@@ -668,7 +634,6 @@ span.form-info {
 
 		.checkbox-list {
 			.entry {
-				display: grid;
 				grid-template-columns: auto auto 1fr;
 			}
 
@@ -727,9 +692,14 @@ button.with-padding {
 
 .suspend-import-list {
 	.checkbox-list {
-		.header, .entry {
-			display: grid;
+		.entry {
 			grid-template-columns: auto 25ch auto 1fr;
+			grid-template-rows: auto 1fr;
+
+			p {
+				grid-column: 4;
+				grid-row: 1 / span 2;
+			}
 		}
 	}
 
@@ -743,9 +713,82 @@ button.with-padding {
 			color: $green1;
 		}
 
+		#icon .suggest-changes {
+			color: $orange2;
+		}
+
 		p {
 			align-self: center;
 			margin: 0;
+		}
+	}
+}
+
+.import-export {
+	p {
+		margin: 0;
+	}
+
+	.export-file {
+		display: flex;
+		gap: 0.7rem;
+		align-items: center;
+	}
+
+	.button-grid {
+		display: inline-grid;
+		grid-template-columns: auto auto auto;
+		align-self: start;
+		gap: 0.5rem;
+
+		button {
+			width: 100%;
+		}
+	}
+}
+
+.update-hints {
+	background: $list-entry-alternate-bg;
+	border: 0.1rem solid $border-accent;
+	/* border-radius: $br; */
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+
+	.hints {
+		max-width: 100%;
+		align-self: start;
+		align-items: center;
+		margin: 1rem 0;
+		display: inline-grid;
+		grid-template-columns: auto auto auto auto;
+		gap: 1rem;
+	}
+}
+
+.export-format-table {
+	width: 100%;
+	background: $list-entry-alternate-bg;
+	border-collapse: collapse;
+
+	th, td {
+		border: 0.1rem solid $gray1;
+		padding: 0.3rem;
+	}
+
+	th {
+		background: $list-entry-bg;
+	}
+
+	td {
+		text-align: center;
+
+		.fa-check {
+			color: $green1;
+		}
+
+		.fa-times {
+			color: $error3;
 		}
 	}
 }
@@ -760,6 +803,10 @@ button.with-padding {
 		width: auto;
 		place-self: center;
 	}
+}
+
+[role="button"] {
+	cursor: pointer;
 }
 
 @keyframes fadeout {

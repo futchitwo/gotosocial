@@ -38,6 +38,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/processing/admin"
 	federationProcessor "github.com/superseriousbusiness/gotosocial/internal/processing/federation"
 	mediaProcessor "github.com/superseriousbusiness/gotosocial/internal/processing/media"
+	"github.com/superseriousbusiness/gotosocial/internal/processing/report"
 	"github.com/superseriousbusiness/gotosocial/internal/processing/status"
 	"github.com/superseriousbusiness/gotosocial/internal/processing/streaming"
 	"github.com/superseriousbusiness/gotosocial/internal/processing/user"
@@ -139,6 +140,13 @@ type Processor interface {
 	AdminMediaPrune(ctx context.Context, mediaRemoteCacheDays int) gtserror.WithCode
 	// AdminMediaRefetch triggers a refetch of remote media for the given domain (or all if domain is empty).
 	AdminMediaRefetch(ctx context.Context, authed *oauth.Auth, domain string) gtserror.WithCode
+	// AdminReportsGet returns a list of user moderation reports.
+	AdminReportsGet(ctx context.Context, authed *oauth.Auth, resolved *bool, accountID string, targetAccountID string, maxID string, sinceID string, minID string, limit int) (*apimodel.PageableResponse, gtserror.WithCode)
+	// AdminReportGet returns a single user moderation report, specified by id.
+	AdminReportGet(ctx context.Context, authed *oauth.Auth, id string) (*apimodel.AdminReport, gtserror.WithCode)
+	// AdminReportResolve marks a single user moderation report as resolved, with the given id.
+	// actionTakenComment is optional: if set, this will be stored as a comment on the action taken.
+	AdminReportResolve(ctx context.Context, authed *oauth.Auth, id string, actionTakenComment *string) (*apimodel.AdminReport, gtserror.WithCode)
 
 	// AppCreate processes the creation of a new API application
 	AppCreate(ctx context.Context, authed *oauth.Auth, form *apimodel.ApplicationCreateRequest) (*apimodel.Application, gtserror.WithCode)
@@ -162,13 +170,15 @@ type Processor interface {
 	// FollowRequestReject handles the rejection of a follow request from the given account ID.
 	FollowRequestReject(ctx context.Context, auth *oauth.Auth, accountID string) (*apimodel.Relationship, gtserror.WithCode)
 
-	// InstanceGet retrieves instance information for serving at api/v1/instance
-	InstanceGet(ctx context.Context, domain string) (*apimodel.Instance, gtserror.WithCode)
-	InstancePeersGet(ctx context.Context, authed *oauth.Auth, includeSuspended bool, includeOpen bool, flat bool) (interface{}, gtserror.WithCode)
+	// InstanceGetV1 retrieves instance information for serving at api/v1/instance
+	InstanceGetV1(ctx context.Context) (*apimodel.InstanceV1, gtserror.WithCode)
+	// InstanceGetV1 retrieves instance information for serving at api/v2/instance
+	InstanceGetV2(ctx context.Context) (*apimodel.InstanceV2, gtserror.WithCode)
+	InstancePeersGet(ctx context.Context, includeSuspended bool, includeOpen bool, flat bool) (interface{}, gtserror.WithCode)
 	// InstancePatch updates this instance according to the given form.
 	//
 	// It should already be ascertained that the requesting account is authenticated and an admin.
-	InstancePatch(ctx context.Context, form *apimodel.InstanceSettingsUpdateRequest) (*apimodel.Instance, gtserror.WithCode)
+	InstancePatch(ctx context.Context, form *apimodel.InstanceSettingsUpdateRequest) (*apimodel.InstanceV1, gtserror.WithCode)
 
 	// MediaCreate handles the creation of a media attachment, using the given form.
 	MediaCreate(ctx context.Context, authed *oauth.Auth, form *apimodel.AttachmentRequest) (*apimodel.Attachment, gtserror.WithCode)
@@ -231,6 +241,13 @@ type Processor interface {
 	// UserConfirmEmail confirms an email address using the given token.
 	// The user belonging to the confirmed email is also returned.
 	UserConfirmEmail(ctx context.Context, token string) (*gtsmodel.User, gtserror.WithCode)
+
+	// ReportsGet returns reports created by the given user.
+	ReportsGet(ctx context.Context, authed *oauth.Auth, resolved *bool, targetAccountID string, maxID string, sinceID string, minID string, limit int) (*apimodel.PageableResponse, gtserror.WithCode)
+	// ReportGet returns one report created by the given user.
+	ReportGet(ctx context.Context, authed *oauth.Auth, id string) (*apimodel.Report, gtserror.WithCode)
+	// ReportCreate creates a new report using the given account and form.
+	ReportCreate(ctx context.Context, authed *oauth.Auth, form *apimodel.ReportCreateRequest) (*apimodel.Report, gtserror.WithCode)
 
 	/*
 		FEDERATION API-FACING PROCESSING FUNCTIONS
@@ -303,6 +320,7 @@ type processor struct {
 	mediaProcessor      mediaProcessor.Processor
 	userProcessor       user.Processor
 	federationProcessor federationProcessor.Processor
+	reportProcessor     report.Processor
 }
 
 // NewProcessor returns a new Processor.
@@ -326,6 +344,7 @@ func NewProcessor(
 	mediaProcessor := mediaProcessor.New(db, tc, mediaManager, federator.TransportController(), storage)
 	userProcessor := user.New(db, emailSender)
 	federationProcessor := federationProcessor.New(db, tc, federator)
+	reportProcessor := report.New(db, tc, clientWorker)
 	filter := visibility.NewFilter(db)
 
 	return &processor{
@@ -348,6 +367,7 @@ func NewProcessor(
 		mediaProcessor:      mediaProcessor,
 		userProcessor:       userProcessor,
 		federationProcessor: federationProcessor,
+		reportProcessor:     reportProcessor,
 	}
 }
 
