@@ -341,9 +341,12 @@ func encoreConn(ctx context.Context) (*DBConn, error) {
 	sqldb := encoreDB.Stdlib()
 	
 	/*
-	maxOpenConns := 4 * runtime.GOMAXPROCS(0)
-	sqldb.SetMaxOpenConns(maxOpenConns)
-	sqldb.SetMaxIdleConns(maxOpenConns)
+	// Tune db connections for postgres, see:
+	// - https://bun.uptrace.dev/guide/running-bun-in-production.html#database-sql
+	// - https://www.alexedwards.net/blog/configuring-sqldb
+	sqldb.SetMaxOpenConns(maxOpenConns())     // x number of conns per CPU
+	sqldb.SetMaxIdleConns(2)                  // assume default 2; if max idle is less than max open, it will be automatically adjusted
+	sqldb.SetConnMaxLifetime(5 * time.Minute) // fine to kill old connections
 	*/
 
 	conn := WrapDBConn(bun.NewDB(sqldb, pgdialect.New()))
