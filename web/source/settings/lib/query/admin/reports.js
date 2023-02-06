@@ -18,11 +18,35 @@
 
 "use strict";
 
-module.exports = {
-	"extends": ["@joepie91/eslint-config/react"],
-	"plugins": ["license-header"],
-	"rules": {
-		"license-header/header": ["error", __dirname + "/.license-header.js"],
-		"no-console": 'error'
-	}
-};
+module.exports = (build) => ({
+	listReports: build.query({
+		query: (params = {}) => ({
+			url: "/api/v1/admin/reports",
+			params: {
+				limit: 100,
+				...params
+			}
+		}),
+		providesTags: ["Reports"]
+	}),
+
+	getReport: build.query({
+		query: (id) => ({
+			url: `/api/v1/admin/reports/${id}`
+		}),
+		providesTags: (res, error, id) => [{ type: "Reports", id }]
+	}),
+
+	resolveReport: build.mutation({
+		query: (formData) => ({
+			url: `/api/v1/admin/reports/${formData.id}/resolve`,
+			method: "POST",
+			asForm: true,
+			body: formData
+		}),
+		invalidatesTags: (res) =>
+			res
+				? [{ type: "Reports", id: "LIST" }, { type: "Reports", id: res.id }]
+				: [{ type: "Reports", id: "LIST" }]
+	})
+});

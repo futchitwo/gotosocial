@@ -11,7 +11,7 @@ require (
 	codeberg.org/gruf/go-kv v1.5.2
 	codeberg.org/gruf/go-logger/v2 v2.2.1
 	codeberg.org/gruf/go-mutexes v1.1.5
-	codeberg.org/gruf/go-runners v1.4.0
+	codeberg.org/gruf/go-runners v1.5.1
 	codeberg.org/gruf/go-store/v2 v2.2.1
 	github.com/KimMachineGun/automemlimit v0.2.4
 	github.com/abema/go-mp4 v0.10.0
@@ -44,12 +44,12 @@ require (
 	github.com/superseriousbusiness/exif-terminator v0.5.0
 	github.com/superseriousbusiness/oauth2/v4 v4.3.2-SSB
 	github.com/tdewolff/minify/v2 v2.12.4
-	github.com/ulule/limiter/v3 v3.10.0
+	github.com/ulule/limiter/v3 v3.11.0
 	github.com/uptrace/bun v1.1.10
 	github.com/uptrace/bun/dialect/pgdialect v1.1.10
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.10
 	github.com/wagslane/go-password-validator v0.3.0
-	github.com/yuin/goldmark v1.5.3
+	github.com/yuin/goldmark v1.5.4
 	go.uber.org/automaxprocs v1.5.1
 	golang.org/x/crypto v0.5.0
 	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d

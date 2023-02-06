@@ -79,8 +79,8 @@ codeberg.org/gruf/go-mutexes v1.1.5 h1:8Y8DwCGf24MyzOSaPvLrtk/B4ecVx4z+fppL6dY+P
 codeberg.org/gruf/go-mutexes v1.1.5/go.mod h1:1j/6/MBeBQUedAtAtysLLnBKogfOZAxdym0E3wlaBD8=
 codeberg.org/gruf/go-pools v1.1.0 h1:LbYP24eQLl/YI1fSU2pafiwhGol1Z1zPjRrMsXpF88s=
 codeberg.org/gruf/go-pools v1.1.0/go.mod h1:ZMYpt/DjQWYC3zFD3T97QWSFKs62zAUGJ/tzvgB9D68=
-codeberg.org/gruf/go-runners v1.4.0 h1:977nVjigAdH95+VAB/a6tyBJOKk99e60h+mfHzBs/n8=
-codeberg.org/gruf/go-runners v1.4.0/go.mod h1:kUM6GYL7dC+f9Sc/XuwdvB/mB4FuI4fJFb150ADMsmw=
+codeberg.org/gruf/go-runners v1.5.1 h1:ekhhxKvO6D/VC7nS/xpv71/iRX01JSqcBEbahqPUghg=
+codeberg.org/gruf/go-runners v1.5.1/go.mod h1:kUM6GYL7dC+f9Sc/XuwdvB/mB4FuI4fJFb150ADMsmw=
 codeberg.org/gruf/go-sched v1.2.0 h1:utZl/7srVcbh30rFw42LC2/cMtak4UZRxtIOt/5riNA=
 codeberg.org/gruf/go-sched v1.2.0/go.mod h1:v4ueWq+fAtAw9JYt4aFXvadI1YoOqofgHQgszRYuslA=
 codeberg.org/gruf/go-store/v2 v2.2.1 h1:lbvMjhMLebefiaPNLtWvPySKSYM5xN1aztSxxz+vCzU=
@@ -573,8 +573,8 @@ github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc/go.mod h1:bciPuU6GH
 github.com/ugorji/go v1.2.7/go.mod h1:nF9osbDWLy6bDVv/Rtoh6QgnvNDpmCalQV5urGCCS6M=
 github.com/ugorji/go/codec v1.2.7 h1:YPXUKf7fYbp/y8xloBqZOw2qaVggbfwMlI8WM3wZUJ0=
 github.com/ugorji/go/codec v1.2.7/go.mod h1:WGN1fab3R1fzQlVQTkfxVtIBhWDRqOviHU95kRgeqEY=
-github.com/ulule/limiter/v3 v3.10.0 h1:C9mx3tgxYnt4pUYKWktZf7aEOVPbRYxR+onNFjQTEp0=
-github.com/ulule/limiter/v3 v3.10.0/go.mod h1:NqPA/r8QfP7O11iC+95X6gcWJPtRWjKrtOUw07BTvoo=
+github.com/ulule/limiter/v3 v3.11.0 h1:9hXMyS0K8Z+EYfrtwPMwmWYflPimswsC/EOMsO2sHx4=
+github.com/ulule/limiter/v3 v3.11.0/go.mod h1:OiKIiMs9dXLMk5TwtIBZlswhPigov9fGmwO4xYbmFkY=
 github.com/uptrace/bun v1.1.10 h1:wx80lg32mWlOV1gNvmPTbR9znt6A2fYvvURzU5dzSPE=
 github.com/uptrace/bun v1.1.10/go.mod h1:pOWJSVU+W0jp3+cbn/TtHdcG/h+QxagECw4EYdKiaSw=
 github.com/uptrace/bun/dialect/pgdialect v1.1.10 h1:H25ieb5OJV5ywvKvswF++wMTnePRaGRiSNkYCRXrQxc=
@@ -584,7 +584,7 @@ github.com/uptrace/bun/dialect/sqlitedialect v1.1.10/go.mod h1:KlD+UbC5Xzd+HKGxS
 github.com/valyala/bytebufferpool v1.0.0 h1:GqA5TC/0021Y/b9FG4Oi9Mr3q7XYx6KllzawFIhcdPw=
 github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=
 github.com/valyala/fasthttp v1.14.0/go.mod h1:ol1PCaL0dX20wC0htZ7sYCsvCYmrouYra0zHzaclZhE=
-github.com/valyala/fasthttp v1.34.0 h1:d3AAQJ2DRcxJYHm7OXNXtXt2as1vMDfxeIcFvhmGGm4=
+github.com/valyala/fasthttp v1.44.0 h1:R+gLUhldIsfg1HokMuQjdQ5bh9nuXHPIfvkYUu9eR5Q=
 github.com/valyala/tcplisten v0.0.0-20161114210144-ceec8f93295a/go.mod h1:v3UYOV9WzVtRmSR+PDvWpU/qWl4Wa5LApYYX4ZtKbio=
 github.com/vmihailenco/msgpack/v5 v5.3.5 h1:5gO0H1iULLWGhs2H5tbAHIZTV8/cYafcFOr9znI5mJU=
 github.com/vmihailenco/msgpack/v5 v5.3.5/go.mod h1:7xyJ9e+0+9SaZT0Wt1RGleJXzli6Q/V5KbhBonMG9jc=
@@ -612,8 +612,8 @@ github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
-github.com/yuin/goldmark v1.5.3 h1:3HUJmBFbQW9fhQOzMgseU134xfi6hU+mjWywx5Ty+/M=
-github.com/yuin/goldmark v1.5.3/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
+github.com/yuin/goldmark v1.5.4 h1:2uY/xC0roWy8IBEGLgB1ywIoEJFGmRrX21YQcvGZzjU=
+github.com/yuin/goldmark v1.5.4/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 github.com/zeebo/assert v1.1.0/go.mod h1:Pq9JiuJQpG8JLJdtkwrJESF0Foym2/D9XMU5ciN/wJ0=
 github.com/zeebo/blake3 v0.2.1/go.mod h1:TSQ0KjMH+pht+bRyvVooJ1rBpvvngSGaPISafq9MxJk=
 github.com/zeebo/pcg v1.0.1/go.mod h1:09F0S9iiKrwn9rlI5yjLkmrug154/YRW6KnnXVDM/l4=
