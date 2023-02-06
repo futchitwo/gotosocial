@@ -1,8 +1,12 @@
 /* from settings/style.css */
 
+:root {
+	--fa-fw: 1.28571429em;
+}
+
 /*
    GoToSocial
-   Copyright (C) 2021-2022 GoToSocial Authors admin@gotosocial.org
+   Copyright (C) 2021-2023 GoToSocial Authors admin@gotosocial.org
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU Affero General Public License as published by
@@ -16,6 +20,10 @@
 
    You should have received a copy of the GNU Affero General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* Fork-Awesome 'fa-fw' fixed icon width 
+   keep in sync with https://github.com/ForkAwesome/Fork-Awesome/blob/a99579ae3e735ee70e51ed62dfcee3172b5b2db7/css/fork-awesome.css#L50
 */
 
 body {
@@ -44,7 +52,7 @@ section {
 		border-bottom-left-radius: 0;
 	}
 
-#root section.with-sidebar > div {
+#root section.with-sidebar > div, #root section.with-sidebar > form {
 			border-left: 0.2rem solid var(--border-accent);
 			padding-left: 0.4rem;
 			display: flex;
@@ -53,21 +61,25 @@ section {
 			margin: 2rem 0;
 		}
 
-#root section.with-sidebar > div h2 {
+#root section.with-sidebar > div h2, #root section.with-sidebar > form h2 {
 				margin: 0;
-				margin-bottom: 0.5rem;
+				margin-top: 0.1rem;
 			}
 
-#root section.with-sidebar > div:only-child {
+#root section.with-sidebar > div:only-child, #root section.with-sidebar > form:only-child {
 				border-left: none;
 			}
 
-#root section.with-sidebar > div:first-child {
+#root section.with-sidebar > div:first-child, #root section.with-sidebar > form:first-child {
 				margin-top: 0;
 			}
 
-#root section.with-sidebar > div:last-child {
+#root section.with-sidebar > div:last-child, #root section.with-sidebar > form:last-child {
 				margin-bottom: 0;
+			}
+
+#root section.with-sidebar > div.without-border, #root section.with-sidebar > form.without-border {
+				border-left: 0;
 			}
 
 #root .sidebar {
@@ -213,43 +225,41 @@ input, select, textarea {
 	) !important;
 }
 
-section.with-sidebar > div {
+section.with-sidebar > div, section.with-sidebar > form {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
 }
 
-section.with-sidebar > div input, section.with-sidebar > div textarea {
+section.with-sidebar > div input, section.with-sidebar > div textarea, section.with-sidebar > form input, section.with-sidebar > form textarea {
 		width: 100%;
 		line-height: 1.5rem;
 	}
 
-section.with-sidebar > div input[type=checkbox] {
+section.with-sidebar > div button, section.with-sidebar > form button {
+		width: auto;
+		align-self: flex-start;
+		line-height: 1.5rem;
+	}
+
+section.with-sidebar > div input[type=checkbox], section.with-sidebar > form input[type=checkbox] {
 		justify-self: start;
 		width: initial;
 	}
 
-section.with-sidebar > div input:read-only {
-		border: none;
-	}
-
-section.with-sidebar > div input:invalid {
-		border-color: red;
-	}
-
-section.with-sidebar > div textarea {
+section.with-sidebar > div textarea, section.with-sidebar > form textarea {
 		width: 100%;
 	}
 
-section.with-sidebar > div h1 {
+section.with-sidebar > div h1, section.with-sidebar > form h1 {
 		margin-bottom: 0.5rem;
 	}
 
-section.with-sidebar > div .moreinfolink {
+section.with-sidebar > div .moreinfolink, section.with-sidebar > form .moreinfolink {
 		font-size: 0.9em;
 	}
 
-section.with-sidebar > div .labelinput .border {
+section.with-sidebar > div .labelinput .border, section.with-sidebar > form .labelinput .border {
 		border-radius: 0.2rem;
 		border: 0.15rem solid var(--border_accent);
 		padding: 0.3rem;
@@ -257,7 +267,7 @@ section.with-sidebar > div .labelinput .border {
 		flex-direction: column;
 	}
 
-section.with-sidebar > div .file-input.button {
+section.with-sidebar > div .file-input.button, section.with-sidebar > form .file-input.button {
 		display: inline-block;
 		font-size: 1rem;
 		font-weight: normal;
@@ -266,18 +276,18 @@ section.with-sidebar > div .file-input.button {
 		margin-right: 0.2rem;
 	}
 
-section.with-sidebar > div .labelinput, section.with-sidebar > div .labelselect {
+section.with-sidebar > div .labelinput, section.with-sidebar > div .labelselect, section.with-sidebar > form .labelinput, section.with-sidebar > form .labelselect {
 		display: flex;
 		flex-direction: column;
 		gap: 0.4rem;
 	}
 
-section.with-sidebar > div .labelcheckbox {
+section.with-sidebar > div .labelcheckbox, section.with-sidebar > form .labelcheckbox {
 		display: flex;
 		gap: 0.4rem;
 	}
 
-section.with-sidebar > div .titlesave {
+section.with-sidebar > div .titlesave, section.with-sidebar > form .titlesave {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.4rem;
@@ -335,14 +345,24 @@ section.with-sidebar > div .titlesave {
 				font-style: italic;
 			}
 
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
 .form-field label {
 	font-weight: bold;
 }
 
-.form-field.file {
-	width: 100%;
-	display: flex;
+.form-field.file label {
+	display: grid;
+	grid-template-columns: auto 1fr;
 }
+
+.form-field.file label .label {
+		grid-column: 1 / span 2;
+	}
 
 span.form-info {
 	flex: 1 1 auto;
@@ -350,38 +370,25 @@ span.form-info {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	padding: 0.3rem 0;
+	font-weight: initial;
 }
 
-.list {
-	display: flex;
-	flex-direction: column;
-	margin-top: 0.5rem;
-	max-height: 40rem;
-	overflow: auto;
-}
-
-.list .entry {
-		display: flex;
-		flex-wrap: wrap;
-		background: var(--settings-entry-bg);
+.checkbox-list .header, .checkbox-list .entry {
+		display: grid;
+		gap: 0 1rem;
 	}
 
-.list .entry:hover {
-			background: var(--settings-entry-hover-bg);
-		}
+.instance-list p {
+		margin-top: 0;
+	}
 
 .instance-list .filter {
 		display: flex;
 		gap: 0.5rem;
 	}
 
-.instance-list .filter input {
-			width: auto;
-			flex: 1 1 auto;
-		}
-
 .instance-list .entry {
-		padding: 0.3rem;
+		padding: 0.5rem;
 		margin: 0.2rem 0;
 	}
 
@@ -398,13 +405,20 @@ span.form-info {
 }
 
 .emoji-list {
-	background: var(--settings-entry-bg);
+	background: var(--list-entry-bg);
 }
 
+.emoji-list .header .form-field {
+		flex: 1 1 auto;
+	}
+
 .emoji-list .entry {
-		padding: 0.5rem;
 		flex-direction: column;
 	}
+
+.emoji-list .entry b {
+			padding-left: 0.4rem;
+		}
 
 .emoji-list .entry .emoji-group {
 			display: flex;
@@ -426,7 +440,7 @@ span.form-info {
 				}
 
 .emoji-list .entry .emoji-group a:hover {
-					background: var(--settings-entry-hover-bg);
+					background: var(--list-entry-hover-bg);
 				}
 
 .emoji-list .entry:hover {
@@ -548,6 +562,7 @@ span.form-info {
 
 .row {
 	display: flex;
+	gap: 0.5rem;
 }
 
 .emoji-detail {
@@ -566,6 +581,12 @@ span.form-info {
 		gap: 0.5rem;
 	}
 
+.emoji-detail .emoji-header div {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+		}
+
 .emoji-detail .emoji-header img {
 			height: 8.5rem;
 			width: 8.5rem;
@@ -575,18 +596,13 @@ span.form-info {
 			padding: 0.5rem;
 		}
 
-.emoji-detail .update-category {
-		margin-bottom: 1rem;
-	}
-
 .emoji-detail .update-category .combobox-wrapper button {
 			font-size: 1rem;
 			margin: 0.15rem 0;
 		}
 
 .emoji-detail .update-category .row {
-			margin-top: 0.4rem;
-			gap: 0.5rem;
+			margin-top: 0.1rem;
 		}
 
 .emoji-detail .update-image {
@@ -607,43 +623,314 @@ span.form-info {
 		gap: 1rem;
 	}
 
-.parse-emoji .parsed > span {
-			margin-bottom: -1rem;
+.parse-emoji .parsed span {
+			margin-bottom: -0.5rem;
 		}
 
 .parse-emoji .parsed .action-buttons {
 			gap: 1rem;
 		}
 
-.parse-emoji .parsed .emoji-list {
-			display: flex;
-			flex-direction: column;
-		}
-
-.parse-emoji .parsed .emoji-list > * {
-				gap: 1rem;
-				align-items: center;
-				padding: 0.5rem 1rem;
-			}
-
-.parse-emoji .parsed .emoji-list .header {
-				background: var(--gray2);
-				display: flex;
-			}
-
-.parse-emoji .parsed .emoji-list .row {
-				display: grid;
+.parse-emoji .parsed .checkbox-list .entry {
 				grid-template-columns: auto auto 1fr;
 			}
 
-.parse-emoji .parsed .emoji-list .row:hover {
-					background: var(--settings-entry-hover-bg);
-				}
-
-.parse-emoji .parsed .emoji-list .emoji {
+.parse-emoji .parsed .checkbox-list .emoji {
 				height: 2rem;
 				width: 2rem;
 				margin: 0;
 			}
+
+.info {
+	color: var(--info-fg);
+	background: var(--info-bg);
+	padding: 0.5rem;
+	border-radius: var(--br);
+
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.info i {
+		margin-top: 0.1em;
+	}
+
+.info a {
+		color: var(--info-link);
+	}
+
+.info p {
+		margin-top: 0;
+	}
+
+button.with-icon {
+	display: flex;
+	align-content: center;
+	padding-right: calc(0.5rem + var(--fa-fw));
+}
+
+button.with-icon .fa {
+		align-self: center;
+	}
+
+button.with-padding {
+	padding: 0.5rem calc(0.5rem + var(--fa-fw));
+}
+
+.loading-icon {
+	align-self: flex-start;
+}
+
+.fadeout {
+	-webkit-animation-name: fadeout;
+	        animation-name: fadeout;
+	-webkit-animation-duration: 0.5s;
+	        animation-duration: 0.5s;
+	-webkit-animation-delay: 2s;
+	        animation-delay: 2s;
+	-webkit-animation-fill-mode: forwards;
+	        animation-fill-mode: forwards;
+}
+
+.suspend-import-list .checkbox-list .entry {
+			grid-template-columns: auto 25ch auto 1fr;
+			grid-template-rows: auto 1fr;
+		}
+
+.suspend-import-list .checkbox-list .entry p {
+				grid-column: 4;
+				grid-row: 1 / span 2;
+			}
+
+.suspend-import-list .entry #icon {
+			margin-left: -0.5rem;
+			align-self: center;
+		}
+
+.suspend-import-list .entry #icon .already-blocked {
+			color: var(--green1);
+		}
+
+.suspend-import-list .entry #icon .suggest-changes {
+			color: var(--orange2);
+		}
+
+.suspend-import-list .entry p {
+			align-self: center;
+			margin: 0;
+		}
+
+.import-export p {
+		margin: 0;
+	}
+
+.import-export .export-file {
+		display: flex;
+		gap: 0.7rem;
+		align-items: center;
+	}
+
+.import-export .button-grid {
+		display: inline-grid;
+		grid-template-columns: auto auto auto;
+		align-self: start;
+		gap: 0.5rem;
+	}
+
+.import-export .button-grid button {
+			width: 100%;
+		}
+
+.update-hints {
+	background: var(--list-entry-alternate-bg);
+	border: 0.1rem solid var(--border-accent);
+	/* border-radius: $br; */
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.update-hints .hints {
+		max-width: 100%;
+		align-self: start;
+		align-items: center;
+		margin: 1rem 0;
+		display: inline-grid;
+		grid-template-columns: auto auto auto auto;
+		gap: 1rem;
+	}
+
+.export-format-table {
+	width: 100%;
+	background: var(--list-entry-alternate-bg);
+	border-collapse: collapse;
+}
+
+.export-format-table th, .export-format-table td {
+		border: 0.1rem solid var(--gray1);
+		padding: 0.3rem;
+	}
+
+.export-format-table th {
+		background: var(--list-entry-bg);
+	}
+
+.export-format-table td {
+		text-align: center;
+	}
+
+.export-format-table td .fa-check {
+			color: var(--green1);
+		}
+
+.export-format-table td .fa-times {
+			color: var(--error3);
+		}
+
+.form-field.radio, .form-field.radio label {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+.form-field.radio input {
+		width: auto;
+		place-self: center;
+	}
+
+.reports p {
+		margin: 0;
+	}
+
+.reports .report {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin: 0.5rem 0;
+
+		text-decoration: none;
+		color: var(--fg);
+
+		padding: 1rem;
+
+		border: none;
+		border-left: 0.3rem solid var(--border-accent);
+	}
+
+.reports .report .byline {
+			display: grid;
+			grid-template-columns: 1fr auto;
+		}
+
+.reports .report .byline .status {
+				color: var(--border-accent);
+			}
+
+.reports .report .details {
+			display: grid;
+			grid-template-columns: auto 1fr;
+			gap: 0.2rem 0.5rem;
+			padding: 0.5rem;
+
+			justify-items: start;
+		}
+
+.reports .report h3 {
+			margin: 0;
+		}
+
+.reports .report.resolved {
+			color: var(--fg-reduced);
+			border-left: 0.4rem solid var(--bg);
+		}
+
+.reports .report.resolved .byline .status {
+				color: var(--fg-reduced);
+			}
+
+.reports .report.resolved .user {
+				opacity: 0.8;
+			}
+
+.reports .report.detail {
+			border: none;
+			padding: 0;
+		}
+
+.reports .report.detail {
+		display: flex;
+		flex-direction: column;
+		margin-top: 1rem;
+		gap: 1rem;
+	}
+
+.reports .report.detail .info-block {
+			padding: 0.5rem;
+			background: var(--gray2);
+		}
+
+.reports .report.detail .info {
+			display: block;
+		}
+
+.reports .report.detail .reported-toots {
+			margin-top: 0.5rem;
+		}
+
+.reports .report.detail .toot .toot-info {
+			padding: 0.5rem;
+			background: var(--toot-info-bg);
+		}
+
+.reports .report.detail .toot .toot-info a {
+				color: var(--fg-reduced);
+			}
+
+.reports .report.detail .toot .toot-info:last-child {
+				border-bottom-left-radius: var(--br);
+				border-bottom-right-radius: var(--br);
+			}
+
+.reports .user {
+		background: var(--fg-accent);
+		color: var(--bg);
+		border-radius: var(--br);
+		padding: 0.1rem 0.2rem;
+		margin: 0 0.1rem;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+.reports .user.suspended {
+			background: var(--bg-accent);
+			color: var(--fg);
+			text-decoration: line-through;
+		}
+
+.reports .user.local {
+			background: var(--green1);
+		}
+
+[role="button"] {
+	cursor: pointer;
+}
+
+@-webkit-keyframes fadeout {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes fadeout {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
 
 

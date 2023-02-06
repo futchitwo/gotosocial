@@ -1,7 +1,7 @@
 
 /*
 	GoToSocial
-	Copyright (C) 2021-2022 GoToSocial Authors admin@gotosocial.org
+	Copyright (C) 2021-2023 GoToSocial Authors admin@gotosocial.org
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU Affero General Public License as published by
@@ -18,279 +18,279 @@
 */
 
 header a img {
-    height: 5rem;
-}
+		height: 5rem;
+	}
 
 main {
-background: transparent;
-padding-top: 0;
+	background: transparent;
+	padding-top: 0;
 }
 
 .profile {
-background: var(--bg-accent);
-display: grid;
-grid-template-rows: auto auto auto;
-grid-template-columns: 100%;
-gap: 0.5rem;
-margin-bottom: 0.2rem;
-overflow-x: hidden;
-position: relative;
+	background: var(--bg-accent);
+	display: grid;
+	grid-template-rows: auto auto auto;
+	grid-template-columns: 100%;
+	gap: 0.5rem;
+	margin-bottom: 0.2rem;
+	overflow-x: hidden;
+	position: relative;
 
-border-radius: var(--br);
-box-shadow: var(--boxshadow);
-border: var(--boxshadow-border);
+	border-radius: var(--br);
+	box-shadow: var(--boxshadow);
+	border: var(--boxshadow-border);
 }
 
 .profile .headerimage {
-    width: 100%;
-    aspect-ratio: 3 / 1;
-    max-height: 30ch;
-    overflow: hidden;
-    box-shadow: var(--boxshadow);
-}
+		width: 100%;
+		aspect-ratio: 3 / 1;
+		max-height: 16rem;
+		overflow: hidden;
+		box-shadow: var(--boxshadow);
+	}
 
 .profile .headerimage img {
-        width: 100%;
-        height: 100%;
-        -o-object-fit: cover;
-           object-fit: cover;
-        border-radius: var(--br-inner) var(--br-inner) 0 0;
-    }
+			width: 100%;
+			height: 100%;
+			-o-object-fit: cover;
+			   object-fit: cover;
+			border-radius: var(--br-inner) var(--br-inner) 0 0;
+		}
 
 .profile .basic {
-    height: 8.5rem;
-    margin-top: -6.5rem;
+		height: 8.5rem;
+		margin-top: -6.5rem;
 
-    display: grid;
-    grid-template-columns: 1rem 8.5rem 1fr;
-    grid-template-rows: 3rem 3rem 2.5rem;
+		display: grid;
+		grid-template-columns: 1rem 8.5rem 1fr;
+		grid-template-rows: 3rem 3rem 2.5rem;
 
-    grid-template-areas:
-        ".       avatar ."
-        "filler2 avatar displayname"
-        ".       avatar username";
-}
+		grid-template-areas:
+			".       avatar ."
+			"filler2 avatar displayname"
+			".       avatar username";
+	}
 
 .profile .basic #profile-basic-filler2 {
-        grid-area: filler2;
-        background: var(--bg-trans);
-    }
+			grid-area: filler2;
+			background: var(--bg-trans);
+		}
 
 .profile .basic .avatar {
-        align-self: end;
-        box-sizing: border-box;
-        height: 8.5rem;
-        width: 8.5rem;
-        grid-area: avatar;
-        background: var(--bg);
-        border: 0.2rem solid var(--avatar-border);
-        padding: 0;
-        border-radius: var(--br);
-        position: relative;
+			align-self: end;
+			box-sizing: border-box;
+			height: 8.5rem;
+			width: 8.5rem;
+			grid-area: avatar;
+			background: var(--bg);
+			border: 0.2rem solid var(--avatar-border);
+			padding: 0;
+			border-radius: var(--br);
+			position: relative;
 
-        box-shadow: var(--boxshadow);
-    }
+			box-shadow: var(--boxshadow);
+		}
 
 .profile .basic .avatar img {
-            -o-object-fit: cover;
-               object-fit: cover;
-            border-radius: var(--br-inner);
-            width: 100%;
-            height: 100%;
-        }
+				-o-object-fit: cover;
+				   object-fit: cover;
+				border-radius: var(--br-inner);
+				width: 100%;
+				height: 100%;
+			}
 
 .profile .basic a, .profile .basic div {
-        color: inherit;
-        text-decoration: none;
-    }
+			color: inherit;
+			text-decoration: none;
+		}
 
 .profile .basic .displayname {
-        grid-area: displayname;
-        font-weight: bold;
-        font-size: 2rem;
-        line-height: 3rem;
-        background: var(--bg-trans);
-        word-break: break-all;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-height: 6rem;
-        padding: 0 0.5rem;
-    }
+			grid-area: displayname;
+			font-weight: bold;
+			font-size: 2rem;
+			line-height: 3rem;
+			background: var(--bg-trans);
+			word-break: break-all;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			max-height: 6rem;
+			padding: 0 0.5rem;
+		}
 
 .profile .basic .usernamecontainer {
-        height: 2.5rem;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        grid-area: username;
-        /* justify-content: space-between; */
-        padding: 0;
-        gap: 0.5rem;
-        position: relative;
-        
-        color: var(--fg-accent);
-        font-weight: bold;
-    }
+			height: 2.5rem;
+			display: grid;
+			grid-template-columns: auto 1fr;
+			grid-area: username;
+			/* justify-content: space-between; */
+			padding: 0;
+			gap: 0.5rem;
+			position: relative;
+			
+			color: var(--fg-accent);
+			font-weight: bold;
+		}
 
 .profile .basic .usernamecontainer .username {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            -webkit-user-select: all;
-                    user-select: all;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				-webkit-user-select: all;
+				        user-select: all;
 
-            line-height: 2.5rem;
-            padding-left: 0;
-            margin-left: 0.5rem;
-        }
+				line-height: 2.5rem;
+				padding-left: 0;
+				margin-left: 0.5rem;
+			}
 
 .profile .basic .usernamecontainer .role {
-            justify-self: start;
-            align-self: center;
-            line-height: 1.1rem;
-            font-size: 0.9rem;
-            margin-right: 0.2rem;
-            padding: 0.2rem;
-            margin-top: 0.1rem;
-            padding-top: 0.1rem;
-            border: 0.1rem solid var(--gray1);
-            border-radius: var(--br);
-            font-variant: small-caps;
-        }
+				justify-self: start;
+				align-self: center;
+				line-height: 1.1rem;
+				font-size: 0.9rem;
+				margin-right: 0.2rem;
+				padding: 0.2rem;
+				margin-top: 0.1rem;
+				padding-top: 0.1rem;
+				border: 0.1rem solid var(--gray1);
+				border-radius: var(--br);
+				font-variant: small-caps;
+			}
 
 .profile .basic .usernamecontainer .role.admin {
-            background: var(--gray1);
-            color: var(--orange2);
-            border-color: var(--orange2);
-        }
+				background: var(--gray1);
+				color: var(--orange2);
+				border-color: var(--orange2);
+			}
 
 .profile .basic .usernamecontainer .role.moderator {
-            background: var(--gray1);
-            color: var(--blue2);
-            border-color: var(--blue1);
-        }
+				background: var(--gray1);
+				color: var(--blue2);
+				border-color: var(--blue1);
+			}
 
 @media screen and (max-width: 600px) {
-    .profile {
-        gap: 0.1rem;
-    }
+		.profile {
+			gap: 0.1rem;
+		}
 
-    .profile .basic {
-        margin-top: calc(-22vw + 1rem);
-        height: initial;
-        display: flex;
-        flex-direction: column;
-    }
+		.profile .basic {
+			margin-top: calc(-22vw + 1rem);
+			height: initial;
+			display: flex;
+			flex-direction: column;
+		}
 
-        .profile .basic #profile-basic-filler2 {
-            display: none;
-        }
+			.profile .basic #profile-basic-filler2 {
+				display: none;
+			}
 
-        .profile .basic .avatar {
-            align-self: flex-start;
-            margin-left: 1rem;
-            height: 22vw;
-            width: 22vw;
-        }
+			.profile .basic .avatar {
+				align-self: flex-start;
+				margin-left: 1rem;
+				height: 22vw;
+				width: 22vw;
+			}
 
-        .profile .basic .displayname {
-            padding-left: 1rem;
-            font-size: 1.5rem;
-            line-height: 2rem;
-            margin-top: 0.5rem;
-            align-self: stretch;
-        }
+			.profile .basic .displayname {
+				padding-left: 1rem;
+				font-size: 1.5rem;
+				line-height: 2rem;
+				margin-top: 0.5rem;
+				align-self: stretch;
+			}
 
-        .profile .basic .usernamecontainer {
-            padding-left: 1rem;
-        }
+			.profile .basic .usernamecontainer {
+				padding-left: 1rem;
+			}
 
-            .profile .basic .usernamecontainer .username {
-                margin-left: 0;
-            }
-}
+				.profile .basic .usernamecontainer .username {
+					margin-left: 0;
+				}
+	}
 
 .profile .detailed {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 25em;
-}
+		display: flex;
+		flex-direction: column;
+		flex: 1 1 25em;
+	}
 
 .profile .detailed h2 {
-        margin-top: 0;
-    }
+			margin-top: 0;
+		}
 
 .profile .detailed .bio {
-        margin-top: 0;
-        margin-bottom: 0.5rem;
-        margin-left: 1rem;
-        margin-right: 1rem;
-        word-break: break-word;
-    }
+			margin-top: 0;
+			margin-bottom: 0.5rem;
+			margin-left: 1rem;
+			margin-right: 1rem;
+			word-break: break-word;
+		}
 
 .profile .detailed .bio a {
-            color: var(--acc1);
-            text-decoration: underline;
-        }
+				color: var(--acc1);
+				text-decoration: underline;
+			}
 
 .accountstats {
-display: flex;
-flex-wrap: wrap;
-border-radius: 0 0 var(--br) var(--br);
-border-top: 0.1rem solid var(--bg);
+	display: flex;
+	flex-wrap: wrap;
+	border-radius: 0 0 var(--br) var(--br);
+	border-top: 0.1rem solid var(--bg);
 }
 
 .accountstats .entry-group {
-    flex: 1 1 auto;
-    min-width: 50%;
-    display: flex;
-}
+		flex: 1 1 auto;
+		min-width: 50%;
+		display: flex;
+	}
 
 .accountstats .entry {
-    white-space: nowrap;
-    width: 50%;
-    margin: 1.2rem 0.5rem;
-    text-align: center;
-}
+		white-space: nowrap;
+		width: 50%;
+		margin: 1.2rem 0.5rem;
+		text-align: center;
+	}
 
 .nothinghere {
-margin-left: 1rem;
+	margin-left: 1rem;
 }
 
 .backnextlinks {
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
 }
 
 .backnextlinks a {
-    padding: 1rem;
-}
+		padding: 1rem;
+	}
 
 .backnextlinks .next {
-    margin-left: auto;
-}
+		margin-left: auto;
+	}
 
 .toot, .toot:last-child {
-box-shadow: var(--boxshadow);
+	box-shadow: var(--boxshadow);
 }
 
 #recent {
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-between;
-margin: 1rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin: 1rem;
 }
 
 #recent .rss-icon {
-    font-size: 1.45em;
-    -o-object-fit: contain;
-       object-fit: contain;
-    vertical-align: middle;
-    color: var(--orange2);
-    /* can't size a single-color background, so we use a linear-gradient that's effectively white */
-    background: linear-gradient(to right, var(--white1) 100%, transparent 0) no-repeat center center;
-    background-size: 1.2rem 1.4rem;
-}
+		font-size: 1.45em;
+		-o-object-fit: contain;
+		   object-fit: contain;
+		vertical-align: middle;
+		color: var(--orange2);
+		/* can't size a single-color background, so we use a linear-gradient that's effectively white */
+		background: linear-gradient(to right, var(--white1) 100%, transparent 0) no-repeat center center;
+		background-size: 1.2rem 1.4rem;
+	}
 

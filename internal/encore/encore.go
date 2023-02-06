@@ -56,6 +56,8 @@ func initService() (*Service, error) {
 
 	// Initialize caches
 	state.Caches.Init()
+	state.Caches.Start()
+	defer state.Caches.Stop()
 
 	// Open connection to the database
 	dbService, err := bundb.NewBunDBService(ctx, &state)
@@ -145,7 +147,7 @@ func initService() (*Service, error) {
 
 	// attach global no route / 404 handler to the router
 	router_.AttachNoRouteHandler(func(c *gin.Context) {
-		apiutil.ErrorHandler(c, gtserror.NewErrorNotFound(errors.New(http.StatusText(http.StatusNotFound))), processor.InstanceGet)
+		apiutil.ErrorHandler(c, gtserror.NewErrorNotFound(errors.New(http.StatusText(http.StatusNotFound))), processor.InstanceGetV1)
 	})
 
 	// build router modules
