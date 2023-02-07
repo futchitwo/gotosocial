@@ -38,6 +38,8 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
 	"github.com/superseriousbusiness/gotosocial/internal/log"
 	"github.com/superseriousbusiness/gotosocial/internal/transport"
+
+	"encore.dev/rlog"
 )
 
 /*
@@ -182,6 +184,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 		publicKey = requestingLocalAccount.PublicKey
 
 		pkOwnerURI, err = url.Parse(requestingLocalAccount.URI)
+		rlog("local key:", publicKey)
 		if err != nil {
 			errWithCode := gtserror.NewErrorBadRequest(err, fmt.Sprintf("couldn't parse public key owner URL %s", requestingLocalAccount.URI))
 			log.Debug(errWithCode)
@@ -193,6 +196,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 		log.Tracef("proceeding without dereference for cached public key %s", requestingPublicKeyID)
 		publicKey = requestingRemoteAccount.PublicKey
 		pkOwnerURI, err = url.Parse(requestingRemoteAccount.URI)
+		rlog.Info("cached key", "pk", publicKey)
 		if err != nil {
 			errWithCode := gtserror.NewErrorBadRequest(err, fmt.Sprintf("couldn't parse public key owner URL %s", requestingRemoteAccount.URI))
 			log.Debug(errWithCode)
@@ -284,6 +288,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 			return nil, errWithCode
 		}
 		pkOwnerURI = pkOwnerProp.GetIRI()
+		rlog.Info("remote key:", "pk", publicKey)
 	}
 
 	// after all that, public key should be defined
