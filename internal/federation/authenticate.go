@@ -184,7 +184,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 		publicKey = requestingLocalAccount.PublicKey
 
 		pkOwnerURI, err = url.Parse(requestingLocalAccount.URI)
-		rlog("local key:", publicKey)
+		rlog.Info("local key", "pk", publicKey)
 		if err != nil {
 			errWithCode := gtserror.NewErrorBadRequest(err, fmt.Sprintf("couldn't parse public key owner URL %s", requestingLocalAccount.URI))
 			log.Debug(errWithCode)
