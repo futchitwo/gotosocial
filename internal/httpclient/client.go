@@ -31,6 +31,8 @@ import (
 	"codeberg.org/gruf/go-kv"
 	"github.com/cornelk/hashmap"
 	"github.com/superseriousbusiness/gotosocial/internal/log"
+
+	"encore.dev/rlog"
 )
 
 // ErrInvalidRequest is returned if a given HTTP request is invalid and cannot be performed.
@@ -178,6 +180,8 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	default:
 	}
 
+	rlog.Info("client OK!", "ok", ok)
+
 	if !ok {
 		// No spot acquired, log warning
 		log.WithFields(kv.Fields{
@@ -199,17 +203,20 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 
 	// Firstly, ensure this is a valid request
 	if err := ValidateRequest(req); err != nil {
+		rlog.Error("client wrong!", "err", err)
 		return nil, err
 	}
 
 	// Perform the HTTP request
 	rsp, err := c.client.Do(req)
 	if err != nil {
+		rlog.Error("client wrong!", "err", err)
 		return nil, err
 	}
 
 	// Check response body not too large
 	if rsp.ContentLength > c.bmax {
+		rlog.Error("client wrong!", "err", ErrBodyTooLarge)
 		return nil, ErrBodyTooLarge
 	}
 

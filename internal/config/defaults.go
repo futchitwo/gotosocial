@@ -28,7 +28,7 @@ import (
 // Defaults contains a populated Configuration with reasonable defaults. Note that
 // if you use this, you will still need to set Host, and, if desired, ConfigPath.
 var Defaults = Configuration{
-	LogLevel:        "info",
+	LogLevel:        "trace",
 	LogDbQueries:    true,
 	ApplicationName: "gotosocial",
 	LandingPageUser: "",

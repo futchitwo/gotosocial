@@ -27,6 +27,8 @@ import (
 	"github.com/gin-gonic/gin"
 	apiutil "github.com/superseriousbusiness/gotosocial/internal/api/util"
 	"github.com/superseriousbusiness/gotosocial/internal/gtserror"
+
+	"encore.dev/rlog"
 )
 
 // UsersGETHandler should be served at https://example.org/users/:username.
@@ -43,12 +45,14 @@ func (m *Module) UsersGETHandler(c *gin.Context) {
 	requestedUsername := strings.ToLower(c.Param(UsernameKey))
 	if requestedUsername == "" {
 		err := errors.New("no username specified in request")
+		rlog.Error("something went terribly wrong!", "err", err)
 		apiutil.ErrorHandler(c, gtserror.NewErrorBadRequest(err, err.Error()), m.processor.InstanceGetV1)
 		return
 	}
 
 	format, err := apiutil.NegotiateAccept(c, apiutil.HTMLOrActivityPubHeaders...)
 	if err != nil {
+		rlog.Error("something went terribly wrong!", "err", err)
 		apiutil.ErrorHandler(c, gtserror.NewErrorNotAcceptable(err, err.Error()), m.processor.InstanceGetV1)
 		return
 	}
@@ -61,12 +65,14 @@ func (m *Module) UsersGETHandler(c *gin.Context) {
 
 	resp, errWithCode := m.processor.GetFediUser(apiutil.TransferSignatureContext(c), requestedUsername, c.Request.URL)
 	if errWithCode != nil {
+		rlog.Error("something went terribly wrong!", "err", errWithCode)
 		apiutil.ErrorHandler(c, errWithCode, m.processor.InstanceGetV1)
 		return
 	}
 
 	b, err := json.Marshal(resp)
 	if err != nil {
+		rlog.Error("something went terribly wrong!", "err", err)
 		apiutil.ErrorHandler(c, gtserror.NewErrorInternalError(err), m.processor.InstanceGetV1)
 		return
 	}
