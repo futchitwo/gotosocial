@@ -220,6 +220,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 		}
 
 		log.Tracef("proceeding with dereference for uncached public key %s", requestingPublicKeyID)
+		rlog.Info("proceeding with dereference for uncached public key", "pkId", requestingPublicKeyID, "userName", requestedUsername)
 		trans, err := f.transportController.NewTransportForUsername(transport.WithFastfail(ctx), requestedUsername)
 		if err != nil {
 			errWithCode := gtserror.NewErrorInternalError(fmt.Errorf("error creating transport for %s: %s", requestedUsername, err))
@@ -288,7 +289,10 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 			return nil, errWithCode
 		}
 		pkOwnerURI = pkOwnerProp.GetIRI()
-		rlog.Info("remote key:", "pk", publicKey)
+		rlog.Info(
+			"remote key",
+			"pk", publicKey,
+		)
 	}
 
 	// after all that, public key should be defined

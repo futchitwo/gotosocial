@@ -12,6 +12,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-fed/httpsig"
+
+	"encore.dev/rlog"
 )
 
 var (
@@ -47,6 +49,7 @@ func SignatureCheck(isURIBlocked func(context.Context, *url.URL) (bool, db.Error
 			}
 			return
 		}
+		rlog.Info("verifier", "v", verifier)
 
 		// The request was signed!
 		// The key ID should be given in the signature so that we know where to fetch it from the remote server.
@@ -82,8 +85,10 @@ func SignatureCheck(isURIBlocked func(context.Context, *url.URL) (bool, db.Error
 		var signature string
 		if s := c.GetHeader(signatureHeader); s != "" {
 			signature = s
+			rlog.Info("signature", "signatureHeader", signature)
 		} else {
 			signature = c.GetHeader(authorizationHeader)
+			rlog.Info("signature", "authorizationHeader", signature)
 		}
 
 		// set the verifier and signature on the context here to save some work further down the line
