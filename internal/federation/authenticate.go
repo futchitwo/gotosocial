@@ -321,6 +321,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 			log.Tracef("authentication for %s PASSED with algorithm %s", pkOwnerURI, algo)
 			return pkOwnerURI, nil
 		}
+		rlog.Error("for algo", "algo", algo, "err", err)
 		log.Tracef("authentication for %s NOT PASSED with algorithm %s: %s", pkOwnerURI, algo, err)
 	}
 
