@@ -256,6 +256,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 			log.Debug(errWithCode)
 			return nil, errWithCode
 		}
+		rlog.Info("reqpubkey", "requestingPublicKey",requestingPublicKey)
 
 		// we should be able to get the actual key embedded in the vocab.W3IDSecurityV1PublicKey
 		pkPemProp := requestingPublicKey.GetW3IDSecurityV1PublicKeyPem()
@@ -264,6 +265,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 			log.Debug(errWithCode)
 			return nil, errWithCode
 		}
+		rlog.Info("pkpemprop", "pkpemprop", pkPemProp)
 
 		// and decode the PEM so that we can parse it as a golang public key
 		pubKeyPem := pkPemProp.Get()
@@ -273,6 +275,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 			log.Debug(errWithCode)
 			return nil, errWithCode
 		}
+		rlog.Info("decode", "pkpem", pubKeyPem, "block", block)
 
 		publicKey, err = x509.ParsePKIXPublicKey(block.Bytes)
 		if err != nil {
@@ -292,6 +295,8 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 		rlog.Info(
 			"remote key",
 			"pk", publicKey,
+			"pkOwnerProp", pkOwnerProp,
+			"pkOwnerURI", pkOwnerURI,
 		)
 	}
 
