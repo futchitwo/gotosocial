@@ -20,6 +20,7 @@ package federation
 
 import (
 	"context"
+	"crypto/rsa"
 	"crypto/x509"
 	"encoding/json"
 	"encoding/pem"
@@ -313,6 +314,14 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 		httpsig.RSA_SHA512,
 		httpsig.ED25519,
 	}
+
+	pub, ok := publicKey.(*rsa.PublicKey)
+	rlog(
+		"sign",
+		"ok", ok,
+		"pubNSign", pub.N.Sign(),
+		"pubN", pub.N,
+	)
 
 	for _, algo := range algos {
 		log.Tracef("trying algo: %s", algo)
