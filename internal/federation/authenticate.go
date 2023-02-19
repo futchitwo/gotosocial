@@ -316,7 +316,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 	}
 
 	pub, ok := publicKey.(*rsa.PublicKey)
-	rlog(
+	rlog.Info(
 		"sign",
 		"ok", ok,
 		"pubNSign", pub.N.Sign(),
