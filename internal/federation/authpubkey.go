@@ -9,9 +9,11 @@
 
 package federation
 
+/*
 import(
 	"crypto/x509/pkix"
 	"encoding/asn1"
+	"errors"
 	"math/big"
 )
 
@@ -39,3 +41,4 @@ func ParsePKIXPublicKey(derBytes []byte) (pub any, err error) {
 	}
 	return parsePublicKey(&pki)
 }
+*/
