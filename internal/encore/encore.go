@@ -218,7 +218,8 @@ func initService() (*Service, error) {
 
 //encore:api public raw path=/*gtsPath
 func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) {
-	req.Header["Host"] = []string{encore.Meta().APIBaseURL.Hostname()}
+	req.Host = encore.Meta().APIBaseURL.Hostname()
+	req.Header["Host"] = []string{req.Host}
 	s.engine.ServeHTTP(w, req)
 }
 
