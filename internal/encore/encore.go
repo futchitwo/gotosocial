@@ -218,7 +218,8 @@ func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) {
 		"Host header", req.Header["Host"],
 		"host header", req.Header["host"],
 	)
-	req.Header["Host"] = []string{encore.Meta().APIBaseURL.Hostname()}
+	req.Host = encore.Meta().APIBaseURL.Hostname()
+	req.Header["Host"] = []string{req.Host}
 	s.engine.ServeHTTP(w, req)
 }
 
