@@ -133,9 +133,10 @@ type Configuration struct {
 	SyslogProtocol string `name:"syslog-protocol" usage:"Protocol to use when directing logs to syslog. Leave empty to connect to local syslog."`
 	SyslogAddress  string `name:"syslog-address" usage:"Address:port to send syslog logs to. Leave empty to connect to local syslog."`
 
-	AdvancedCookiesSamesite      string `name:"advanced-cookies-samesite" usage:"'strict' or 'lax', see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite"`
-	AdvancedRateLimitRequests    int    `name:"advanced-rate-limit-requests" usage:"Amount of HTTP requests to permit within a 5 minute window. 0 or less turns rate limiting off."`
-	AdvancedThrottlingMultiplier int    `name:"advanced-throttling-multiplier" usage:"Multiplier to use per cpu for http request throttling. 0 or less turns throttling off."`
+	AdvancedCookiesSamesite      string        `name:"advanced-cookies-samesite" usage:"'strict' or 'lax', see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite"`
+	AdvancedRateLimitRequests    int           `name:"advanced-rate-limit-requests" usage:"Amount of HTTP requests to permit within a 5 minute window. 0 or less turns rate limiting off."`
+	AdvancedThrottlingMultiplier int           `name:"advanced-throttling-multiplier" usage:"Multiplier to use per cpu for http request throttling. 0 or less turns throttling off."`
+	AdvancedThrottlingRetryAfter time.Duration `name:"advanced-throttling-retry-after" usage:"Retry-After duration response to send for throttled requests."`
 
 	// Cache configuration vars.
 	Cache CacheConfiguration `name:"cache"`
@@ -146,6 +147,8 @@ type Configuration struct {
 	AdminAccountPassword  string `name:"password" usage:"the password to set for this account"`
 	AdminTransPath        string `name:"path" usage:"the path of the file to import from/export to"`
 	AdminMediaPruneDryRun bool   `name:"dry-run" usage:"perform a dry run and only log number of items eligible for pruning"`
+
+	RequestIDHeader string `name:"request-id-header" usage:"Header to extract the Request ID from. Eg.,'X-Request-Id'"`
 }
 
 type CacheConfiguration struct {

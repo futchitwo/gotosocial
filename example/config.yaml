@@ -458,6 +458,8 @@ storage-local-base-path: "/gotosocial/storage"
 # String. API endpoint of the S3 compatible service.
 # Only required when running with the s3 storage backend.
 # Examples: ["minio:9000", "s3.nl-ams.scw.cloud", "s3.us-west-002.backblazeb2.com"]
+# GoToSocial uses "DNS-style" when accessing buckets. 
+# If you are using Scaleways object storage, please remove the "bucket name" from the endpoint address
 # Default: ""
 storage-s3-endpoint: ""
 
@@ -690,6 +692,15 @@ syslog-protocol: "udp"
 # Default: "localhost:514"
 syslog-address: "localhost:514"
 
+##################################
+##### OBSERVABILITY SETTINGS #####
+##################################
+
+# String. Header name to use to extract a request or trace ID from. Typically set by a
+# loadbalancer or proxy.
+# Default: "X-Request-Id"
+request-id-header: "X-Request-Id"
+
 #############################
 ##### ADVANCED SETTINGS #####
 #############################
@@ -760,3 +771,10 @@ advanced-rate-limit-requests: 300
 # Examples: [8, 4, 9, 0]
 # Default: 8
 advanced-throttling-multiplier: 8
+
+# Duration. Time period to use as the "retry-after" header value in response to throttled requests.
+# Minimum resolution is 1 second.
+#
+# Examples: [30s, 10s, 5s, 1m]
+# Default: 30s
+advanced-throttling-retry-after: "30s"

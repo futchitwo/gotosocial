@@ -4,14 +4,16 @@ go 1.19
 
 require (
 	codeberg.org/gruf/go-bytesize v1.0.2
-	codeberg.org/gruf/go-byteutil v1.0.2
-	codeberg.org/gruf/go-cache/v3 v3.2.2
-	codeberg.org/gruf/go-debug v1.2.0
+	codeberg.org/gruf/go-byteutil v1.1.2
+	codeberg.org/gruf/go-cache/v3 v3.2.3
+	codeberg.org/gruf/go-debug v1.3.0
 	codeberg.org/gruf/go-errors/v2 v2.1.1
-	codeberg.org/gruf/go-kv v1.5.2
+	codeberg.org/gruf/go-fastcopy v1.1.2
+	codeberg.org/gruf/go-kv v1.6.0
 	codeberg.org/gruf/go-logger/v2 v2.2.1
 	codeberg.org/gruf/go-mutexes v1.1.5
-	codeberg.org/gruf/go-runners v1.5.1
+	codeberg.org/gruf/go-runners v1.6.0
+	codeberg.org/gruf/go-sched v1.2.3
 	codeberg.org/gruf/go-store/v2 v2.2.1
 	github.com/KimMachineGun/automemlimit v0.2.4
 	github.com/abema/go-mp4 v0.10.0
@@ -33,10 +35,9 @@ require (
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/microcosm-cc/bluemonday v1.0.22
 	github.com/miekg/dns v1.1.50
-	github.com/minio/minio-go/v7 v7.0.47
+	github.com/minio/minio-go/v7 v7.0.48
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/oklog/ulid v1.3.1
-	github.com/robfig/cron/v3 v3.0.1
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.1
@@ -51,15 +52,15 @@ require (
 	github.com/wagslane/go-password-validator v0.3.0
 	github.com/yuin/goldmark v1.5.4
 	go.uber.org/automaxprocs v1.5.1
-	golang.org/x/crypto v0.5.0
+	golang.org/x/crypto v0.6.0
 	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d
-	golang.org/x/image v0.3.0
-	golang.org/x/net v0.5.0
+	golang.org/x/image v0.5.0
+	golang.org/x/net v0.7.0
 	golang.org/x/oauth2 v0.4.0
-	golang.org/x/text v0.6.0
+	golang.org/x/text v0.7.0
 	gopkg.in/mcuadros/go-syslog.v2 v2.3.0
 	gopkg.in/yaml.v3 v3.0.1
-	modernc.org/sqlite v1.20.3
+	modernc.org/sqlite v1.20.4
 	mvdan.cc/xurls/v2 v2.4.0
 )
 
@@ -67,17 +68,15 @@ replace github.com/stretchr/testify => github.com/futchitwo/testify v0.0.0-20221
 
 require (
 	codeberg.org/gruf/go-atomics v1.1.0 // indirect
-	codeberg.org/gruf/go-bitutil v1.0.1 // indirect
+	codeberg.org/gruf/go-bitutil v1.1.0 // indirect
 	codeberg.org/gruf/go-bytes v1.0.2 // indirect
-	codeberg.org/gruf/go-fastcopy v1.1.2 // indirect
 	codeberg.org/gruf/go-fastpath v1.0.3 // indirect
 	codeberg.org/gruf/go-fastpath/v2 v2.0.0 // indirect
 	codeberg.org/gruf/go-hashenc v1.0.2 // indirect
 	codeberg.org/gruf/go-iotools v0.0.0-20221224124424-3386841cb225 // indirect
-	codeberg.org/gruf/go-mangler v1.2.2 // indirect
+	codeberg.org/gruf/go-mangler v1.2.3 // indirect
 	codeberg.org/gruf/go-maps v1.0.3 // indirect
 	codeberg.org/gruf/go-pools v1.1.0 // indirect
-	codeberg.org/gruf/go-sched v1.2.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/cilium/ebpf v0.4.0 // indirect
 	github.com/containerd/cgroups v1.0.4 // indirect
@@ -148,7 +147,7 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220907135952-02c991387e35 // indirect
-	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect

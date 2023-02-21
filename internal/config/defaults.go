@@ -161,4 +161,8 @@ var Defaults = Configuration{
 			UserSweepFreq: time.Second * 10,
 		},
 	},
+
+	AdminMediaPruneDryRun: true,
+
+	RequestIDHeader: "X-Request-Id",
 }

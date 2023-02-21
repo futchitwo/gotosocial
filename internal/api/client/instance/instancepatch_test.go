@@ -135,6 +135,7 @@ func (suite *InstancePatchTestSuite) TestInstancePatch1() {
     "acct": "admin",
     "display_name": "",
     "locked": false,
+    "discoverable": true,
     "bot": false,
     "created_at": "2022-05-17T13:10:59.000Z",
     "note": "",
@@ -150,7 +151,9 @@ func (suite *InstancePatchTestSuite) TestInstancePatch1() {
     "emojis": [],
     "fields": [],
     "enable_rss": true,
-    "role": "admin"
+    "role": {
+      "name": "admin"
+    }
   },
   "max_toot_chars": 5000
 }`, dst.String())
@@ -230,6 +233,7 @@ func (suite *InstancePatchTestSuite) TestInstancePatch2() {
     "acct": "admin",
     "display_name": "",
     "locked": false,
+    "discoverable": true,
     "bot": false,
     "created_at": "2022-05-17T13:10:59.000Z",
     "note": "",
@@ -245,7 +249,9 @@ func (suite *InstancePatchTestSuite) TestInstancePatch2() {
     "emojis": [],
     "fields": [],
     "enable_rss": true,
-    "role": "admin"
+    "role": {
+      "name": "admin"
+    }
   },
   "max_toot_chars": 5000
 }`, dst.String())
@@ -325,6 +331,7 @@ func (suite *InstancePatchTestSuite) TestInstancePatch3() {
     "acct": "admin",
     "display_name": "",
     "locked": false,
+    "discoverable": true,
     "bot": false,
     "created_at": "2022-05-17T13:10:59.000Z",
     "note": "",
@@ -340,7 +347,9 @@ func (suite *InstancePatchTestSuite) TestInstancePatch3() {
     "emojis": [],
     "fields": [],
     "enable_rss": true,
-    "role": "admin"
+    "role": {
+      "name": "admin"
+    }
   },
   "max_toot_chars": 5000
 }`, dst.String())
@@ -471,6 +480,7 @@ func (suite *InstancePatchTestSuite) TestInstancePatch6() {
     "acct": "admin",
     "display_name": "",
     "locked": false,
+    "discoverable": true,
     "bot": false,
     "created_at": "2022-05-17T13:10:59.000Z",
     "note": "",
@@ -486,7 +496,9 @@ func (suite *InstancePatchTestSuite) TestInstancePatch6() {
     "emojis": [],
     "fields": [],
     "enable_rss": true,
-    "role": "admin"
+    "role": {
+      "name": "admin"
+    }
   },
   "max_toot_chars": 5000
 }`, dst.String())
@@ -589,6 +601,7 @@ func (suite *InstancePatchTestSuite) TestInstancePatch8() {
     "acct": "admin",
     "display_name": "",
     "locked": false,
+    "discoverable": true,
     "bot": false,
     "created_at": "2022-05-17T13:10:59.000Z",
     "note": "",
@@ -604,7 +617,9 @@ func (suite *InstancePatchTestSuite) TestInstancePatch8() {
     "emojis": [],
     "fields": [],
     "enable_rss": true,
-    "role": "admin"
+    "role": {
+      "name": "admin"
+    }
   },
   "max_toot_chars": 5000
 }`, dst.String())
@@ -719,6 +734,7 @@ func (suite *InstancePatchTestSuite) TestInstancePatch9() {
     "acct": "admin",
     "display_name": "",
     "locked": false,
+    "discoverable": true,
     "bot": false,
     "created_at": "2022-05-17T13:10:59.000Z",
     "note": "",
@@ -734,7 +750,9 @@ func (suite *InstancePatchTestSuite) TestInstancePatch9() {
     "emojis": [],
     "fields": [],
     "enable_rss": true,
-    "role": "admin"
+    "role": {
+      "name": "admin"
+    }
   },
   "max_toot_chars": 5000
 }`, dst.String())

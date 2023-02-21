@@ -47,6 +47,7 @@ func (suite *InternalToFrontendTestSuite) TestAccountToFrontend() {
   "acct": "the_mighty_zork",
   "display_name": "original zork (he/they)",
   "locked": false,
+  "discoverable": true,
   "bot": false,
   "created_at": "2022-05-20T11:09:18.000Z",
   "note": "\u003cp\u003ehey yo this is my profile!\u003c/p\u003e",
@@ -62,7 +63,9 @@ func (suite *InternalToFrontendTestSuite) TestAccountToFrontend() {
   "emojis": [],
   "fields": [],
   "enable_rss": true,
-  "role": "user"
+  "role": {
+    "name": "user"
+  }
 }`, string(b))
 }
 
@@ -84,6 +87,7 @@ func (suite *InternalToFrontendTestSuite) TestAccountToFrontendWithEmojiStruct()
   "acct": "the_mighty_zork",
   "display_name": "original zork (he/they)",
   "locked": false,
+  "discoverable": true,
   "bot": false,
   "created_at": "2022-05-20T11:09:18.000Z",
   "note": "\u003cp\u003ehey yo this is my profile!\u003c/p\u003e",
@@ -107,7 +111,9 @@ func (suite *InternalToFrontendTestSuite) TestAccountToFrontendWithEmojiStruct()
   ],
   "fields": [],
   "enable_rss": true,
-  "role": "user"
+  "role": {
+    "name": "user"
+  }
 }`, string(b))
 }
 
@@ -129,6 +135,7 @@ func (suite *InternalToFrontendTestSuite) TestAccountToFrontendWithEmojiIDs() {
   "acct": "the_mighty_zork",
   "display_name": "original zork (he/they)",
   "locked": false,
+  "discoverable": true,
   "bot": false,
   "created_at": "2022-05-20T11:09:18.000Z",
   "note": "\u003cp\u003ehey yo this is my profile!\u003c/p\u003e",
@@ -152,7 +159,9 @@ func (suite *InternalToFrontendTestSuite) TestAccountToFrontendWithEmojiIDs() {
   ],
   "fields": [],
   "enable_rss": true,
-  "role": "user"
+  "role": {
+    "name": "user"
+  }
 }`, string(b))
 }
 
@@ -170,6 +179,7 @@ func (suite *InternalToFrontendTestSuite) TestAccountToFrontendSensitive() {
   "acct": "the_mighty_zork",
   "display_name": "original zork (he/they)",
   "locked": false,
+  "discoverable": true,
   "bot": false,
   "created_at": "2022-05-20T11:09:18.000Z",
   "note": "\u003cp\u003ehey yo this is my profile!\u003c/p\u003e",
@@ -194,7 +204,9 @@ func (suite *InternalToFrontendTestSuite) TestAccountToFrontendSensitive() {
     "follow_requests_count": 0
   },
   "enable_rss": true,
-  "role": "user"
+  "role": {
+    "name": "user"
+  }
 }`, string(b))
 }
 
@@ -238,6 +250,7 @@ func (suite *InternalToFrontendTestSuite) TestStatusToFrontend() {
     "acct": "admin",
     "display_name": "",
     "locked": false,
+    "discoverable": true,
     "bot": false,
     "created_at": "2022-05-17T13:10:59.000Z",
     "note": "",
@@ -253,7 +266,9 @@ func (suite *InternalToFrontendTestSuite) TestStatusToFrontend() {
     "emojis": [],
     "fields": [],
     "enable_rss": true,
-    "role": "admin"
+    "role": {
+      "name": "admin"
+    }
   },
   "media_attachments": [
     {
@@ -350,6 +365,7 @@ func (suite *InternalToFrontendTestSuite) TestStatusToFrontendUnknownLanguage() 
     "acct": "admin",
     "display_name": "",
     "locked": false,
+    "discoverable": true,
     "bot": false,
     "created_at": "2022-05-17T13:10:59.000Z",
     "note": "",
@@ -365,7 +381,9 @@ func (suite *InternalToFrontendTestSuite) TestStatusToFrontendUnknownLanguage() 
     "emojis": [],
     "fields": [],
     "enable_rss": true,
-    "role": "admin"
+    "role": {
+      "name": "admin"
+    }
   },
   "media_attachments": [
     {
@@ -531,6 +549,7 @@ func (suite *InternalToFrontendTestSuite) TestInstanceV1ToFrontend() {
     "acct": "admin",
     "display_name": "",
     "locked": false,
+    "discoverable": true,
     "bot": false,
     "created_at": "2022-05-17T13:10:59.000Z",
     "note": "",
@@ -546,7 +565,9 @@ func (suite *InternalToFrontendTestSuite) TestInstanceV1ToFrontend() {
     "emojis": [],
     "fields": [],
     "enable_rss": true,
-    "role": "admin"
+    "role": {
+      "name": "admin"
+    }
   },
   "max_toot_chars": 5000
 }`, string(b))
@@ -637,6 +658,7 @@ func (suite *InternalToFrontendTestSuite) TestInstanceV2ToFrontend() {
       "acct": "admin",
       "display_name": "",
       "locked": false,
+      "discoverable": true,
       "bot": false,
       "created_at": "2022-05-17T13:10:59.000Z",
       "note": "",
@@ -652,7 +674,9 @@ func (suite *InternalToFrontendTestSuite) TestInstanceV2ToFrontend() {
       "emojis": [],
       "fields": [],
       "enable_rss": true,
-      "role": "admin"
+      "role": {
+        "name": "admin"
+      }
     }
   },
   "rules": []
@@ -745,6 +769,7 @@ func (suite *InternalToFrontendTestSuite) TestReportToFrontend1() {
     "acct": "foss_satan@fossbros-anonymous.io",
     "display_name": "big gerald",
     "locked": false,
+    "discoverable": true,
     "bot": false,
     "created_at": "2021-09-26T10:52:36.000Z",
     "note": "i post about like, i dunno, stuff, or whatever!!!!",
@@ -787,6 +812,7 @@ func (suite *InternalToFrontendTestSuite) TestReportToFrontend2() {
     "acct": "1happyturtle",
     "display_name": "happy little turtle :3",
     "locked": true,
+    "discoverable": false,
     "bot": false,
     "created_at": "2022-06-04T13:12:00.000Z",
     "note": "\u003cp\u003ei post about things that concern me\u003c/p\u003e",
@@ -801,7 +827,9 @@ func (suite *InternalToFrontendTestSuite) TestReportToFrontend2() {
     "last_status_at": "2021-10-20T10:40:37.000Z",
     "emojis": [],
     "fields": [],
-    "role": "user"
+    "role": {
+      "name": "user"
+    }
   }
 }`, string(b))
 }
@@ -833,7 +861,9 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
     "ips": [],
     "locale": "",
     "invite_request": null,
-    "role": "user",
+    "role": {
+      "name": "user"
+    },
     "confirmed": false,
     "approved": false,
     "disabled": false,
@@ -845,6 +875,7 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
       "acct": "foss_satan@fossbros-anonymous.io",
       "display_name": "big gerald",
       "locked": false,
+      "discoverable": true,
       "bot": false,
       "created_at": "2021-09-26T10:52:36.000Z",
       "note": "i post about like, i dunno, stuff, or whatever!!!!",
@@ -871,7 +902,9 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
     "ips": [],
     "locale": "en",
     "invite_request": "",
-    "role": "user",
+    "role": {
+      "name": "user"
+    },
     "confirmed": true,
     "approved": true,
     "disabled": false,
@@ -883,6 +916,7 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
       "acct": "1happyturtle",
       "display_name": "happy little turtle :3",
       "locked": true,
+      "discoverable": false,
       "bot": false,
       "created_at": "2022-06-04T13:12:00.000Z",
       "note": "\u003cp\u003ei post about things that concern me\u003c/p\u003e",
@@ -897,7 +931,9 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
       "last_status_at": "2021-10-20T10:40:37.000Z",
       "emojis": [],
       "fields": [],
-      "role": "user"
+      "role": {
+        "name": "user"
+      }
     },
     "created_by_application_id": "01F8MGY43H3N2C8EWPR2FPYEXG"
   },
@@ -911,7 +947,9 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
     "ips": [],
     "locale": "en",
     "invite_request": "",
-    "role": "admin",
+    "role": {
+      "name": "admin"
+    },
     "confirmed": true,
     "approved": true,
     "disabled": false,
@@ -923,6 +961,7 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
       "acct": "admin",
       "display_name": "",
       "locked": false,
+      "discoverable": true,
       "bot": false,
       "created_at": "2022-05-17T13:10:59.000Z",
       "note": "",
@@ -938,7 +977,9 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
       "emojis": [],
       "fields": [],
       "enable_rss": true,
-      "role": "admin"
+      "role": {
+        "name": "admin"
+      }
     },
     "created_by_application_id": "01F8MGXQRHYF5QPMTMXP78QC2F"
   },
@@ -952,7 +993,9 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
     "ips": [],
     "locale": "en",
     "invite_request": "",
-    "role": "admin",
+    "role": {
+      "name": "admin"
+    },
     "confirmed": true,
     "approved": true,
     "disabled": false,
@@ -964,6 +1007,7 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
       "acct": "admin",
       "display_name": "",
       "locked": false,
+      "discoverable": true,
       "bot": false,
       "created_at": "2022-05-17T13:10:59.000Z",
       "note": "",
@@ -979,7 +1023,9 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend1() {
       "emojis": [],
       "fields": [],
       "enable_rss": true,
-      "role": "admin"
+      "role": {
+        "name": "admin"
+      }
     },
     "created_by_application_id": "01F8MGXQRHYF5QPMTMXP78QC2F"
   },
@@ -1016,7 +1062,9 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend2() {
     "ips": [],
     "locale": "en",
     "invite_request": "",
-    "role": "user",
+    "role": {
+      "name": "user"
+    },
     "confirmed": true,
     "approved": true,
     "disabled": false,
@@ -1028,6 +1076,7 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend2() {
       "acct": "1happyturtle",
       "display_name": "happy little turtle :3",
       "locked": true,
+      "discoverable": false,
       "bot": false,
       "created_at": "2022-06-04T13:12:00.000Z",
       "note": "\u003cp\u003ei post about things that concern me\u003c/p\u003e",
@@ -1042,7 +1091,9 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend2() {
       "last_status_at": "2021-10-20T10:40:37.000Z",
       "emojis": [],
       "fields": [],
-      "role": "user"
+      "role": {
+        "name": "user"
+      }
     },
     "created_by_application_id": "01F8MGY43H3N2C8EWPR2FPYEXG"
   },
@@ -1056,7 +1107,9 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend2() {
     "ips": [],
     "locale": "",
     "invite_request": null,
-    "role": "user",
+    "role": {
+      "name": "user"
+    },
     "confirmed": false,
     "approved": false,
     "disabled": false,
@@ -1068,6 +1121,7 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend2() {
       "acct": "foss_satan@fossbros-anonymous.io",
       "display_name": "big gerald",
       "locked": false,
+      "discoverable": true,
       "bot": false,
       "created_at": "2021-09-26T10:52:36.000Z",
       "note": "i post about like, i dunno, stuff, or whatever!!!!",
@@ -1114,6 +1168,7 @@ func (suite *InternalToFrontendTestSuite) TestAdminReportToFrontend2() {
         "acct": "foss_satan@fossbros-anonymous.io",
         "display_name": "big gerald",
         "locked": false,
+        "discoverable": true,
         "bot": false,
         "created_at": "2021-09-26T10:52:36.000Z",
         "note": "i post about like, i dunno, stuff, or whatever!!!!",

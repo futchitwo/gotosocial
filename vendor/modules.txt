@@ -1,8 +1,8 @@
 # codeberg.org/gruf/go-atomics v1.1.0
 ## explicit; go 1.16
 codeberg.org/gruf/go-atomics
-# codeberg.org/gruf/go-bitutil v1.0.1
-## explicit; go 1.16
+# codeberg.org/gruf/go-bitutil v1.1.0
+## explicit; go 1.19
 codeberg.org/gruf/go-bitutil
 # codeberg.org/gruf/go-bytes v1.0.2
 ## explicit; go 1.14
@@ -10,15 +10,15 @@ codeberg.org/gruf/go-bytes
 # codeberg.org/gruf/go-bytesize v1.0.2
 ## explicit; go 1.17
 codeberg.org/gruf/go-bytesize
-# codeberg.org/gruf/go-byteutil v1.0.2
+# codeberg.org/gruf/go-byteutil v1.1.2
 ## explicit; go 1.16
 codeberg.org/gruf/go-byteutil
-# codeberg.org/gruf/go-cache/v3 v3.2.2
+# codeberg.org/gruf/go-cache/v3 v3.2.3
 ## explicit; go 1.19
 codeberg.org/gruf/go-cache/v3
 codeberg.org/gruf/go-cache/v3/result
 codeberg.org/gruf/go-cache/v3/ttl
-# codeberg.org/gruf/go-debug v1.2.0
+# codeberg.org/gruf/go-debug v1.3.0
 ## explicit; go 1.16
 codeberg.org/gruf/go-debug
 # codeberg.org/gruf/go-errors/v2 v2.1.1
@@ -39,14 +39,14 @@ codeberg.org/gruf/go-hashenc
 # codeberg.org/gruf/go-iotools v0.0.0-20221224124424-3386841cb225
 ## explicit; go 1.19
 codeberg.org/gruf/go-iotools
-# codeberg.org/gruf/go-kv v1.5.2
+# codeberg.org/gruf/go-kv v1.6.0
 ## explicit; go 1.19
 codeberg.org/gruf/go-kv
 codeberg.org/gruf/go-kv/format
 # codeberg.org/gruf/go-logger/v2 v2.2.1
 ## explicit; go 1.19
 codeberg.org/gruf/go-logger/v2/level
-# codeberg.org/gruf/go-mangler v1.2.2
+# codeberg.org/gruf/go-mangler v1.2.3
 ## explicit; go 1.19
 codeberg.org/gruf/go-mangler
 # codeberg.org/gruf/go-maps v1.0.3
@@ -58,10 +58,10 @@ codeberg.org/gruf/go-mutexes
 # codeberg.org/gruf/go-pools v1.1.0
 ## explicit; go 1.16
 codeberg.org/gruf/go-pools
-# codeberg.org/gruf/go-runners v1.5.1
-## explicit; go 1.14
+# codeberg.org/gruf/go-runners v1.6.0
+## explicit; go 1.19
 codeberg.org/gruf/go-runners
-# codeberg.org/gruf/go-sched v1.2.0
+# codeberg.org/gruf/go-sched v1.2.3
 ## explicit; go 1.19
 codeberg.org/gruf/go-sched
 # codeberg.org/gruf/go-store/v2 v2.2.1
@@ -329,7 +329,7 @@ github.com/miekg/dns
 # github.com/minio/md5-simd v1.1.2
 ## explicit; go 1.14
 github.com/minio/md5-simd
-# github.com/minio/minio-go/v7 v7.0.47
+# github.com/minio/minio-go/v7 v7.0.48
 ## explicit; go 1.17
 github.com/minio/minio-go/v7
 github.com/minio/minio-go/v7/pkg/credentials
@@ -379,9 +379,6 @@ github.com/quasoft/memstore
 # github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0
 ## explicit; go 1.12
 github.com/remyoudompheng/bigfft
-# github.com/robfig/cron/v3 v3.0.1
-## explicit; go 1.12
-github.com/robfig/cron/v3
 # github.com/rs/xid v1.4.0
 ## explicit; go 1.12
 github.com/rs/xid
@@ -692,7 +689,7 @@ github.com/yuin/goldmark/util
 go.uber.org/automaxprocs/internal/cgroups
 go.uber.org/automaxprocs/internal/runtime
 go.uber.org/automaxprocs/maxprocs
-# golang.org/x/crypto v0.5.0
+# golang.org/x/crypto v0.6.0
 ## explicit; go 1.17
 golang.org/x/crypto/acme
 golang.org/x/crypto/acme/autocert
@@ -716,7 +713,7 @@ golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
 ## explicit; go 1.18
 golang.org/x/exp/constraints
 golang.org/x/exp/slices
-# golang.org/x/image v0.3.0
+# golang.org/x/image v0.5.0
 ## explicit; go 1.12
 golang.org/x/image/bmp
 golang.org/x/image/ccitt
@@ -729,7 +726,7 @@ golang.org/x/image/webp
 # golang.org/x/mod v0.6.0-dev.0.20220907135952-02c991387e35
 ## explicit; go 1.17
 golang.org/x/mod/semver
-# golang.org/x/net v0.5.0
+# golang.org/x/net v0.7.0
 ## explicit; go 1.17
 golang.org/x/net/bpf
 golang.org/x/net/context
@@ -750,14 +747,14 @@ golang.org/x/net/publicsuffix
 ## explicit; go 1.17
 golang.org/x/oauth2
 golang.org/x/oauth2/internal
-# golang.org/x/sys v0.4.0
+# golang.org/x/sys v0.5.0
 ## explicit; go 1.17
 golang.org/x/sys/cpu
 golang.org/x/sys/execabs
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.6.0
+# golang.org/x/text v0.7.0
 ## explicit; go 1.17
 golang.org/x/text/cases
 golang.org/x/text/internal
@@ -887,7 +884,7 @@ modernc.org/memory
 # modernc.org/opt v0.1.3
 ## explicit; go 1.13
 modernc.org/opt
-# modernc.org/sqlite v1.20.3
+# modernc.org/sqlite v1.20.4
 ## explicit; go 1.17
 modernc.org/sqlite
 modernc.org/sqlite/lib
