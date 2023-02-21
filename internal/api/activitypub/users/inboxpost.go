@@ -25,6 +25,8 @@ import (
 	"github.com/gin-gonic/gin"
 	apiutil "github.com/superseriousbusiness/gotosocial/internal/api/util"
 	"github.com/superseriousbusiness/gotosocial/internal/gtserror" //nolint:typecheck
+
+	"encore.dev/rlog"
 )
 
 // InboxPOSTHandler deals with incoming POST requests to an actor's inbox.
@@ -34,18 +36,22 @@ func (m *Module) InboxPOSTHandler(c *gin.Context) {
 	requestedUsername := strings.ToLower(c.Param(UsernameKey))
 	if requestedUsername == "" {
 		err := errors.New("no username specified in request")
+		rlog.Error("no username specified in request", "usernameKey", c.Param(UsernameKey))
 		apiutil.ErrorHandler(c, gtserror.NewErrorBadRequest(err, err.Error()), m.processor.InstanceGetV1)
 		return
 	}
 
 	if posted, err := m.processor.InboxPost(apiutil.TransferSignatureContext(c), c.Writer, c.Request); err != nil {
 		if withCode, ok := err.(gtserror.WithCode); ok {
+			rlog.Error("api/inboxpost A", "err", err, "withCode", withCode)
 			apiutil.ErrorHandler(c, withCode, m.processor.InstanceGetV1)
 		} else {
+			rlog.Error("api/inboxpost B", "err", err)
 			apiutil.ErrorHandler(c, gtserror.NewErrorBadRequest(err, err.Error()), m.processor.InstanceGetV1)
 		}
 	} else if !posted {
 		err := errors.New("unable to process request")
+		rlog.Error("api/inboxpost C", "err", err, "posted", posted)
 		apiutil.ErrorHandler(c, gtserror.NewErrorBadRequest(err, err.Error()), m.processor.InstanceGetV1)
 	}
 }
