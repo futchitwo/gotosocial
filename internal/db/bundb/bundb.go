@@ -357,7 +357,7 @@ func encoreConn(ctx context.Context) (*DBConn, error) {
 		return nil, fmt.Errorf("encore DB ping: %s", err)
 	}
 
-	log.Info("connected to POSTGRES database")
+	log.Info(ctx, "connected to POSTGRES database")
 	return conn, nil
 }
 

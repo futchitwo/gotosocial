@@ -57,7 +57,7 @@ func populateDefaultAvatars() (defaultAvatars []string) {
 
 	defaultAvatarFiles, err := web.WebFS.ReadDir("assets/default_avatars")
 	if err != nil {
-		log.Warnf("populateDefaultAvatars: error reading default avatars: %s", err)
+		log.Warnf(nil, "populateDefaultAvatars: error reading default avatars: %s", err)
 		return
 	}
 
