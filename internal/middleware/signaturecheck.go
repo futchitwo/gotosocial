@@ -38,8 +38,20 @@ var (
 // In case of an error, the request will be aborted with http code 500 internal server error.
 func SignatureCheck(isURIBlocked func(context.Context, *url.URL) (bool, db.Error)) func(*gin.Context) {
 	return func(c *gin.Context) {
+		rlog.Info(
+			"gin header",
+			"host", c.Request.Host,
+			"get host header", c.Request.Header.Get("host"),
+			"Host header", c.Request.Header["Host"],
+			"host header", c.Request.Header["host"],
+		)
+
 		// create the verifier from the request, this will error if the request wasn't signed
 		verifier, err := httpsig.NewVerifier(c.Request)
+		rlog.Info(
+			"verifier",
+		)
+
 		if err != nil {
 			// Something went wrong, so we need to return regardless, but only actually
 			// *abort* the request with 401 if a signature was present but malformed

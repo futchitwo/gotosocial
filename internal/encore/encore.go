@@ -38,6 +38,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/web"
 
 	"encore.dev/storage/sqldb"
+	"encore.dev/rlog"
 )
 
 // Start creates and starts a gotosocial server
@@ -209,6 +210,13 @@ func initService() (*Service, error) {
 
 //encore:api public raw path=/*gtsPath
 func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) {
+	rlog.Info(
+		"raw header",
+		"host", req.Host,
+		"get host header", req.Header.Get("host"),
+		"Host header", req.Header["Host"],
+		"host header", req.Header["host"],
+	)
 	s.engine.ServeHTTP(w, req)
 }
 

@@ -320,7 +320,7 @@ func (f *federator) AuthenticateFederatedRequest(ctx context.Context, requestedU
 		"sign",
 		"ok", ok,
 		"pubNSign", pub.N.Sign(),
-		"pubN", pub.N,
+		"pubN", pub.N.String(),
 	)
 
 	for _, algo := range algos {
