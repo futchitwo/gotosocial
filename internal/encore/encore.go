@@ -37,6 +37,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/typeutils"
 	"github.com/superseriousbusiness/gotosocial/internal/web"
 
+	"encore.dev"
 	"encore.dev/storage/sqldb"
 	"encore.dev/rlog"
 )
