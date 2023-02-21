@@ -37,6 +37,7 @@ import (
 	"github.com/superseriousbusiness/gotosocial/internal/typeutils"
 	"github.com/superseriousbusiness/gotosocial/internal/web"
 
+	"encore.dev"
 	"encore.dev/storage/sqldb"
 )
 
@@ -209,6 +210,7 @@ func initService() (*Service, error) {
 
 //encore:api public raw path=/*gtsPath
 func (s *Service) gtsMain(w http.ResponseWriter, req *http.Request) {
+	req.Header["Host"] = []string{encore.Meta().APIBaseURL.Hostname()}
 	s.engine.ServeHTTP(w, req)
 }
 
