@@ -195,9 +195,9 @@ func initService() (*Service, error) {
 	// throttling
 	cpuMultiplier := config.GetAdvancedThrottlingMultiplier()
 	retryAfter := config.GetAdvancedThrottlingRetryAfter()
-	clThrottle := middleware.Throttle(cpuMultiplier)  // client api
-	s2sThrottle := middleware.Throttle(cpuMultiplier) // server-to-server (AP)
-	fsThrottle := middleware.Throttle(cpuMultiplier)  // fileserver / web templates
+	clThrottle := middleware.Throttle(cpuMultiplier, retryAfter)  // client api
+	s2sThrottle := middleware.Throttle(cpuMultiplier, retryAfter) // server-to-server (AP)
+	fsThrottle := middleware.Throttle(cpuMultiplier, retryAfter)  // fileserver / web templates
 	pkThrottle := middleware.Throttle(cpuMultiplier, retryAfter)  // throttle public key endpoint separately
 
 	gzip := middleware.Gzip() // applied to all except fileserver
