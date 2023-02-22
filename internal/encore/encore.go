@@ -210,7 +210,7 @@ func initService() (*Service, error) {
 	wellKnownModule.Route(router_, gzip, s2sLimit, s2sThrottle)
 	nodeInfoModule.Route(router_, s2sLimit, s2sThrottle, gzip)
 	activityPubModule.Route(router_, s2sLimit, s2sThrottle, gzip)
-	activityPubModule.RoutePublicKey(router, s2sLimit, pkThrottle, gzip)
+	activityPubModule.RoutePublicKey(router_, s2sLimit, pkThrottle, gzip)
 	webModule.Route(router_, fsLimit, fsThrottle, gzip)
 
 	return &Service{engine: router_.(*router.RouterType).Engine}, nil
